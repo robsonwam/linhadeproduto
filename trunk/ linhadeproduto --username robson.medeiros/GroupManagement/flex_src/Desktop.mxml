@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas backgroundColor="#FFFFFF"
+		   creationComplete="initDesktop();"
+		   height="100%"
+		   width="100%"
+		   xmlns:mx="http://www.adobe.com/2006/mxml"
+		   xmlns:ns1="br.com.r2jm.sauderesidencia.view.*">
+	<mx:Script>
+		<![CDATA[
+			// Import the debugger
+//            import br.com.mr.mrescolar.util.MonsterDebugger;
+		]]>
+	</mx:Script>
+
+	<mx:Script source="desktop.as"/>
+
+	<mx:Script>
+		<![CDATA[
+			import br.ufpe.cin.reuso.model.ReusoModelLocator;
+			import br.ufpe.cin.reuso.util.MenuXMLList;
+			import mx.collections.ArrayCollection;
+			import flash.sampler.getMemberNames;
+			import mx.collections.XMLListCollection;
+			import mx.core.Application;
+			import br.com.r2jm.sauderesidencia.model.SaudeResidenciaModelLocator;
+
+			[Bindable]
+			private var infoUsuario:String;
+
+			[Bindable]
+			private var model:ReusoModelLocator = ReusoModelLocator.getInstance();
+
+			[Bindable]
+			private var menuBarCollection:XMLListCollection;
+
+			public function initDesktop():void
+			{
+				this.loadMenuBar();
+			}
+
+			private function loadMenuBar():void
+			{
+				//Inicializa o menu
+				var o:MenuXMLList = new MenuXMLList();
+				var menuXml:XMLList = o.getMenu(model.userLogged.funcionario.perfilAcessoId.flagGestorAcesso.toUpperCase(), model.userLogged.funcionario.perfilAcessoId.perfilModuloCollection as ArrayCollection);
+				menuBarCollection = new XMLListCollection(menuXml);
+			}
+
+		]]>
+	</mx:Script>
+
+	<mx:MenuBar dataProvider="{menuBarCollection}"
+				fontSize="12"
+				height="22"
+				id="DesktopMenuBar"
+				itemClick="menuItemClick(event);"
+				labelField="@label"
+				left="0"
+				right="0"
+				top="0">
+	</mx:MenuBar>
+
+</mx:Canvas>

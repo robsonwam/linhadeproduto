@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application width="100%"
+				height="100%"
+				creationComplete="initializeForm();"
+				currentState=""
+				layout="absolute"
+				styleName="global"
+				verticalScrollPolicy="off"
+				xmlns:business="br.ufpe.cin.reuso.business.*"
+				xmlns:control="br.ufpe.cin.reuso.control.*"
+				xmlns:mx="http://www.adobe.com/2006/mxml"
+				xmlns:root="*">
+
+	<mx:Style>
+        global {
+            modalTransparencyBlur: 0;
+            modalTransparency: 0.8;
+            modalTransparencyColor: haloSilver;
+            modalTransparencyDuration: 500;
+        }
+    </mx:Style>
+
+	<mx:Script>
+		<![CDATA[
+			import br.ufpe.cin.reuso.model.ReusoModelLocator;
+			import br.ufpe.cin.reuso.vo.MembroVO;
+			import br.com.r2jm.sauderesidencia.util.MonsterDebugger;
+
+			import mx.collections.XMLListCollection;
+			import br.com.r2jm.sauderesidencia.vo.UsuarioVO;
+			import mx.controls.Alert;
+			import mx.managers.PopUpManager;
+			import br.com.r2jm.sauderesidencia.model.SaudeResidenciaModelLocator;
+
+			private var model:ReusoModelLocator = ReusoModelLocator.getInstance();
+
+			private function initializeForm():void
+			{
+				login.lbLoginError.text = null;
+				login.lbLoginError.visible = false;
+				login.visible = true;
+			}
+
+			public function logged( isLogged:Boolean, user:MembroVO = null, msg:String = "" ):void
+			{
+				model.userLogged = user as MembroVO;
+
+				if ( isLogged )
+				{
+					currentState = 'Desktop';
+					desktop.initDesktop();
+					login.lbLoginError.text = null;
+					login.lbLoginError.visible = false;
+					login.visible = false;
+				}
+				else
+				{
+					currentState = "";
+					login.lbLoginError.text = msg;
+					login.lbLoginError.visible = true;
+					login.visible = true;
+				}
+			}
+
+			public function logout():void
+			{
+				model.userLogged = null;
+				currentState = "";
+				login.visible = true;
+				login.txtPassword.text = null;
+				login.txtUser.text = null;
+				login.lbLoginError.text = null;
+				login.lbLoginError.visible = false;
+				login.btnAuthentication.enabled = false;
+			}
+		]]>
+	</mx:Script>
+
+	<mx:TraceTarget/>
+	<control:ReusoController id="controller"/>
+	<business:Services id="services"/>
+	<mx:states>
+		<mx:State activate="{}"
+				  name="Desktop">
+			<mx:AddChild position="lastChild">
+				<root:Desktop id="desktop"
+							  width="100%"
+							  height="100%">
+				</root:Desktop>
+			</mx:AddChild>
+			<!-- <mx:RemoveChild target = "{login}"/> -->
+		</mx:State>
+		<!--
+			 <mx:State name = "Logon">
+			 <mx:AddChild position = "lastChild">
+			 <root:Login horizontalCenter = "0"
+			 verticalCenter = "0"
+			 id = "login"
+			 visible = "true">
+			 </root:Login>
+			 </mx:AddChild>
+			 <mx:RemoveChild target = "{desktop}"/>
+			 </mx:State>
+		-->
+
+	</mx:states>
+	<root:Login id="login"
+				horizontalCenter="0"
+				verticalCenter="0"
+				visible="false"/>
+</mx:Application>
