@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel width="398"
+		  height="322"
+		  defaultButton="{btnAuthentication}"
+		  layout="absolute"
+		  title="Reuso"
+		  verticalScrollPolicy="off"
+		  xmlns:mx="http://www.adobe.com/2006/mxml">
+
+	<mx:Metadata>
+        [Event(name="loginAuth")]
+    </mx:Metadata>
+
+	<mx:Script>
+		<![CDATA[
+			import br.ufpe.cin.reuso.vo.LoginVO;
+			import br.ufpe.cin.reuso.model.ReusoModelLocator;
+			import mx.logging.LogEvent;
+			import mx.validators.Validator;
+			import mx.events.ValidationResultEvent;
+			import mx.events.ValidationResultEvent;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import mx.controls.Alert;
+
+			[Bindable]
+			private var model:ReusoModelLocator = ReusoModelLocator.getInstance();
+
+			[Bindable]
+			private var formIsValid:Boolean = false;
+
+			[Bindable]
+			private var formIsEmpty:Boolean = false;
+
+			private var focussedFormControl:DisplayObject;
+
+			public function validateForm( event:Event ):void
+			{
+				this.focussedFormControl = event.target as DisplayObject;
+				this.formIsValid = true;
+				this.formIsEmpty = ( txtUser.text == "" && txtPassword.text == "" );
+				validate( reqValid );
+				validate( reqPassword );
+			}
+
+			private function validate( validator:Validator ):Boolean
+			{
+				// See also here for validating data:
+				var validatorSource:DisplayObject = validator.source as DisplayObject;
+				var suppressEvents:Boolean = ( validatorSource != focussedFormControl );
+				var event:ValidationResultEvent = validator.validate( null, suppressEvents );
+				var currentControlIsValid:Boolean = ( event.type == ValidationResultEvent.VALID );
+				this.formIsValid = this.formIsValid && currentControlIsValid;
+				return currentControlIsValid;
+			}
+
+			private function clearMessage():void
+			{
+				lbLoginError.text = "";
+				lbLoginError.visible = false;
+			}
+
+			private function ValidateUser():void
+			{
+				var event:LoginEvent = new LoginEvent( LoginEvent.DO_LOGIN );
+				var loginVO:LoginVO = new LoginVO();
+				loginVO.usuario = txtUser.text;
+				loginVO.senha = txtPassword.text;
+				event.login = loginVO;
+				lbLoginError.text = "";
+				lbLoginError.visible = false;
+				CairngormEventDispatcher.getInstance().dispatchEvent( event );
+			}
+		]]>
+	</mx:Script>
+
+	<mx:Image x="39"
+			  y="25"
+			  source="br/com/r2jm/sauderesidencia/assets/images/security.png"/>
+	<mx:HRule x="23"
+			  y="97"/>
+	<mx:Label text="Bem vindo ao Saúde Sistema!"
+			  x="131"
+			  y="25"
+			  width="216"
+			  fontSize="12"/>
+	<mx:Text text="Utilize um nome de usuário e senha válido para acessar o sistema."
+			 x="131"
+			 y="66"
+			 width="228"
+			 height="36"
+			 textAlign="left"/>
+
+	<mx:StringValidator id="reqValid"
+						minLength="1"
+						property="text"
+						required="true"
+						requiredFieldError="{Dicionario.ERROR_FIELD_REQUIRED}"
+						source="{txtUser}"/>
+
+	<mx:StringValidator id="reqPassword"
+						minLength="1"
+						property="text"
+						required="true"
+						requiredFieldError="{Dicionario.ERROR_FIELD_REQUIRED}"
+						source="{txtPassword}"/>
+
+	<mx:Canvas x="23"
+			   y="121"
+			   width="336"
+			   height="115"
+			   backgroundColor="#f9f9f9">
+		<mx:Label text="Usuário"
+				  x="10"
+				  y="19"/>
+		<mx:TextInput id="txtUser"
+					  x="10"
+					  y="35"
+					  width="316"
+					  change="validateForm(event);"
+					  toolTip="Nome do usuário"/>
+		<mx:Label text="Senha"
+				  x="10"
+				  y="65"/>
+		<mx:TextInput id="txtPassword"
+					  x="10"
+					  y="82"
+					  width="316"
+					  change="validateForm(event);"
+					  displayAsPassword="true"
+					  keyDown="clearMessage();"
+					  keyUp="clearMessage();"
+					  toolTip="Senha"/>
+	</mx:Canvas>
+	<mx:Label id="lbLoginError"
+			  text="Informe o nome de usuário e senha"
+			  x="32"
+			  y="123"
+			  width="315"
+			  color="#DB0000"
+			  visible="true"/>
+
+	<mx:ControlBar horizontalAlign="right">
+		<mx:Button id="btnAuthentication"
+				   label="Entrar"
+				   click="ValidateUser()"
+				   enabled="{formIsValid}"
+				   keyDown="clearMessage();"
+				   keyUp="clearMessage();"/>
+	</mx:ControlBar>
+
+</mx:Panel>
