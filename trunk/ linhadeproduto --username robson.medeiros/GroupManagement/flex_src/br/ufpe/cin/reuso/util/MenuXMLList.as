@@ -38,20 +38,20 @@ package br.ufpe.cin.reuso.util
 
 			for ( var i:uint = 0; i < dp.length; i++ )
 			{
-				var perfilModuloVO:PerfilModuloVO = ( dp.getItemAt( i ) as PerfilModuloVO );
-
-				if ( perfilModuloVO.moduloId != null )
-				{
-					if ( perfilModuloVO.moduloId.parentId == 0 )
-					{
-						var nome:String = StringUtil.trim( perfilModuloVO.moduloId.nomeModulo.toString());
-						var mod_id:int = perfilModuloVO.moduloId.moduloId;
-						var habilitar:String = this.validMenuEnabled( flagGestorAcesso, perfilModuloVO.flagAcesso.toUpperCase());
-						strMenu = strMenu + '<menuitem label="' + nome + '" enabled="' + habilitar + '">';
-						strMenu = strMenu + this.getChildMenu( flagGestorAcesso, dp, mod_id );
-						strMenu = strMenu + '</menuitem>';
-					}
-				}
+//				var perfilModuloVO:PerfilModuloVO = ( dp.getItemAt( i ) as PerfilModuloVO );
+//
+//				if ( perfilModuloVO.moduloId != null )
+//				{
+//					if ( perfilModuloVO.moduloId.parentId == 0 )
+//					{
+//						var nome:String = StringUtil.trim( perfilModuloVO.moduloId.nomeModulo.toString());
+//						var mod_id:int = perfilModuloVO.moduloId.moduloId;
+//						var habilitar:String = this.validMenuEnabled( flagGestorAcesso, perfilModuloVO.flagAcesso.toUpperCase());
+//						strMenu = strMenu + '<menuitem label="' + nome + '" enabled="' + habilitar + '">';
+//						strMenu = strMenu + this.getChildMenu( flagGestorAcesso, dp, mod_id );
+//						strMenu = strMenu + '</menuitem>';
+//					}
+//				}
 			}
 			strMenu = strMenu + '</>';
 			return new XMLList( strMenu );
@@ -65,36 +65,36 @@ package br.ufpe.cin.reuso.util
 			// var txt:String ="";
 			for ( var i:uint = 0; i < dp.length; i++ )
 			{
-				var perfilModuloVO:PerfilModuloVO = ( dp.getItemAt( i ) as PerfilModuloVO );
-
-				if ( perfilModuloVO.moduloId != null )
-				{
-
-					//try{ txt+= perfilModuloVO.modulo.id.toString()+" - " + perfilModuloVO.modulo.nome.toString()+" - "+perfilModuloVO.modulo.parent.toString()+"\n";
-					//}catch (e:Error){Alert.show(e.errorID.toString() + ", " + e.name + ", " + e.message + ", " + e.getStackTrace());}
-
-
-					if ( perfilModuloVO.moduloId.parentId == parentId )
-					{
-
-						var nome:String = StringUtil.trim( perfilModuloVO.moduloId.nomeModulo.toString());
-						var mod_id:int = perfilModuloVO.moduloId.moduloId;
-						var habilitar:String = this.validMenuEnabled( flagGestorAcesso, perfilModuloVO.flagAcesso.toUpperCase());
-						var strChild:String = this.getChildMenu( flagGestorAcesso, dp, mod_id );
-
-
-						if ( strChild.length > 0 )
-						{
-							strMenu = strMenu + '<menuitem label="' + nome + '" data="' + mod_id.toString() + '">';
-							strMenu = strMenu + strChild;
-							strMenu = strMenu + '</menuitem>';
-						}
-						else
-						{
-							strMenu = strMenu + '<menuitem label="' + nome + '" data="' + mod_id.toString() + '"/>';
-						}
-					}
-				}
+//				var perfilModuloVO:PerfilModuloVO = ( dp.getItemAt( i ) as PerfilModuloVO );
+//
+//				if ( perfilModuloVO.moduloId != null )
+//				{
+//
+//					//try{ txt+= perfilModuloVO.modulo.id.toString()+" - " + perfilModuloVO.modulo.nome.toString()+" - "+perfilModuloVO.modulo.parent.toString()+"\n";
+//					//}catch (e:Error){Alert.show(e.errorID.toString() + ", " + e.name + ", " + e.message + ", " + e.getStackTrace());}
+//
+//
+//					if ( perfilModuloVO.moduloId.parentId == parentId )
+//					{
+//
+//						var nome:String = StringUtil.trim( perfilModuloVO.moduloId.nomeModulo.toString());
+//						var mod_id:int = perfilModuloVO.moduloId.moduloId;
+//						var habilitar:String = this.validMenuEnabled( flagGestorAcesso, perfilModuloVO.flagAcesso.toUpperCase());
+//						var strChild:String = this.getChildMenu( flagGestorAcesso, dp, mod_id );
+//
+//
+//						if ( strChild.length > 0 )
+//						{
+//							strMenu = strMenu + '<menuitem label="' + nome + '" data="' + mod_id.toString() + '">';
+//							strMenu = strMenu + strChild;
+//							strMenu = strMenu + '</menuitem>';
+//						}
+//						else
+//						{
+//							strMenu = strMenu + '<menuitem label="' + nome + '" data="' + mod_id.toString() + '"/>';
+//						}
+//					}
+//				}
 			}
 			//Alert.show(txt);
 			return strMenu;
