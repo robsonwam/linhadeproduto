@@ -1,6 +1,6 @@
 /*
 Created		13/03/2010
-Modified		14/03/2010
+Modified		15/03/2010
 Project		
 Model			
 Company		
@@ -8,39 +8,6 @@ Author
 Version		
 Database		PostgreSQL 8.1 
 */
-
-
-
-/* Drop Referential Integrity Triggers */
-
-
-
-
-
-/* Drop User-Defined Triggers */
-
-
-
-/* Drop Domains */
-
-
-
-/* Drop Procedures */
-
-
-
-/* Drop Views */
-
-
-
-/* Drop Indexes */
-
-
-
-/* Drop Tables */
-Drop table "autor" Restrict;
-Drop table "publicacao" Restrict;
-Drop table "membro" Restrict;
 
 
 
@@ -57,6 +24,7 @@ Create table "membro"
 	"passwd" Char(20),
 	"nome" Varchar NOT NULL,
 	"tipo" Varchar NOT NULL,
+	"tipo_estudante" Varchar,
 	"orientador" Char(10),
 	"co_orientador" Char(10),
 	"departamento" Varchar,
