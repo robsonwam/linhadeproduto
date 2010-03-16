@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="remoting-service"
+    class="flex.messaging.services.RemotingService">
+
+    <adapters>
+        <adapter-definition id="java-object" class="flex.messaging.services.remoting.adapters.JavaAdapter" default="false"/>
+        <adapter-definition id="hibernate-object" class="net.digitalprimates.persistence.hibernate.HibernateAdapter" default="true">
+                <properties>
+                        <hibernate>
+                                <sessionFactory>
+                                        <class>net.digitalprimates.persistence.hibernate.utils.HibernateUtil</class>
+                                        <getCurrentSessionMethod>getCurrentSession</getCurrentSessionMethod>                            
+                                </sessionFactory>
+                        </hibernate>
+                </properties>
+         
+        </adapter-definition>
+    </adapters>
+
+
+    <default-channels>
+        <channel ref="my-amf"/>
+    </default-channels>
+
+    <destination id="facadeFlexSaudeResidencia">
+        <properties>
+            <source>br.com.r2jm.sauderesidencia.controller.FacadeFlexSaudeResidencia</source>
+        </properties>
+    </destination>
+
+</service>
