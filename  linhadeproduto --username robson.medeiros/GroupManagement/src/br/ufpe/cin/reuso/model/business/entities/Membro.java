@@ -10,6 +10,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Column;
 
 @Entity
 public class Membro implements Serializable {
@@ -21,6 +22,9 @@ public class Membro implements Serializable {
 	private String nome;
 
 	private String tipo;
+	
+	@Column(name="tipo_estudante")
+	private String tipoEstudante;
 
 	private String departamento;
 
@@ -166,28 +170,36 @@ public class Membro implements Serializable {
 		this.coOrientador = coOrientador;
 	}
 
-	public Collection<Membro> getMembroCollection() {
-		return this.orientadorCollection;
-	}
-
-	public void setMembroCollection(Collection<Membro> membroCollection) {
-		this.orientadorCollection = membroCollection;
-	}
-
-	public Collection<Membro> getMembroCollection2() {
-		return this.coOrientadorCollection;
-	}
-
-	public void setMembroCollection2(Collection<Membro> membroCollection2) {
-		this.coOrientadorCollection = membroCollection2;
-	}
-
 	public Collection<Publicacao> getPublicacaoCollection() {
 		return this.publicacaoCollection;
 	}
 
 	public void setPublicacaoCollection(Collection<Publicacao> publicacaoCollection) {
 		this.publicacaoCollection = publicacaoCollection;
+	}
+
+	public String getTipoEstudante() {
+		return tipoEstudante;
+	}
+
+	public void setTipoEstudante(String tipoEstudante) {
+		this.tipoEstudante = tipoEstudante;
+	}
+
+	public Collection<Membro> getOrientadorCollection() {
+		return orientadorCollection;
+	}
+
+	public void setOrientadorCollection(Collection<Membro> orientadorCollection) {
+		this.orientadorCollection = orientadorCollection;
+	}
+
+	public Collection<Membro> getCoOrientadorCollection() {
+		return coOrientadorCollection;
+	}
+
+	public void setCoOrientadorCollection(Collection<Membro> coOrientadorCollection) {
+		this.coOrientadorCollection = coOrientadorCollection;
 	}
 
 }

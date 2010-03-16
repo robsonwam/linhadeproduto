@@ -12,6 +12,7 @@ package br.ufpe.cin.reuso.vo
 		public var passwd:String;
 		public var nome:String;
 		public var tipo:String;
+		public var tipoEstudante:String;
 		public var departamento:String;
 		public var email:String;
 		public var telefone:String;
