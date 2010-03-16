@@ -1,7 +1,5 @@
 package br.ufpe.cin.reuso.util
 {
-	import br.com.r2jm.sauderesidencia.vo.*;
-
 	public class ObjectTranslate
 	{
 		public function ObjectTranslate()

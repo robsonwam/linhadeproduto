@@ -14,7 +14,7 @@ package br.ufpe.cin.reuso.business
 
 		public function MembroDelegate( responder:IResponder )
 		{
-			this.service = ServiceLocator.getInstance().getRemoteObject( SaudeResidenciaModelLocator.SERVICES_LOCATION );
+			this.service = ServiceLocator.getInstance().getRemoteObject( ReusoModelLocator.SERVICES_LOCATION );
 			this.responder = responder;
 		}
 

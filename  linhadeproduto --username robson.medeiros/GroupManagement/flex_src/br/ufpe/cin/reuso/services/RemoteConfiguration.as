@@ -1,4 +1,4 @@
-package br.com.r2jm.sauderesidencia.services
+package br.ufpe.cin.reuso.services
 {
 	/**
 	* Classe de constantes para declarações de RemoteDestination,
@@ -8,7 +8,7 @@ package br.com.r2jm.sauderesidencia.services
 	{
 		
 		/**
-		 *  destination id ="facadeFlexSaudeResidencia"
+		 *  destination id ="facadeFlexReuso"
 		 **/
 		private var destination : String = "facadeFlexReuso";
 		
@@ -25,7 +25,7 @@ package br.com.r2jm.sauderesidencia.services
 		/**
 		* Nome de destination para operações com Usuário.
 		**/
-		public static const USER_DESTINATION:RemoteConfiguration = new RemoteConfiguration("facadeFlexSaudeResidencia","br.com.r2jm.sauderesidencia.controller.FacadeFlexSaudeResidencia",true);
+		public static const USER_DESTINATION:RemoteConfiguration = new RemoteConfiguration("facadeFlexReuso","br.ufpe.cin.reuso.controller.FacadeFlexReuso",true);
 	
 		public function RemoteConfiguration(name:String, source:String, showBusyCursor:Boolean)
 		{

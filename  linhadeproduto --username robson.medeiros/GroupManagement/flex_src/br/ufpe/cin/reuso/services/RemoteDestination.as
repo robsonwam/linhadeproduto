@@ -12,7 +12,7 @@ package br.ufpe.cin.reuso.services
 		/**
 		* Nome de destination para operações com Usuário.
 		**/
-		public static const USER_DESTINATION:RemoteDestination = new RemoteDestination("facadeFlexSaudeResidencia","br.com.r2jm.sauderesidencia.controller.FacadeFlexSaudeResidencia");
+		public static const USER_DESTINATION:RemoteDestination = new RemoteDestination("facadeFlexReuso","br.ufpe.cin.reuso.controller.FacadeFlexReuso");
 	
 	
 		public function RemoteDestination(name:String, source:String)

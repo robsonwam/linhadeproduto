@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0"
+			 xmlns="http://java.sun.com/xml/ns/persistence"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+	<persistence-unit name="GroupManagement">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.Verba</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.TipoEvento</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.Relatorio</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.PessoaFisica</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.PerfilModuloPK</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.PerfilModulo</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.PerfilFolhaPK</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.PerfilFolha</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.PerfilAcesso</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.ParcelaPK</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.Parcela</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.Pagamento</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.Modulo</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.LancamentoVerba</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.FuncionarioEventoVerba</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.Funcionario</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.FormaPagamento</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.EventoFuncionarioPK</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.EventoFuncionario</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.Evento</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.EstadoCivil</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.Departamento</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.Configuracao</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.Cargo</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.Caixa</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.Banco</class>
+		<class>
+		br.com.r2jm.sauderesidencia.model.business.entities.Ambulancia</class>
+
+		<properties>
+			<property name="hibernate.connection.username"
+					  value="postgres"/>
+
+			<property name="hibernate.connection.driver_class"
+					  value="org.postgresql.Driver"/>
+
+			<property name="hibernate.connection.password"
+					  value="123456"/>
+
+			<property name="hibernate.show_sql"
+					  value="true"/>
+
+			<property name="hibernate.connection.url"
+					  value="jdbc:postgresql:reuso"/>
+
+			<property name="hibernate.dialect"
+					  value="org.hibernate.dialect.PostgreSQLDialect"/>
+
+		</properties>
+	</persistence-unit>
+</persistence>
