@@ -17,7 +17,7 @@ public class EntityManagerFactoryCreate {
 	}
 
 	private EntityManagerFactoryCreate() {
-		emf = Persistence.createEntityManagerFactory("SaudeResidencia");
+		emf = Persistence.createEntityManagerFactory("GroupManagement");
 		em = emf.createEntityManager();
 
 	}

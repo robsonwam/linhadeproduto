@@ -1,6 +1,9 @@
 package br.ufpe.cin.reuso.control
 {
 	
+	import br.ufpe.cin.reuso.commands.LoginCommand;
+	import br.ufpe.cin.reuso.events.LoginEvent;
+	
 	import com.adobe.cairngorm.control.FrontController;
 
 	public class ReusoController extends FrontController
@@ -13,8 +16,8 @@ package br.ufpe.cin.reuso.control
 		public function initialize():void
 		{
 
-//			//ADD COMMANDS
-//			this.addCommand( LoginEvent.DO_LOGIN, LoginCommand );
+			//ADD COMMANDS
+			this.addCommand( LoginEvent.DO_LOGIN, LoginCommand );
 //
 //			//Formas de pagamento
 //			this.addCommand( FormaPagamentoEvent.EVENT_PESQUISAR, FormaPagamentoCommand );

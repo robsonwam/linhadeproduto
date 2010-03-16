@@ -25,10 +25,10 @@ public class MembroDAO extends GenericDAO<Membro> {
 		Membro membro;
 		//Collection<PerfilModulo> perfilModulos;
 		try {
-		   Query query1 = getEntityManager().createQuery("SELECT m FROM Membro f WHERE f.codigo = :login AND f.passwd = :passwd");
+		   Query query1 = getEntityManager().createQuery("SELECT m FROM Membro m WHERE m.codigo = :login AND m.passwd = :passwd");
 		   
 		   query1.setParameter("login", login.getUsuario());
-		   query1.setParameter("senha", login.getSenha());
+		   query1.setParameter("passwd", login.getSenha());
 
 		   membro = (Membro) query1.getSingleResult();   
 		   } catch (NoResultException e) {
