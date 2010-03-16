@@ -13,6 +13,8 @@
 
 	<mx:Script>
 		<![CDATA[
+			import br.ufpe.cin.reuso.util.Dicionario;
+			import br.ufpe.cin.reuso.events.LoginEvent;
 			import br.ufpe.cin.reuso.vo.LoginVO;
 			import br.ufpe.cin.reuso.model.ReusoModelLocator;
 			import mx.logging.LogEvent;
@@ -75,10 +77,10 @@
 
 	<mx:Image x="39"
 			  y="25"
-			  source="br/com/r2jm/sauderesidencia/assets/images/security.png"/>
+			  source="br/ufpe/cin/reuso/assets/images/security.png"/>
 	<mx:HRule x="23"
 			  y="97"/>
-	<mx:Label text="Bem vindo ao Saúde Sistema!"
+	<mx:Label text="Bem vindo!"
 			  x="131"
 			  y="25"
 			  width="216"

@@ -4,7 +4,7 @@
 		   height="100%"
 		   width="100%"
 		   xmlns:mx="http://www.adobe.com/2006/mxml"
-		   xmlns:ns1="br.com.r2jm.sauderesidencia.view.*">
+		   xmlns:ns1="br.ufpe.cin.reuso.view.*">
 	<mx:Script>
 		<![CDATA[
 			// Import the debugger
@@ -22,7 +22,6 @@
 			import flash.sampler.getMemberNames;
 			import mx.collections.XMLListCollection;
 			import mx.core.Application;
-			import br.com.r2jm.sauderesidencia.model.SaudeResidenciaModelLocator;
 
 			[Bindable]
 			private var infoUsuario:String;
@@ -42,8 +41,8 @@
 			{
 				//Inicializa o menu
 				var o:MenuXMLList = new MenuXMLList();
-				var menuXml:XMLList = o.getMenu(model.userLogged.funcionario.perfilAcessoId.flagGestorAcesso.toUpperCase(), model.userLogged.funcionario.perfilAcessoId.perfilModuloCollection as ArrayCollection);
-				menuBarCollection = new XMLListCollection(menuXml);
+//				var menuXml:XMLList = o.getMenu(model.userLogged.funcionario.perfilAcessoId.flagGestorAcesso.toUpperCase(), model.userLogged.funcionario.perfilAcessoId.perfilModuloCollection as ArrayCollection);
+//				menuBarCollection = new XMLListCollection(menuXml);
 			}
 
 		]]>
