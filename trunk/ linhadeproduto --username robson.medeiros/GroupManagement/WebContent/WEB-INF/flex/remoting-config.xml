@@ -22,9 +22,9 @@
         <channel ref="my-amf"/>
     </default-channels>
 
-    <destination id="facadeFlexSaudeResidencia">
+    <destination id="facadeFlexReuso">
         <properties>
-            <source>br.com.r2jm.sauderesidencia.controller.FacadeFlexSaudeResidencia</source>
+            <source>br.ufpe.cin.reuso.controller.FacadeFlexReuso</source>
         </properties>
     </destination>
 

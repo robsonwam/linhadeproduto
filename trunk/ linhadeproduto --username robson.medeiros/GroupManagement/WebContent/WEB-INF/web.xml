@@ -13,7 +13,7 @@ version="2.5">
         <filter-name>hibernateSessionFilter</filter-name>
         <url-pattern>/messagebroker/*</url-pattern>
     </filter-mapping>
-	<display-name>SaudeResidencia</display-name>
+	<display-name>GroupManagement</display-name>
 	<context-param>
 		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
 		<param-value>server</param-value>

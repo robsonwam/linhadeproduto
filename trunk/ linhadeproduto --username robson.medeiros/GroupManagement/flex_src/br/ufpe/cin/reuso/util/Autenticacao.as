@@ -1,10 +1,5 @@
 package br.ufpe.cin.reuso.util
 {
-	import br.com.r2jm.sauderesidencia.controller.FacadeSaudeResidencia;
-	import br.com.r2jm.sauderesidencia.vo.Funcionario;
-	import br.com.r2jm.sauderesidencia.vo.Login;
-	import br.com.r2jm.sauderesidencia.remote.RemoteConection;
-
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	import mx.rpc.events.*;
@@ -71,7 +66,7 @@ package br.ufpe.cin.reuso.util
 		{
 			if ( validarLogin( login ))
 			{
-				var facade:FacadeSaudeResidencia = FacadeSaudeResidencia.getInstance() as FacadeSaudeResidencia;
+				var facade:FacadeReuso = FacadeReuso.getInstance() as FacadeReuso;
 				( facade.getRemoteObjectConection() as RemoteConection ).call( "doLogin", login, null, this.autorizaAcesso );
 				return Boolean(( this.usuario != null ));
 			}

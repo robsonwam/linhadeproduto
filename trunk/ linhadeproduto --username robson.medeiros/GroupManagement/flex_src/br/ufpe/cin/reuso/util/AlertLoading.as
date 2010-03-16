@@ -113,7 +113,7 @@ package br.ufpe.cin.reuso.util
 			 myWin.addChild(buttonBox);*/
 
 			var imagem:Image = new Image();
-			imagem.source = "br/com/r2jm/sauderesidencia/assets/images/loading.GIF";
+			imagem.source = "br/ufpe/cin/reuso/assets/images/loading.GIF";
 			myWin.addChild( imagem );
 		}
 

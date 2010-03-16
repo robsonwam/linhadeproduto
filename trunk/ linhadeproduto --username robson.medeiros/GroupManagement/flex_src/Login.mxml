@@ -63,6 +63,7 @@
 
 			private function ValidateUser():void
 			{
+				Alert.show( "PASSOU!" , "PASSOU!" );
 				var event:LoginEvent = new LoginEvent( LoginEvent.DO_LOGIN );
 				var loginVO:LoginVO = new LoginVO();
 				loginVO.usuario = txtUser.text;

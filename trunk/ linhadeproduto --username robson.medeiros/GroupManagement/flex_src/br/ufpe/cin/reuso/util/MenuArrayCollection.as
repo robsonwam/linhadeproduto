@@ -1,6 +1,5 @@
 package br.ufpe.cin.reuso.util
 {
-	import br.com.r2jm.sauderesidencia.vo.PerfilModuloVO;
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	import mx.events.MenuEvent;
