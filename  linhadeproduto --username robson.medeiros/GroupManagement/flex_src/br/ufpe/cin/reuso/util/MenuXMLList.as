@@ -21,38 +21,24 @@ package br.ufpe.cin.reuso.util
 			return habilitar ? "true" : "false";
 		}
 
-		public function getMenu( flagGestorAcesso:String, dp:ArrayCollection ):XMLList
+		public function getMenu():XMLList
 		{
-			var dtp:ArrayCollection = dp;
-			dtp.sort;
-			return createMenu( flagGestorAcesso, ( dtp as ArrayCollection ));
+			return createMenu();
 		}
 
-		private function createMenu( flagGestorAcesso:String, dp:ArrayCollection ):XMLList
+		private function createMenu( ):XMLList
 		{
 			var strMenu:String = '<>';
 			strMenu = strMenu + '<menuitem label="Programa">';
             strMenu = strMenu + '  <menuitem label="Mudar Senha" data="1"/>';
 			strMenu = strMenu + '  <menuitem label="Sair" data="-1"/>';
 			strMenu = strMenu + '</menuitem>';
+			
+			strMenu = strMenu + '<menuitem label="Cadastro">';
+            strMenu = strMenu + '  <menuitem label="Membro" data="2"/>';
+			strMenu = strMenu + '  <menuitem label="Publicação" data="3"/>';
+			strMenu = strMenu + '</menuitem>';
 
-			for ( var i:uint = 0; i < dp.length; i++ )
-			{
-//				var perfilModuloVO:PerfilModuloVO = ( dp.getItemAt( i ) as PerfilModuloVO );
-//
-//				if ( perfilModuloVO.moduloId != null )
-//				{
-//					if ( perfilModuloVO.moduloId.parentId == 0 )
-//					{
-//						var nome:String = StringUtil.trim( perfilModuloVO.moduloId.nomeModulo.toString());
-//						var mod_id:int = perfilModuloVO.moduloId.moduloId;
-//						var habilitar:String = this.validMenuEnabled( flagGestorAcesso, perfilModuloVO.flagAcesso.toUpperCase());
-//						strMenu = strMenu + '<menuitem label="' + nome + '" enabled="' + habilitar + '">';
-//						strMenu = strMenu + this.getChildMenu( flagGestorAcesso, dp, mod_id );
-//						strMenu = strMenu + '</menuitem>';
-//					}
-//				}
-			}
 			strMenu = strMenu + '</>';
 			return new XMLList( strMenu );
 		}

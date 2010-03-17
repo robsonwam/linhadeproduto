@@ -1,7 +1,7 @@
 package br.ufpe.cin.reuso.model
 {
 
-	import br.ufpe.cin.reuso.vo.MembroVO;
+	import br.ufpe.cin.reuso.vo.UsuarioVO;
 	
 	import com.adobe.cairngorm.CairngormError;
 	import com.adobe.cairngorm.CairngormMessageCodes;
@@ -60,7 +60,7 @@ package br.ufpe.cin.reuso.model
 
 		public static const SERVICES_SHOW_BUSY:Boolean = true;
 
-		public var userLogged:MembroVO;
+		public var userLogged:UsuarioVO;
 
 		public var workflowState:uint = 0;
 
