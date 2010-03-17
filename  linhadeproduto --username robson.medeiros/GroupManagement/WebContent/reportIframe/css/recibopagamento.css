@@ -1,0 +1,282 @@
+@media print {
+	@page land 
+	{
+		size: landscape;
+	}
+	* 
+	{
+		background-color: white !important;
+		background-image: none !important;
+	}
+	html,body 
+	{
+	    padding: 0px 0px 0px 0px;
+		margin: 0px 0px 0px 0px;
+		background-color: #FFFFFF;
+		font-size: 10pt;
+	}
+	div.Recibo 
+	{
+		border: none;
+		border-bottom: 1px dotted #000000;
+		font-family: serif;
+		font-size: 10pt;
+		height: auto;
+		padding: 5px 5px 25px 5px;
+		margin: 0px 0px 10px 0px;
+		width: 640px;
+	}
+	div.Recibo div.DivHeader 
+	{
+		margin-bottom: 10px;
+		width: 100%;
+	}
+	div.Recibo div.DivHeader table 
+	{
+		border: none;
+		border-collapse: collapse;
+		text-align: center;
+		display: block;
+		width: 100%;
+	}
+	div.Recibo div.DivHeader table tr td.Titulo1,div.Recibo div.DivHeader table tr td.Titulo2,div.Recibo div.DivHeader table tr td.Titulo3
+	{
+		border: none;
+		border-collapse: collapse;
+		text-align: center;
+		font-weight:bold;
+	}
+	div.Recibo div.DivHeader table tr td.Titulo1 
+	{
+		width: 25%;
+		text-align: left;
+	}
+	div.Recibo div.DivHeader table tr td.Titulo2 
+	{
+		width: 50%;
+		text-align: center;
+	}
+	div.Recibo div.DivHeader table tr td.Titulo3 
+	{
+		width: 25%;
+		text-align: right;
+	}
+	div.Recibo div.DivBody div.Dados 
+	{
+		text-align: left;
+		margin-bottom: 5pt;
+	}
+	div.Recibo div.DivBody div.Dados span.Matricula 
+	{
+		font-weight: bold;
+		margin-right: 5pt;
+	}
+	div.Recibo div.DivBody div.Dados span.Nome 
+	{
+		font-weight: bold;
+		margin-left: 20pt;
+		margin-right: 5pt;
+	}
+	div.Recibo div.DivBody table.TabelaRecibo 
+	{
+		border: none;
+		border: 1px solid #E4E4E4;
+		border-collapse: collapse;
+		text-align: left;
+		width: 100%;
+		margin-bottom: 20pt;
+	}
+	div.Recibo div.DivBody table.TabelaRecibo thead tr th,div.Recibo div.DivBody table.TabelaRecibo tbody tr td,div.Recibo div.DivBody table.TabelaRecibo tfoot tr td
+	{ 
+		padding-left: 5pt;
+	}
+	div.Recibo div.DivBody table.TabelaRecibo thead tr th.Titulo1,div.Recibo div.DivBody table.TabelaRecibo thead tr th.Titulo2,div.Recibo div.DivBody table.TabelaRecibo thead tr th.Titulo3
+	{
+		border: 1px solid #E4E4E4;
+		border: none;
+		padding-left: 2pt;
+		border-collapse: collapse;
+		text-align: left;
+	}
+	div.Recibo div.DivHeader table.TabelaRecibo thead tr th.Titulo1 {
+		width: 15%;
+	}
+	div.Recibo div.DivHeader table.TabelaRecibo thead tr th.Titulo2 {
+		width: 70%;
+	}
+	div.Recibo div.DivHeader table.TabelaRecibo thead tr th.Titulo3 {
+		width: 15%;
+	}
+	div.Recibo div.DivBody table.TabelaRecibo tfoot tr td.Total,
+	td.Total
+	{
+		text-align: right;
+		padding-right: 10pt; font-weight: bold;
+	}
+	div.Recibo div.DivFooter {
+		display: block;
+	}
+	div.Recibo div.DivFooter div.Titulo1 {
+		display: block;
+		text-align: center;
+		margin-bottom: 30px;
+		font-weight: bold;
+		font-size: 11pt;
+	}
+	div.Recibo div.DivFooter div.Titulo2 {
+		display: block;
+		text-align: left;
+	}
+	div.Recibo div.DivFooter div.Titulo2 span.DataAtual {
+		font-weight: bold;
+		margin-right: 5pt;
+	}
+	div.Recibo div.DivFooter div.Titulo2 span.Funcionario {
+		font-weight: bold;
+		margin-left: 100pt;
+		margin-right: 5pt;
+	}
+	input
+	{
+	  display: none;
+	}
+}
+
+@media screen {
+	html,body {
+		margin: 0px 0px 0px 0px;
+		background-color: #FFFFFF;
+		width: 700px;
+	}
+	div.Recibo {
+		border: none;
+		border-bottom: 1px dotted #000000;
+		font-family: serif;
+		font-size: 10pt;
+		height: auto;
+		padding: 5px 5px 25px 5px;
+		margin: 10px 5px 10px 5px;
+		/*border: 1px solid red;*/
+		width: 682px;
+	}
+	
+	div.Recibo div.DivHeader {
+		margin-bottom: 10px;
+		width: 100%;
+	}
+	div.Recibo div.DivHeader table {
+		border: none;		
+		border-collapse: collapse;
+		text-align: center;
+		display: block;
+		width: 100%;
+	}
+
+	div.Recibo div.DivHeader table tr td.Titulo1,
+	div.Recibo div.DivHeader table tr td.Titulo2,
+	div.Recibo div.DivHeader table tr td.Titulo3
+	{
+		border: none;
+		border-collapse: collapse;
+		text-align: center;
+		font-weight:bold;
+		
+	}
+	div.Recibo div.DivHeader table tr td.Titulo1 {
+		width: 25%;
+		text-align: left;
+	}
+	div.Recibo div.DivHeader table tr td.Titulo2 {
+		width: 50%;
+		text-align: center;
+	}
+	div.Recibo div.DivHeader table tr td.Titulo3 {
+		width: 25%;
+		text-align: right;
+	}
+	
+	/*******************************************************************/
+	
+	div.Recibo div.DivBody
+	{
+		border: none;
+	}
+	div.Recibo div.DivBody div.Dados {
+		text-align: left;
+		margin-bottom: 5pt;
+	}
+	div.Recibo div.DivBody div.Dados span.Matricula {
+		font-weight: bold;
+		margin-right: 5pt;
+	}
+	div.Recibo div.DivBody div.Dados span.Nome {
+		font-weight: bold;
+		margin-left: 20pt;
+		margin-right: 5pt;
+	}
+	div.Recibo div.DivBody table.TabelaRecibo {
+		border: none;
+		border: 1px solid #E4E4E4;
+		border-collapse: collapse;
+		text-align: left;
+		width: 100%;
+		margin-bottom: 20pt;
+	}
+
+	div.Recibo div.DivBody table.TabelaRecibo thead tr th,
+	div.Recibo div.DivBody table.TabelaRecibo tbody tr td,
+	div.Recibo div.DivBody table.TabelaRecibo tfoot tr td
+	{ 
+		padding-left: 5pt;
+	}
+	div.Recibo div.DivBody table.TabelaRecibo thead tr th.Titulo1,
+	div.Recibo div.DivBody table.TabelaRecibo thead tr th.Titulo2,
+	div.Recibo div.DivBody table.TabelaRecibo thead tr th.Titulo3
+	{
+		border: 1px solid #E4E4E4;
+		border: none;
+		padding-left: 2pt;
+		border-collapse: collapse;
+		text-align: left;
+		
+	}
+	div.Recibo div.DivHeader table.TabelaRecibo thead tr th.Titulo1 {
+		width: 15%;
+	}
+	div.Recibo div.DivHeader div.TabelaRecibo thead tr th.Titulo2 {
+		width: 70%;
+	}
+	div.Recibo div.DivHeader div.TabelaRecibo thead tr th.Titulo3 {
+		width: 15%; 
+	}
+	div.Recibo div.DivBody div.TabelaRecibo tfoot tr td.Total,
+	td.Total {
+		text-align: right;
+		padding-right: 10pt; 
+		font-weight: bold;
+	}
+	div.Recibo div.DivFooter {
+		display: block;
+	}
+	div.Recibo div.DivFooter div.Titulo1 {
+		display: block;
+		text-align: center;
+		margin-bottom: 30px;
+		font-weight: bold;
+		font-size: 11pt;
+	}
+	div.Recibo div.DivFooter div.Titulo2 {
+		display: block;
+		text-align: left;
+		margin-bottom: 30px;
+	}
+	div.Recibo div.DivFooter div.Titulo2 span.DataAtual {
+		font-weight: bold;
+		margin-right: 5pt;
+	}
+	div.Recibo div.DivFooter div.Titulo2 span.Funcionario {
+		font-weight: bold;
+		margin-left: 100pt;
+		margin-right: 5pt;
+	}
+}
