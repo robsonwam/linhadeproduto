@@ -22,6 +22,7 @@
 
 	<mx:Script>
 		<![CDATA[
+			import br.ufpe.cin.reuso.vo.UsuarioVO;
 			import br.ufpe.cin.reuso.util.MonsterDebugger;
 
 			import mx.collections.XMLListCollection;
@@ -39,9 +40,9 @@
 				login.visible = true;
 			}
 
-			public function logged( isLogged:Boolean, user:MembroVO = null, msg:String = "" ):void
+			public function logged( isLogged:Boolean, user:UsuarioVO = null, msg:String = "" ):void
 			{
-				model.userLogged = user as MembroVO;
+				model.userLogged = user as UsuarioVO;
 
 				if ( isLogged )
 				{
