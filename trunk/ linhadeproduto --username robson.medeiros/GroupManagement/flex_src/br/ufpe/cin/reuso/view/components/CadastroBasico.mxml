@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas height="550"
+		   width="750"
+		   xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Script>
+		<![CDATA[
+			import br.com.r2jm.sauderesidencia.model.SaudeResidenciaModelLocator;
+			import br.com.r2jm.sauderesidencia.vo.PerfilAcessoVO;
+			import br.com.r2jm.sauderesidencia.vo.PerfilModuloVO;
+			import mx.collections.SortField;
+			import mx.collections.Sort;
+			import mx.managers.PopUpManager;
+			import mx.core.Application;
+			import org.doc.PaperFormat;
+			import br.com.r2jm.sauderesidencia.view.reports.report.templates.TemplateLista;
+			import org.doc.Document;
+			import br.com.r2jm.sauderesidencia.view.reports.report.dataproviders.DPTemplateLista;
+			import br.com.r2jm.sauderesidencia.view.reports.report.custom.PreviewWindow;
+
+			import mx.controls.Alert;
+			import mx.collections.ArrayCollection;
+			import mx.binding.utils.BindingUtils;
+			import br.com.r2jm.sauderesidencia.util.Dicionario;
+
+			// Icones dos botões
+			[Embed(source='../../assets/images/novo.png')]
+			[Bindable]
+			private static var ico_incluir:Class;
+
+			[Embed(source='../../assets/images/pesquisar.png')]
+			[Bindable]
+			private static var ico_pesquisar:Class;
+
+			[Embed(source='../../assets/images/editar.png')]
+			[Bindable]
+			private static var ico_editar:Class;
+
+			[Embed(source='../../assets/images/delete.png')]
+			[Bindable]
+			private static var ico_excluir:Class;
+
+			[Embed(source='../../assets/images/detalhar.png')]
+			[Bindable]
+			private static var ico_detalhar:Class;
+
+			[Embed(source='../../assets/images/listar.png')]
+			[Bindable]
+			private static var ico_listar:Class;
+
+			[Embed(source='../../assets/images/cancelar.png')]
+			[Bindable]
+			private static var ico_cancelar:Class;
+
+			[Embed(source='../../assets/images/salvar.png')]
+			[Bindable]
+			private static var ico_salvar:Class;
+
+			public static const AC_SEARCH:uint = 0;
+
+			public static const AC_INSERT:uint = 1;
+
+			public static const AC_INSERT_AND_NEW:uint = 2;
+
+			public static const AC_DETAIL:uint = 3;
+
+			public static const AC_UPDATE:uint = 4;
+
+			public static const AC_DELETE:uint = 5;
+
+			public static const AC_LIST:uint = 6;
+
+			public var titutoReport:String = "Relatário";
+
+			public var MODULO_ID:uint = 0;
+
+			public const VS_CONSULTA:uint = 0;
+
+			public const VS_CADASTRO:uint = 1;
+
+			[Bindable]
+			public var dataFieldCodigo:String = "id";
+
+			[Bindable]
+			public var dataFieldDescricao:String = "descricao";
+
+			[Bindable]
+			public var dpRegistros:ArrayCollection = new ArrayCollection();
+
+			public var action:uint = 0;
+
+			public var funcPesquisar:Function = null;
+
+			public var funcIncluir:Function = null;
+
+			public var funcEditar:Function = null;
+
+			public var funcExcluir:Function = null;
+
+			public var funcDetalhar:Function = null;
+
+			public var funcListar:Function = null;
+
+			public var funcCancelar:Function = null;
+
+			public var funcCancelar1:Function = null;
+
+			public var funcSalvar:Function = null;
+
+			public var funcSalvarENovo:Function = null;
+
+			public var funcCbViewStackChance:Function = null;
+
+			public function getConsDescricao():String
+			{
+				return this.cbcsDescricao.text;
+			}
+
+			public function getConsCodigo():int
+			{
+				return int(this.cbcsCodigo.text);
+			}
+
+			public function setConsDescricao(desc:String):void
+			{
+				this.cbcsDescricao.text = desc;
+			}
+
+			public function setConsCodigo(cod:int):void
+			{
+				this.cbcsCodigo.text = cod.toString();
+			}
+
+			public function getCadDescricao():String
+			{
+				return this.cbcdDescricao.text;
+			}
+
+			public function getCadCodigo():int
+			{
+				return int(this.cbcdCodigo.text);
+			}
+
+			public function setCadDescricao(desc:String):void
+			{
+				this.cbcdDescricao.text = desc;
+			}
+
+			public function setCadCodigo(cod:int):void
+			{
+				this.cbcdCodigo.text = cod.toString();
+			}
+
+			public function changeViewStack(view:uint):void
+			{
+				this.cbViewStack.selectedIndex = view;
+			}
+
+			public function limparCampos():void
+			{
+				this.cbcdCodigo.text = "";
+				this.cbcdDescricao.text = "";
+			}
+
+			public function setDescricaoFocus():void
+			{
+				this.cbcdDescricao.setFocus();
+			}
+
+			private function cbViewStackChance():void
+			{
+				if (this.funcCbViewStackChance != null)
+				{
+					if (this.funcCbViewStackChance is Function)
+					{
+						this.funcCbViewStackChance(this.action);
+					}
+				}
+			}
+
+			private function pesquisar():void
+			{
+				if (this.funcPesquisar != null)
+				{
+					if (this.funcPesquisar is Function)
+					{
+						this.funcPesquisar();
+					}
+				}
+			}
+
+			private function incluir():void
+			{
+				if (this.funcIncluir != null)
+				{
+					if (this.funcIncluir is Function)
+					{
+						this.funcIncluir();
+					}
+				}
+			}
+
+			private function editar():void
+			{
+				if (this.funcEditar != null)
+				{
+					if (this.funcEditar is Function)
+					{
+						this.funcEditar();
+					}
+				}
+			}
+
+			private function detalhar():void
+			{
+				if (this.funcDetalhar != null)
+				{
+					if (this.funcDetalhar is Function)
+					{
+						this.funcDetalhar();
+					}
+				}
+			}
+
+			private function listar():void
+			{
+				var janela:PreviewWindow = new PreviewWindow();
+				janela.width = Application.application.width;
+				janela.height = Application.application.height;
+
+				var template:DPTemplateLista = new DPTemplateLista();
+				template.dpLista = this.dpRegistros;
+				template.titulo = this.titutoReport;
+				template.dtGrid = this.cbdgDataGrid;
+				var campo1:SortField = new SortField();
+				campo1.name = this.dataFieldCodigo;
+				campo1.numeric = true;
+
+//, new SortField(this.dataFieldDescricao, true
+				template.ordenacao = [campo1];
+
+				var doc:Document = new Document(new TemplateLista(), template, PaperFormat.A4);
+				PopUpManager.addPopUp(janela, this, true);
+				janela.previewComponent.doc = doc;
+			}
+
+			private function excluir():void
+			{
+				if (this.funcExcluir != null)
+				{
+					if (this.funcExcluir is Function)
+					{
+						this.funcExcluir();
+					}
+				}
+			}
+
+			private function salvarENovo():void
+			{
+				if (this.funcSalvarENovo != null)
+				{
+					if (this.funcSalvarENovo is Function)
+					{
+						if (this.validarDados())
+						{
+							this.funcSalvarENovo();
+						}
+					}
+				}
+			}
+
+			private function salvar():void
+			{
+				if (this.funcSalvar != null)
+				{
+					if (this.funcSalvar is Function)
+					{
+						if (this.validarDados())
+						{
+							this.funcSalvar();
+						}
+					}
+				}
+			}
+
+			private function cancelar():void
+			{
+				if (this.funcCancelar != null)
+				{
+					if (this.funcCancelar is Function)
+					{
+						this.funcCancelar();
+					}
+				}
+			}
+
+			private function cancelar1():void
+			{
+				if (this.funcCancelar1 != null)
+				{
+					if (this.funcCancelar1 is Function)
+					{
+						this.funcCancelar1();
+					}
+				}
+			}
+
+			private function validarDados():Boolean
+			{
+				if (cbcdDescricao.text.length <= 0)
+				{
+					Alert.show("Favor informa a descrição!", Dicionario.ALERT_TITLE_ERROR);
+					this.setDescricaoFocus();
+					return false;
+				}
+				return true;
+			}
+
+			private function validarPerfil(action:uint):Boolean
+			{
+				var result:Boolean = false;
+				var perfilModulo:PerfilModuloVO = null;
+				var perfilAcesso:PerfilAcessoVO = SaudeResidenciaModelLocator.getInstance().userLogged.funcionario.perfilAcessoId;
+				for (var i:int; i < perfilAcesso.perfilModuloCollection.length; i++)
+				{
+					if ((perfilAcesso.perfilModuloCollection.getItemAt(i) as PerfilModuloVO).moduloId.moduloId == MODULO_ID)
+					{
+						perfilModulo = (perfilAcesso.perfilModuloCollection.getItemAt(i) as PerfilModuloVO);
+						break;
+					}
+				}
+				if (action == AC_INSERT)
+				{
+					result = perfilModulo.criar == "S" ? true : false;
+				}
+				else if (action == AC_DELETE)
+				{
+					result = perfilModulo.excluir == "S" ? true : false;
+				}
+				else if (action == AC_UPDATE)
+				{
+					result = perfilModulo.editar == "S" ? true : false;
+				}
+				else if (action == AC_SEARCH)
+				{
+					result = perfilModulo.consultar == "S" ? true : false;
+				}
+
+				return result;
+			}
+
+			public function SortDataGrid():void
+			{
+				this.dpRegistros.sort = new Sort();
+				this.dpRegistros.sort.fields = [new SortField(this.dataFieldCodigo, true), new SortField(this.dataFieldDescricao, true)];
+				this.dpRegistros.refresh();
+			}
+		]]>
+	</mx:Script>
+
+
+	<mx:ViewStack change="cbViewStackChance();"
+				  height="100%"
+				  id="cbViewStack"
+				  width="100%"
+				  x="0"
+				  y="0">
+
+		<mx:Canvas backgroundAlpha="1.0"
+				   height="100%"
+				   label="Consulta"
+				   width="100%">
+
+			<mx:Label left="10"
+					  text="{Dicionario.CB_CODIGO}"
+					  top="13"
+					  width="112"/>
+
+			<mx:TextInput id="cbcsCodigo"
+						  left="10"
+						  maxChars="10"
+						  restrict="0-9"
+						  top="31"
+						  width="112"/>
+
+			<mx:TextInput id="cbcsDescricao"
+						  left="130"
+						  maxChars="60"
+						  top="31"
+						  width="478"/>
+
+			<mx:Label left="130"
+					  text="{Dicionario.CB_DESCRICAO}"
+					  top="13"/>
+
+			<mx:Button click="pesquisar();"
+					   enabled="{validarPerfil(AC_SEARCH)}"
+					   icon="{ico_pesquisar}"
+					   id="BtnPesquisar"
+					   label="{Dicionario.BTN_PESQUISAR}"
+					   right="10"
+					   width="96"
+					   y="31"/>
+
+			<mx:Label left="10"
+					  text="{Dicionario.REGISTROS_ENCONTRADOS}"
+					  top="69"/>
+
+			<mx:Label color="#FE0000"
+					  id="cbcsCountReg"
+					  left="153"
+					  text="{this.dpRegistros.length}"
+					  top="69"/>
+
+			<mx:DataGrid bottom="53"
+						 creationComplete="SortDataGrid();"
+						 dataProvider="{this.dpRegistros}"
+						 id="cbdgDataGrid"
+						 left="10"
+						 right="10"
+						 top="89"
+						 wordWrap="true">
+
+				<mx:columns>
+					<mx:DataGridColumn dataField="{this.dataFieldCodigo}"
+									   headerText="{Dicionario.CB_CODIGO}"
+									   id="dataGridColumnCodigo"
+									   width="80"/>
+
+					<mx:DataGridColumn dataField="{this.dataFieldDescricao}"
+									   headerText="{Dicionario.CB_DESCRICAO}"
+									   id="dataGridColumnDescricao"
+									   wordWrap="true"/>
+				</mx:columns>
+			</mx:DataGrid>
+
+			<mx:Button bottom="10"
+					   click="incluir();"
+					   enabled="{validarPerfil(AC_INSERT)}"
+					   icon="{ico_incluir}"
+					   id="BtnIncluir"
+					   label="{Dicionario.BTN_INCLUIR}"
+					   left="10"
+					   width="100"/>
+
+			<mx:Button bottom="10"
+					   click="editar();"
+					   enabled="{validarPerfil(AC_UPDATE)}"
+					   icon="{ico_editar}"
+					   id="BtnEditar"
+					   label="{Dicionario.BTN_EDITAR}"
+					   left="114"
+					   width="100"/>
+
+			<mx:Button bottom="10"
+					   click="excluir();"
+					   enabled="{validarPerfil(AC_DELETE)}"
+					   icon="{ico_excluir}"
+					   id="BtnExcluir"
+					   label="{Dicionario.BTN_EXCLUIR}"
+					   left="218"
+					   width="100"/>
+
+			<mx:Button bottom="10"
+					   click="detalhar();"
+					   icon="{ico_detalhar}"
+					   id="BtnDetalhar"
+					   label="{Dicionario.BTN_DETALHAR}"
+					   left="322"
+					   width="100"/>
+
+			<mx:Button bottom="10"
+					   click="listar();"
+					   icon="{ico_listar}"
+					   id="BtnListar"
+					   label="{Dicionario.BTN_LISTAR}"
+					   left="426"
+					   width="100"/>
+
+			<mx:Button bottom="10"
+					   click="cancelar();"
+					   icon="{ico_cancelar}"
+					   id="BtnCancelar"
+					   label="{Dicionario.BTN_FECHAR}"
+					   right="10"
+					   width="96"/>
+		</mx:Canvas>
+
+		<mx:Canvas height="100%"
+				   label="Cadastro"
+				   width="100%">
+
+			<mx:Label enabled="false"
+					  left="10"
+					  text="{Dicionario.CB_CODIGO}"
+					  top="10"
+					  width="112"/>
+
+			<mx:TextInput id="cbcdCodigo"
+						  left="10"
+						  restrict="0-9"
+						  top="28"
+						  width="112"/>
+
+			<mx:Label left="10"
+					  text="{Dicionario.CB_DESCRICAO}"
+					  top="58"/>
+
+			<mx:TextInput id="cbcdDescricao"
+						  left="10"
+						  top="76"
+						  width="700"/>
+
+			<mx:Button bottom="19"
+					   click="salvar();"
+					   icon="{ico_salvar}"
+					   id="BtnSalvar"
+					   label="{Dicionario.BTN_SALVAR}"
+					   left="10"
+					   width="96"/>
+
+			<mx:Button bottom="19"
+					   click="salvarENovo();"
+					   icon="{ico_salvar}"
+					   id="BtnSalvarENovo"
+					   label="{Dicionario.BTN_SALVAR_E_NOVO}"
+					   left="114"
+					   width="122"/>
+
+			<mx:Button bottom="19"
+					   click="cancelar1();"
+					   icon="{ico_cancelar}"
+					   id="BtnCancelar1"
+					   label="{Dicionario.BTN_CANCELAR}"
+					   right="10"
+					   width="96"/>
+		</mx:Canvas>
+	</mx:ViewStack>
+
+</mx:Canvas>

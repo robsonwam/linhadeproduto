@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow close="this.cancelar();"
+				height="360"
+				layout="absolute"
+				showCloseButton="true"
+				title="{this.titulo}"
+				width="428"
+				xmlns:mx="http://www.adobe.com/2006/mxml"
+				>
+
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			import br.com.r2jm.sauderesidencia.util.Dicionario;
+			
+			[Embed( source='../../assets/images/pesquisar.png' )]
+			[Bindable]
+			private var ico_pesquisar:Class;
+			
+			[Embed( source='../../assets/images/confirmar.png' )]
+			[Bindable]
+			private var ico_confirmar:Class;
+			
+			[Embed( source='../../assets/images/cancelar.png' )]
+			[Bindable]
+			private var ico_cancelar:Class;
+			
+			private var fConfirmar:Function = null;
+			
+			private var fPesquisar:Function = null;
+			
+			[Bindable]
+			private var titulo:String = "Pesquisa";
+			
+			[Bindable]
+			private var dataField1:String = "id";
+			
+			[Bindable]
+			private var dataField2:String = "descricao";
+			
+			[Bindable]
+			private var headerField1:String = Dicionario.CB_CODIGO;
+			
+			[Bindable]
+			private var headerField2:String = Dicionario.CB_DESCRICAO;
+			
+			[Bindable]
+			public var data_provider:ArrayCollection = new ArrayCollection();
+			
+			[Bindable]
+			public var filterEmpty:Boolean = true;
+			
+			public function initForm( titulo:String , fConfirmar:Function , fPesquisar:Function , fFilter:Function = null , dataField1:String = null , dataField2:String = null , headerField1:String = null , headerField2:String = null ):void
+			{
+				this.fConfirmar = fConfirmar;
+				this.fPesquisar = fPesquisar;
+				this.data_provider = new ArrayCollection();
+				
+				if ( fFilter != null )
+				{
+					this.data_provider.filterFunction = fFilter;
+					this.data_provider.refresh();
+				}
+				
+				if ( titulo.length > 0 )
+				{
+					this.titulo = titulo;
+				}
+				
+				if ( dataField1 != null )
+				{
+					this.dataField1 = dataField1;
+				}
+				
+				if ( dataField2 != null )
+				{
+					this.dataField2 = dataField2;
+				}
+				
+				if ( headerField1 != null )
+				{
+					this.headerField1 = headerField1;
+				}
+				
+				if ( headerField2 != null )
+				{
+					this.headerField2 = headerField2;
+				}
+			
+			}
+			
+			private function pesquisar():void
+			{
+				this.lblMessage.text = '';
+				
+				if ( this.filterEmpty )
+				{
+					if ( this.fPesquisar != null )
+					{
+						this.fPesquisar( this.codigo.text , this.descricao.text );
+					}
+				}
+				else
+				{
+					if (( this.codigo.text.toString().length > 0 ) || ( this.descricao.text.toString().length > 0 ))
+					{
+						if ( this.fPesquisar != null )
+						{
+							this.fPesquisar( this.codigo.text , this.descricao.text );
+						}
+					}
+					else
+					{
+						this.lblMessage.text = Dicionario.INFORMAR_FILTRO;
+					}
+					
+				}
+			}
+			
+			private function confirmar():void
+			{
+				this.lblMessage.text = '';
+				
+				if ( this.dataGrid.selectedItem != null )
+				{
+					if ( this.fConfirmar != null )
+					{
+						this.fConfirmar( this.dataGrid.selectedItem );
+					}
+				}
+				else
+				{
+					this.lblMessage.text = Dicionario.REGISTROS_NAO_SELECIONADO_INCLUIR;
+				}
+			}
+			
+			public function resultSeach( result:ArrayCollection ):Boolean
+			{
+				this.data_provider = result;
+				return true;
+			}
+			
+			public function cancelar():void
+			{
+				PopUpManager.removePopUp( this );
+			}
+		]]>
+	</mx:Script>
+
+	<mx:Label id="lblCodigo"
+			  left="10"
+			  text="{Dicionario.CB_CODIGO}"
+			  top="10"
+			  />
+
+	<mx:Label id="lblDescricao"
+			  left="99"
+			  text="{Dicionario.CB_DESCRICAO}"
+			  top="10"
+			  />
+
+	<mx:TextInput change="{this.codigo.text = this.codigo.text.toUpperCase();}"
+				  id="codigo"
+				  left="10"
+				  top="26"
+				  width="81"
+				  />
+
+	<mx:TextInput id="descricao"
+				  left="99"
+				  top="26"
+				  width="205"
+				  />
+
+	<mx:Button click="pesquisar();"
+			   icon="{ico_pesquisar}"
+			   label="{Dicionario.BTN_PESQUISAR}"
+			   left="308"
+			   right="10"
+			   y="26"
+			   />
+
+	<mx:DataGrid bottom="73"
+				 click="{this.lblMessage.text = '';}"
+				 dataProvider="{this.data_provider}"
+				 id="dataGrid"
+				 left="10"
+				 right="10"
+				 top="56"
+				 >
+
+		<mx:columns>
+			<mx:DataGridColumn dataField="{this.dataField1}"
+							   headerText="{this.headerField1}"
+							   id="dgColCodigo"
+							   width="80"
+							   />
+
+			<mx:DataGridColumn dataField="{this.dataField2}"
+							   headerText="{this.headerField2}"
+							   id="dgColDescriao"
+							   />
+		</mx:columns>
+	</mx:DataGrid>
+
+	<mx:Label color="#FF0000"
+			  id="lblMessage"
+			  top="255"
+			  width="388"
+			  x="10"
+			  />
+
+	<mx:Button bottom="10"
+			   click="confirmar();"
+			   icon="{ico_confirmar}"
+			   label="{Dicionario.BTN_CONFIRMAR}"
+			   width="100"
+			   x="48"
+			   />
+
+	<mx:Button bottom="10"
+			   click="cancelar();"
+			   icon="{ico_cancelar}"
+			   label="{Dicionario.BTN_CANCELAR}"
+			   width="100"
+			   x="260"
+			   />
+
+
+</mx:TitleWindow>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow close="this.cancelar();"
+				height="100%"
+				layout="absolute"
+				showCloseButton="true"
+				title="{this.titulo}"
+				width="100%"
+				xmlns:flexiframe="br.com.r2jm.sauderesidencia.componets.google.code.flexiframe.*"
+				xmlns:mx="http://www.adobe.com/2006/mxml">
+
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Application;
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			import br.com.r2jm.sauderesidencia.util.Dicionario;
+
+			[Embed(source='../../assets/images/imprimir.png')]
+			[Bindable]
+			private var ico_imprimir:Class;
+
+			[Embed(source='../../assets/images/cancelar.png')]
+			[Bindable]
+			private var ico_cancelar:Class;
+
+			[Bindable]
+			public var titulo:String = "Relatório";
+
+			[Bindable]
+			public var url:String = "";
+
+			public var fncImprimir:Function = null;
+
+			public function refresh():void
+			{
+				this.iFrame.source = url;
+			}
+
+			public function cancelar():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+
+			public function imprimir():void
+			{
+				this.iFrame.printIFrame()
+			}
+		]]>
+	</mx:Script>
+
+
+	<flexiframe:IFrame bottom="56"
+					   id="iFrame"
+					   left="1"
+					   right="1"
+					   source=""
+					   top="0" borderStyle="solid" borderThickness="1" borderColor="#000000"/>
+
+	<mx:Button bottom="10"
+			   click="{imprimir();}"
+			   icon="{ico_imprimir}"
+			   label="Imprimir"
+			   right="124"
+			   width="100"/>
+
+	<mx:Button bottom="10"
+			   click="{cancelar();}"
+			   icon="{ico_cancelar}"
+			   label="cancelar"
+			   right="10"
+			   width="100"/>
+
+</mx:TitleWindow>

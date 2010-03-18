@@ -1,7 +1,10 @@
 package br.ufpe.cin.reuso.events
 {
+	import br.ufpe.cin.reuso.vo.MembroVO;
+	
 	import com.universalmind.cairngorm.events.Callbacks;
 	import com.universalmind.cairngorm.events.UMEvent;
+	
 	import flash.events.Event;
 
 
