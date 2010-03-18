@@ -1,4 +1,5 @@
-import mx.controls.Alert;
+import br.ufpe.cin.reuso.view.Membro;
+
 import mx.core.Application;
 import mx.core.IFlexDisplayObject;
 import mx.events.MenuEvent;
@@ -42,7 +43,7 @@ private function openWindow(windowIndex:uint, modal:Boolean = true):void
 
 private var windows:Array = new Array(
 	null //1
-	, null //2
+	, br.ufpe.cin.reuso.view.Membro //2
 	, null //3
 	, null //4
 //	, br.com.r2jm.sauderesidencia.view.PerfilAcesso //19
