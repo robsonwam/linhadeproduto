@@ -1,4 +1,4 @@
-package br.com.r2jm.sauderesidencia.view.components
+package br.ufpe.cin.reuso.view.components
 {
 	import mx.collections.IViewCursor;
 	import mx.controls.ComboBox;

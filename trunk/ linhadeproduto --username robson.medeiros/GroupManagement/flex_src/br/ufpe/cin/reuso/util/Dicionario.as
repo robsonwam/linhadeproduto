@@ -45,6 +45,18 @@ package br.ufpe.cin.reuso.util
 		public static const BTN_ADICIONAR:String = 'Adicionar';
 		public static const BTN_REMOVER:String = 'Remover';
 		public static const BTN_CONFIGURAR_CURSO:String = 'Configurar';
+		
+		//Membro
+		public static const MEMBRO_ESTUDANTE:String = 'Estudante';
+		public static const MEMBRO_PROFESSOR:String = 'Professor';
+		public static const MEMBRO_PESQUISADOR:String = 'Pesquisador';
+		public static const MEMBRO_DOUTORADO:String = 'Doutorado';
+		public static const MEMBRO_MESTRADO:String = 'Mestrado';
+		public static const MEMBRO_INICIACAO:String = 'Iniciação';
+		public static const MEMBRO_ATIVO:String = 'Ativo';
+		public static const MEMBRO_FORMER_MEMBER:String = 'Former Member';
+		
+		
 
 		public function Dicionario()
 		{

@@ -40,19 +40,10 @@ public class Membro implements Serializable {
 
 	private String ativo;
 
-	@ManyToOne
-	@JoinColumn(name="orientador")
-	private Membro orientador;
+	private String orientador;
 
-	@ManyToOne
-	@JoinColumn(name="co_orientador")
-	private Membro coOrientador;
-
-	@OneToMany(mappedBy="orientador")
-	private Collection<Membro> orientadorCollection;
-
-	@OneToMany(mappedBy="coOrientador")
-	private Collection<Membro> coOrientadorCollection;
+	@Column(name="co_orientador")
+	private String coOrientador;
 
 	@ManyToMany
 	@JoinTable(name="autor",
@@ -154,19 +145,19 @@ public class Membro implements Serializable {
 		this.ativo = ativo;
 	}
 
-	public Membro getOrientador() {
+	public String getOrientador() {
 		return this.orientador;
 	}
 
-	public void setOrientador(Membro orientador) {
+	public void setOrientador(String orientador) {
 		this.orientador = orientador;
 	}
 
-	public Membro getCoOrientador() {
+	public String getCoOrientador() {
 		return this.coOrientador;
 	}
 
-	public void setCoOrientador(Membro coOrientador) {
+	public void setCoOrientador(String coOrientador) {
 		this.coOrientador = coOrientador;
 	}
 
@@ -185,21 +176,4 @@ public class Membro implements Serializable {
 	public void setTipoEstudante(String tipoEstudante) {
 		this.tipoEstudante = tipoEstudante;
 	}
-
-	public Collection<Membro> getOrientadorCollection() {
-		return orientadorCollection;
-	}
-
-	public void setOrientadorCollection(Collection<Membro> orientadorCollection) {
-		this.orientadorCollection = orientadorCollection;
-	}
-
-	public Collection<Membro> getCoOrientadorCollection() {
-		return coOrientadorCollection;
-	}
-
-	public void setCoOrientadorCollection(Collection<Membro> coOrientadorCollection) {
-		this.coOrientadorCollection = coOrientadorCollection;
-	}
-
 }

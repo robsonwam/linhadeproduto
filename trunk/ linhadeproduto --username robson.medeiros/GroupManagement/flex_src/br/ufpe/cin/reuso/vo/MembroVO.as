@@ -20,12 +20,8 @@ package br.ufpe.cin.reuso.vo
 		public var cidade:String;
 		public var foto:ByteArray;
 		public var ativo:String;
-		public var orientador:MembroVO;
-		public var coOrientador:MembroVO;
-		[ArrayElementType( "br.ufpe.cin.reuso.vo.MembroVO" )]
-		public var orientadorCollection:ArrayCollection;
-		[ArrayElementType( "br.ufpe.cin.reuso.vo.MembroVO" )]
-		public var coOrientadorCollection:ArrayCollection;
+		public var orientador:String;
+		public var coOrientador:String;
 		[ArrayElementType( "br.ufpe.cin.reuso.vo.PublicacaoVO" )]
 		public var publicacaoCollection:ArrayCollection;
 	}
