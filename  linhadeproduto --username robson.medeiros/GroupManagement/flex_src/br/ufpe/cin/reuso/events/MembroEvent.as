@@ -15,7 +15,7 @@ package br.ufpe.cin.reuso.events
 		public static const EVENT_EDITAR:String = "EditarMembro";
 		public static const EVENT_EXCLUIR:String = "ExcluirMembro";
 		public var params:MembroVO = null;
-		public var ordernarPor:String = "codigoMembro";
+		public var ordernarPor:String = "codigo";
 
 
 		public function MembroEvent( type:String, callback:Callbacks = null )

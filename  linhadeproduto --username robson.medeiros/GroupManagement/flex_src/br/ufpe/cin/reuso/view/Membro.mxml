@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:TitleWindow close="PopUpManager.removePopUp(this);"
+				creationComplete="initForm();"
 				height="550"
 				layout="absolute"
 				showCloseButton="true"
-				title="Departamento"
+				title="Membro"
 				width="750"
 				xmlns:mx="http://www.adobe.com/2006/mxml"
 				xmlns:view="br.ufpe.cin.reuso.view.components.*"
@@ -11,6 +12,7 @@
 
 	<mx:Script>
 		<![CDATA[
+			import flexunit.flexui.controls.right.SelectedTestCaseForm;
 			import br.ufpe.cin.reuso.view.reports.report.templates.TemplateLista;
 			import br.ufpe.cin.reuso.view.reports.report.dataproviders.DPTemplateLista;
 			import br.ufpe.cin.reuso.view.reports.report.custom.PreviewWindow;
@@ -102,14 +104,44 @@
 			
 			private var dataFieldNome:String = "nome";
 			
-			private var dataFieldSigla:String = "sigla";
+			private var dataFieldTipo:String = "tipo";
+			
+			private var dataFieldAtivo:String = "ativo";
 			
 			[Bindable]
 			private var dpRegistros:ArrayCollection = new ArrayCollection();
 			
+			[Bindable]
+			private var dpTipo:ArrayCollection = new ArrayCollection();
+			
+			[Bindable]
+			private var dpTipoEstudante:ArrayCollection = new ArrayCollection();
+			
+			[Bindable]
+			private var dpAtivo:ArrayCollection = new ArrayCollection();
+			
+			private function initForm():void
+			{
+				this.dpTipo.addItem({ label: "", data: null });
+				this.dpTipo.addItem({ label: Dicionario.MEMBRO_ESTUDANTE, data: Dicionario.MEMBRO_ESTUDANTE });
+				this.dpTipo.addItem({ label: Dicionario.MEMBRO_PESQUISADOR, data: Dicionario.MEMBRO_PESQUISADOR });
+				this.dpTipo.addItem({ label: Dicionario.MEMBRO_PROFESSOR, data: Dicionario.MEMBRO_PROFESSOR });
+				
+				this.dpTipoEstudante.addItem({ label: "", data: null });
+				this.dpTipoEstudante.addItem({ label: Dicionario.MEMBRO_DOUTORADO, data: Dicionario.MEMBRO_DOUTORADO });
+				this.dpTipoEstudante.addItem({ label: Dicionario.MEMBRO_MESTRADO, data: Dicionario.MEMBRO_MESTRADO });
+				this.dpTipoEstudante.addItem({ label: Dicionario.MEMBRO_INICIACAO, data: Dicionario.MEMBRO_INICIACAO });
+				
+				this.dpAtivo.addItem({ label: "", data: null });
+				this.dpAtivo.addItem({ label: Dicionario.MEMBRO_ATIVO, data: Dicionario.MEMBRO_ATIVO });
+				this.dpAtivo.addItem({ label: Dicionario.MEMBRO_FORMER_MEMBER, data: Dicionario.MEMBRO_FORMER_MEMBER });
+				
+			}
+
+			
 			private function getOrdenacao():Array
 			{
-				return [ new SortField( this.dataFieldCodigo , true ) , new SortField( this.dataFieldNome , true ) , new SortField( this.dataFieldSigla , true )];
+				return [ new SortField( this.dataFieldCodigo , true ) , new SortField( this.dataFieldNome , true ) , new SortField( this.dataFieldTipo , true ), new SortField( this.dataFieldAtivo , true )];
 			}
 			
 			private function setEntidade( action:uint ):void
@@ -123,6 +155,19 @@
 				
 				this.cadCodigo.text = f.codigo;
 				this.cadNome.text = f.nome;
+				this.cadAtivo.selectedItem = f.ativo;
+				this.cadCidade.text = f.cidade;
+				this.cadConfirmarSenha.text = "";
+				this.cadSenha.text = "";
+				this.cadCoOrientador.text = f.coOrientador;
+				this.cadOrientador.text = f.orientador;
+				this.cadDepartamento.text = f.departamento;
+				this.cadEmail.text = f.email;
+//				this.cadFoto
+				this.cadSite.text = f.website;
+				this.cadTelefone.text = f.telefone;
+				this.cadTipo.selectedItem = f.tipo;
+				this.cadTipoEstudante.selectedItem = f.tipoEstudante;
 			}
 			
 			private function DispararEvento( action:uint ):void
@@ -136,12 +181,26 @@
 					// Pega os dados da tela de pesquisa
 					f.codigo = this.consCodigo.text;
 					f.nome = this.consNome.text;
+					f.ativo = this.consAtivo.selectedLabel;
+					f.tipo = this.consTipo.selectedLabel;
 				}
 				else if (( action == AC_INSERT ) || ( action == AC_INSERT_AND_NEW ) || ( action == AC_UPDATE ))
 				{
 					// Pega os dados da tela de cadastro
 					f.codigo = this.cadCodigo.text;
 					f.nome = this.cadNome.text;
+					f.ativo = this.cadAtivo.selectedLabel;
+					f.cidade = this.cadCidade.text;
+					f.passwd = this.cadSenha.text;
+					f.coOrientador = this.cadCoOrientador.text;
+					f.orientador = this.cadOrientador.text;
+					f.departamento = this.cadDepartamento.text;
+					f.email = this.cadEmail.text;
+//					this.cadFoto
+					f.website = this.cadSite.text;
+					f.telefone = this.cadTelefone.text;
+					f.tipo = this.cadTipo.selectedLabel;
+					f.tipoEstudante = this.cadTipoEstudante.selectedLabel;
 				}
 				else if ( action == AC_DELETE )
 				{
@@ -217,10 +276,22 @@
 			private function cbViewStackChance():void
 			{
 				
-				this.cadCodigo.enabled = false;
+				this.cadCodigo.enabled = true;
 				this.cadNome.enabled = true;
 				this.BtnSalvar.visible = true;
 				this.BtnSalvarENovo.visible = true;
+				this.cadAtivo.visible = true;
+				this.cadCidade.visible = true;
+				this.cadSenha..visible = true;
+				this.cadCoOrientador.visible = true;
+				this.cadOrientador.visible = true;
+				this.cadDepartamento.visible = true;
+				this.cadEmail.visible = true;
+				this.cadFoto.visible = true;
+				this.cadSite.visible = true;
+				this.cadTelefone.visible = true;
+				this.cadTipo.visible = true;
+				this.cadTipoEstudante.visible = true;
 				
 				if ( this.action == AC_UPDATE )
 				{
@@ -228,9 +299,23 @@
 				}
 				else if ( this.action == AC_DETAIL )
 				{
-					this.cadNome.enabled = false;
+					this.cadNome.editable = false;
+					this.cadAtivo.enabled = false;
+					this.cadCidade.editable = false;
+					this.cadSenha.editable = false;
+					this.cadConfirmarSenha.editable = false;
+					this.cadCoOrientador.editable = false;
+					this.cadOrientador.editable = false;
+					this.cadDepartamento.editable = false;
+					this.cadEmail.editable = false;
+					this.cadSite.editable = false;
+					this.cadTelefone.editable = false;
+					this.cadTipo.enabled = false;
+					this.cadTipoEstudante.enabled = false;
 					this.BtnSalvar.visible = false;
 					this.BtnSalvarENovo.visible = false;
+					this.BtnAdicionarFoto.visible = false;
+					this.BtnExcluirFoto.visible = false;
 				}
 				
 				this.setEntidade( this.action );
@@ -344,6 +429,17 @@
 			{
 				this.cadCodigo.text = "";
 				this.cadNome.text = "";
+				this.cadAtivo.selectedIndex = 0;
+				this.cadCidade.text = "";
+				this.cadSenha.text = "";
+				this.cadCoOrientador.text = "";
+				this.cadOrientador.text = "";
+				this.cadDepartamento.text = "";
+				this.cadEmail.text = "";
+				this.cadSite.text = "";
+				this.cadTelefone.text = "";
+				this.cadTipo.selectedIndex = 0;
+				this.cadTipoEstudante.selectedIndex = 0;
 			}
 			
 			private function listar():void
@@ -403,69 +499,61 @@
 
 			<mx:TextInput id="consCodigo"
 						  maxChars="10"
-						  restrict="0-9"
-						  width="112"
+						  width="100"
 						  x="10"
 						  y="31"
 						  />
 
 			<mx:Label text="Nome"
-					  x="130"
+					  x="118"
 					  y="13"
 					  />
 
 			<mx:TextInput id="consNome"
 						  maxChars="60"
-						  width="377"
-						  x="130"
+						  width="255"
+						  x="118"
 						  y="31"
 						  />
 
-			<mx:Label text="Sigla"
-					  x="515"
+			<mx:Label text="Tipo"
+					  x="381"
 					  y="13"
 					  />
-
-			<mx:TextInput id="consSigla"
-						  maxChars="10"
-						  width="97"
-						  x="515"
-						  y="31"
-						  />
 
 			<mx:Button click="pesquisar();"
 					   icon="{ico_pesquisar}"
 					   id="BtnPesquisar"
 					   label="{Dicionario.BTN_PESQUISAR}"
 					   width="96"
-					   x="620"
-					   y="31"
+					   x="616"
+					   y="61"
 					   />
 
 			<mx:Label text="{Dicionario.REGISTROS_ENCONTRADOS}"
 					  x="10"
-					  y="65"
+					  y="84"
 					  />
 
 			<mx:Label color="#FE0000"
 					  id="cbcsCountReg"
 					  text="{this.dpRegistros.length}"
 					  x="153"
-					  y="65"
+					  y="84"
 					  />
 
 			<mx:DataGrid creationComplete="SortDataGrid();"
 						 dataProvider="{this.dpRegistros}"
-						 height="378"
+						 height="360"
 						 id="consDataGrid"
 						 width="710"
 						 wordWrap="true"
 						 x="10"
-						 y="83"
+						 y="101"
 						 >
 
 				<mx:columns>
-					<mx:DataGridColumn dataField="departamentoId"
+					<mx:DataGridColumn dataField="codigo"
 									   headerText="Código"
 									   id="dataGridColumnCodigo"
 									   width="80"
@@ -477,9 +565,16 @@
 									   wordWrap="true"
 									   />
 
-					<mx:DataGridColumn dataField="sigla"
-									   headerText="Sigla"
-									   id="dataGridColumnSigla"
+					<mx:DataGridColumn dataField="tipo"
+									   headerText="Tipo"
+									   id="dataGridColumnTipo"
+									   width="200"
+									   wordWrap="true"
+									   />
+									   
+					<mx:DataGridColumn dataField="ativo"
+									   headerText="Ativo"
+									   id="dataGridColumnAtivo"
 									   width="80"
 									   wordWrap="true"
 									   />
@@ -539,6 +634,9 @@
 					   right="10"
 					   width="100"
 					   />
+			<mx:ComboBox x="381" y="31" width="196" id="consTipo" dataProvider="{this.dpTipo}"></mx:ComboBox>
+			<mx:ComboBox x="585" y="31" width="127" id="consAtivo" dataProvider="{this.dpAtivo}"></mx:ComboBox>
+			<mx:Label x="585" y="13" text="Ativo"/>
 
 		</mx:Canvas>
 
@@ -547,7 +645,7 @@
 				   width="100%"
 				   >
 
-			<mx:Label enabled="false"
+			<mx:Label enabled="true"
 					  text="Código"
 					  width="112"
 					  x="10"
@@ -555,7 +653,6 @@
 					  />
 
 			<mx:TextInput id="cadCodigo"
-						  restrict="0-9"
 						  width="112"
 						  x="10"
 						  y="28"
@@ -602,16 +699,16 @@
 			<mx:Label x="170" y="10" text="Senha"/>
 			<mx:Label x="338" y="10" text="Confirmar Senha"/>
 			<mx:TextInput x="338" y="28" displayAsPassword="true" id="cadConfirmarSenha"/>
-			<mx:ComboBox x="10" y="123" width="226" id="cadTipo"></mx:ComboBox>
+			<view:ComboBoxFindSelected x="10" y="123" width="226" id="cadTipo" dataProvider="{this.dpTipo}"/>
 			<mx:Label x="12" y="106" text="Tipo"/>
 			<mx:Label x="259" y="106" text="Tipo de Estudante"/>
-			<mx:ComboBox x="259" y="123" width="239" id="cadTipoEstudante"></mx:ComboBox>
+			<view:ComboBoxFindSelected x="259" y="123" width="239" id="cadTipoEstudante" dataProvider="{this.dpTipoEstudante}"/>
 			<mx:Label x="10" y="200" text="Departamento"/>
 			<mx:TextInput x="10" y="216" width="224" id="cadDepartamento"/>
 			<mx:Label x="10" y="153" text="Orientador"/>
 			<mx:Label x="259" y="153" text="Co-Orientador"/>
-			<mx:ComboBox x="10" y="170" width="226" id="cadOrientador"></mx:ComboBox>
-			<mx:ComboBox x="259" y="170" width="239" id="cadCoOrientador"></mx:ComboBox>
+			<mx:TextInput x="10" y="170" width="226" id="cadOrientador"></mx:TextInput>
+			<mx:TextInput x="259" y="170" width="239" id="cadCoOrientador"></mx:TextInput>
 			<mx:Label x="259" y="200" text="E-mail"/>
 			<mx:TextInput x="259" y="216" width="362" id="cadEmail"/>
 			<mx:TextInput x="10" y="261" width="224" id="cadTelefone"/>
@@ -621,11 +718,11 @@
 			<mx:Label x="10" y="291" text="Cidade"/>
 			<mx:TextInput x="10" y="307" width="224" id="cadCidade"/>
 			<mx:Label x="259" y="291" text="Ativo"/>
-			<mx:ComboBox x="259" y="307" id="cadAtivo"></mx:ComboBox>
+			<view:ComboBoxFindSelected x="259" y="307" id="cadAtivo" dataProvider="{this.dpAtivo}" width="178"/>
 			<mx:Image x="520" y="28" width="101" height="130" id="cadFoto"/>
 			<mx:Label x="520" y="10" text="Foto"/>
-			<mx:Button icon="{ico_adicionar}" x="520" y="170"/>
-			<mx:Button icon="{ico_remover}" x="568" y="170"/>
+			<mx:Button icon="{ico_adicionar}" x="520" y="170" id="BtnAdicionarFoto"/>
+			<mx:Button icon="{ico_remover}" x="581" y="170" id="BtnExcluirFoto"/>
 
 		</mx:Canvas>
 	</mx:ViewStack>

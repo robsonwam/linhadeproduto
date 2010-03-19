@@ -1,6 +1,10 @@
 package br.ufpe.cin.reuso.delegate
 {
+	import br.ufpe.cin.reuso.model.ReusoModelLocator;
+	import br.ufpe.cin.reuso.vo.MembroVO;
+	
 	import com.adobe.cairngorm.business.ServiceLocator;
+	
 	import mx.rpc.AsyncToken;
 	import mx.rpc.IResponder;
 

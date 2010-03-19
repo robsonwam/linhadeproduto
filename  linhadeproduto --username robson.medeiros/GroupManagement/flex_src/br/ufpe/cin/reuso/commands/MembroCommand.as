@@ -1,8 +1,15 @@
 package br.ufpe.cin.reuso.commands
 {
+	import br.ufpe.cin.reuso.delegate.MembroDelegate;
+	import br.ufpe.cin.reuso.events.MembroEvent;
+	import br.ufpe.cin.reuso.model.ReusoModelLocator;
+	import br.ufpe.cin.reuso.util.Dicionario;
+	import br.ufpe.cin.reuso.vo.MembroVO;
+	
 	import com.adobe.cairngorm.control.CairngormEvent;
 	import com.universalmind.cairngorm.commands.Command;
 	import com.universalmind.cairngorm.events.Callbacks;
+	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	import mx.rpc.IResponder;
@@ -129,7 +136,7 @@ package br.ufpe.cin.reuso.commands
 			{
 				if ( event.result is MembroVO )
 				{
-					if (( event.result as MembroVO ).codigoMembro != "" )
+					if (( event.result as MembroVO ).codigo != "" )
 					{
 						notifyCaller( true );
 					}

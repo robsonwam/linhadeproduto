@@ -18,7 +18,7 @@
 
 			private function getTitulo():String
 			{
-				return "Saúde Residência";
+				return "R.G.M.S.";
 			}
 		]]>
 	</mx:Script>

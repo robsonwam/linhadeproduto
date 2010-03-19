@@ -1,6 +1,6 @@
 /*
-Created		13/03/2010
-Modified		15/03/2010
+Created		13/3/2010
+Modified		18/3/2010
 Project		
 Model			
 Company		
@@ -8,6 +8,39 @@ Author
 Version		
 Database		PostgreSQL 8.1 
 */
+
+
+
+/* Drop Referential Integrity Triggers */
+
+
+
+
+
+/* Drop User-Defined Triggers */
+
+
+
+/* Drop Domains */
+
+
+
+/* Drop Procedures */
+
+
+
+/* Drop Views */
+
+
+
+/* Drop Indexes */
+
+
+
+/* Drop Tables */
+Drop table "autor" Restrict;
+Drop table "publicacao" Restrict;
+Drop table "membro" Restrict;
 
 
 
@@ -25,8 +58,6 @@ Create table "membro"
 	"nome" Varchar NOT NULL,
 	"tipo" Varchar NOT NULL,
 	"tipo_estudante" Varchar,
-	"orientador" Char(10),
-	"co_orientador" Char(10),
 	"departamento" Varchar,
 	"email" Varchar,
 	"telefone" Varchar,
@@ -34,6 +65,8 @@ Create table "membro"
 	"cidade" Varchar,
 	"foto" Bytea,
 	"ativo" Char(1),
+	"orientador" Varchar,
+	"co_orientador" Varchar,
  primary key ("codigo")
 ) Without Oids;
 
@@ -77,10 +110,6 @@ Create table "autor"
 
 
 /* Create Foreign Keys */
-
-Alter table "membro" add  foreign key ("orientador") references "membro" ("codigo") on update restrict on delete restrict;
-
-Alter table "membro" add  foreign key ("co_orientador") references "membro" ("codigo") on update restrict on delete restrict;
 
 Alter table "autor" add  foreign key ("codigo") references "membro" ("codigo") on update restrict on delete restrict;
 

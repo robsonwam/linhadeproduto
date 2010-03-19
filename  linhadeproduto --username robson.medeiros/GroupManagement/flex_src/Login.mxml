@@ -3,7 +3,7 @@
 		  height="322"
 		  defaultButton="{btnAuthentication}"
 		  layout="absolute"
-		  title="Reuso"
+		  title="Research Group Management System"
 		  verticalScrollPolicy="off"
 		  xmlns:mx="http://www.adobe.com/2006/mxml">
 

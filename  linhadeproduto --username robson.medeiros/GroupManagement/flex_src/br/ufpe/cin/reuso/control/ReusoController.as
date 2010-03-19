@@ -2,7 +2,9 @@ package br.ufpe.cin.reuso.control
 {
 	
 	import br.ufpe.cin.reuso.commands.LoginCommand;
+	import br.ufpe.cin.reuso.commands.MembroCommand;
 	import br.ufpe.cin.reuso.events.LoginEvent;
+	import br.ufpe.cin.reuso.events.MembroEvent;
 	
 	import com.adobe.cairngorm.control.FrontController;
 
@@ -18,12 +20,12 @@ package br.ufpe.cin.reuso.control
 
 			//ADD COMMANDS
 			this.addCommand( LoginEvent.DO_LOGIN, LoginCommand );
-//
-//			//Formas de pagamento
-//			this.addCommand( FormaPagamentoEvent.EVENT_PESQUISAR, FormaPagamentoCommand );
-//			this.addCommand( FormaPagamentoEvent.EVENT_INSERIR, FormaPagamentoCommand );
-//			this.addCommand( FormaPagamentoEvent.EVENT_EDITAR, FormaPagamentoCommand );
-//			this.addCommand( FormaPagamentoEvent.EVENT_EXCLUIR, FormaPagamentoCommand );
+
+			//Formas de pagamento
+			this.addCommand( MembroEvent.EVENT_PESQUISAR, MembroCommand );
+			this.addCommand( MembroEvent.EVENT_INSERIR, MembroCommand );
+			this.addCommand( MembroEvent.EVENT_EDITAR, MembroCommand );
+			this.addCommand( MembroEvent.EVENT_EXCLUIR, MembroCommand );
 //
 //			//Departamento
 //			this.addCommand( DepartamentoEvent.EVENT_PESQUISAR, DepartamentoCommand );
