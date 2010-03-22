@@ -5,7 +5,7 @@
 				showCloseButton="true"
 				title="{this.titulo}"
 				width="100%"
-				xmlns:flexiframe="br.com.r2jm.sauderesidencia.componets.google.code.flexiframe.*"
+				xmlns:flexiframe="br.ufpe.cin.reuso.componets.google.code.flexiframe.*"
 				xmlns:mx="http://www.adobe.com/2006/mxml">
 
 	<mx:Script>
@@ -13,7 +13,7 @@
 			import mx.core.Application;
 			import mx.collections.ArrayCollection;
 			import mx.managers.PopUpManager;
-			import br.com.r2jm.sauderesidencia.util.Dicionario;
+			import br.ufpe.cin.reuso.util.Dicionario;
 
 			[Embed(source='../../assets/images/imprimir.png')]
 			[Bindable]

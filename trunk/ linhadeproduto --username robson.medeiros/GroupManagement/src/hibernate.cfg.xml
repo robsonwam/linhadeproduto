@@ -20,5 +20,6 @@
 <property name="hibernate.use_sql_comments">true</property>
 <mapping class="br.ufpe.cin.reuso.model.business.entities.Publicacao"/>
 <mapping class="br.ufpe.cin.reuso.model.business.entities.Membro"/>
+<mapping class="br.ufpe.cin.reuso.model.business.entities.Tipo"/>
 </session-factory>
 </hibernate-configuration>

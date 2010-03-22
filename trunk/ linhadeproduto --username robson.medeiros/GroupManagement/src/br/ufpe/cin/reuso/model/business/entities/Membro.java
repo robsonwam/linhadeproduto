@@ -3,14 +3,13 @@ package br.ufpe.cin.reuso.model.business.entities;
 import java.io.Serializable;
 import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Column;
 
 @Entity
 public class Membro implements Serializable {
@@ -21,7 +20,9 @@ public class Membro implements Serializable {
 
 	private String nome;
 
-	private String tipo;
+	@ManyToOne
+	@JoinColumn(name="tipo")
+	private Tipo tipo;
 	
 	@Column(name="tipo_estudante")
 	private String tipoEstudante;
@@ -36,7 +37,7 @@ public class Membro implements Serializable {
 
 	private String cidade;
 
-	private byte[] foto;
+	private String foto;
 
 	private String ativo;
 
@@ -44,6 +45,9 @@ public class Membro implements Serializable {
 
 	@Column(name="co_orientador")
 	private String coOrientador;
+	
+	@Column(name="foto_byte")
+	private byte[] fotoByte;
 
 	@ManyToMany
 	@JoinTable(name="autor",
@@ -81,11 +85,11 @@ public class Membro implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getTipo() {
+	public Tipo getTipo() {
 		return this.tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
 	}
 
@@ -129,11 +133,11 @@ public class Membro implements Serializable {
 		this.cidade = cidade;
 	}
 
-	public byte[] getFoto() {
+	public String getFoto() {
 		return this.foto;
 	}
 
-	public void setFoto(byte[] foto) {
+	public void setFoto(String foto) {
 		this.foto = foto;
 	}
 
@@ -175,5 +179,13 @@ public class Membro implements Serializable {
 
 	public void setTipoEstudante(String tipoEstudante) {
 		this.tipoEstudante = tipoEstudante;
+	}
+
+	public byte[] getFotoByte() {
+		return fotoByte;
+	}
+
+	public void setFotoByte(byte[] fotoByte) {
+		this.fotoByte = fotoByte;
 	}
 }

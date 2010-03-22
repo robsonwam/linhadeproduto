@@ -3,8 +3,10 @@ package br.ufpe.cin.reuso.control
 	
 	import br.ufpe.cin.reuso.commands.LoginCommand;
 	import br.ufpe.cin.reuso.commands.MembroCommand;
+	import br.ufpe.cin.reuso.commands.TipoCommand;
 	import br.ufpe.cin.reuso.events.LoginEvent;
 	import br.ufpe.cin.reuso.events.MembroEvent;
+	import br.ufpe.cin.reuso.events.TipoEvent;
 	
 	import com.adobe.cairngorm.control.FrontController;
 
@@ -26,12 +28,12 @@ package br.ufpe.cin.reuso.control
 			this.addCommand( MembroEvent.EVENT_INSERIR, MembroCommand );
 			this.addCommand( MembroEvent.EVENT_EDITAR, MembroCommand );
 			this.addCommand( MembroEvent.EVENT_EXCLUIR, MembroCommand );
-//
-//			//Departamento
-//			this.addCommand( DepartamentoEvent.EVENT_PESQUISAR, DepartamentoCommand );
-//			this.addCommand( DepartamentoEvent.EVENT_INSERIR, DepartamentoCommand );
-//			this.addCommand( DepartamentoEvent.EVENT_EDITAR, DepartamentoCommand );
-//			this.addCommand( DepartamentoEvent.EVENT_EXCLUIR, DepartamentoCommand );
+
+			//Departamento
+			this.addCommand( TipoEvent.EVENT_PESQUISAR, TipoCommand );
+			this.addCommand( TipoEvent.EVENT_INSERIR, TipoCommand );
+			this.addCommand( TipoEvent.EVENT_EDITAR, TipoCommand );
+			this.addCommand( TipoEvent.EVENT_EXCLUIR, TipoCommand );
 //
 //			//Verba
 //			this.addCommand( VerbaEvent.EVENT_PESQUISAR, VerbaCommand );

@@ -1,6 +1,6 @@
 /*
 Created		13/3/2010
-Modified		18/3/2010
+Modified		22/3/2010
 Project		
 Model			
 Company		
@@ -38,6 +38,7 @@ Database		PostgreSQL 8.1
 
 
 /* Drop Tables */
+Drop table "tipo" Restrict;
 Drop table "autor" Restrict;
 Drop table "publicacao" Restrict;
 Drop table "membro" Restrict;
@@ -56,15 +57,16 @@ Create table "membro"
 	"codigo" Char(10) NOT NULL,
 	"passwd" Char(20),
 	"nome" Varchar NOT NULL,
-	"tipo" Varchar NOT NULL,
+	"tipo" Integer,
 	"tipo_estudante" Varchar,
 	"departamento" Varchar,
 	"email" Varchar,
 	"telefone" Varchar,
 	"website" Varchar,
 	"cidade" Varchar,
-	"foto" Bytea,
-	"ativo" Char(1),
+	"foto" Varchar,
+	"foto_byte" Bytea,
+	"ativo" Varchar,
 	"orientador" Varchar,
 	"co_orientador" Varchar,
  primary key ("codigo")
@@ -97,6 +99,14 @@ Create table "autor"
 ) Without Oids;
 
 
+Create table "tipo"
+(
+	"id" Serial NOT NULL,
+	"nome" Varchar,
+ primary key ("id")
+) Without Oids;
+
+
 
 /* Create Tab 'Others' for Selected Tables */
 
@@ -114,6 +124,8 @@ Create table "autor"
 Alter table "autor" add  foreign key ("codigo") references "membro" ("codigo") on update restrict on delete restrict;
 
 Alter table "autor" add  foreign key ("id") references "publicacao" ("id") on update restrict on delete restrict;
+
+Alter table "membro" add  foreign key ("tipo") references "tipo" ("id") on update restrict on delete restrict;
 
 
 
