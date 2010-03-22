@@ -15,7 +15,6 @@ import br.ufpe.cin.reuso.model.business.entities.Publicacao;
 import br.ufpe.cin.reuso.model.business.register.RegisterMembro;
 import br.ufpe.cin.reuso.model.business.register.RegisterTipo;
 import br.ufpe.cin.reuso.model.business.register.RegisterPublicacao;
-import br.ufpe.cin.reuso.model.persistence.dao.impl.PublicacaoDAO;
 
 
 public class ControllerReuso {
