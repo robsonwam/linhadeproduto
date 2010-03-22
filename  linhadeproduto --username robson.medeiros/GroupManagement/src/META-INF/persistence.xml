@@ -9,6 +9,8 @@
 		br.ufpe.cin.reuso.model.business.entities.Publicacao</class>
 		<class>
 		br.ufpe.cin.reuso.model.business.entities.Membro</class>
+		<class>
+		br.ufpe.cin.reuso.model.business.entities.Tipo</class>
 
 		<properties>
 			<property name="hibernate.connection.username"

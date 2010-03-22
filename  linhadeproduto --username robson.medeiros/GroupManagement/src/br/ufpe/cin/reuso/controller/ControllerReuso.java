@@ -10,8 +10,10 @@ import br.ufpe.cin.reuso.exceptions.ExclusaoInvalidaException;
 import br.ufpe.cin.reuso.exceptions.OperacaoInvalidaException;
 import br.ufpe.cin.reuso.model.business.entities.Login;
 import br.ufpe.cin.reuso.model.business.entities.Membro;
+import br.ufpe.cin.reuso.model.business.entities.Tipo;
 import br.ufpe.cin.reuso.model.business.entities.Publicacao;
 import br.ufpe.cin.reuso.model.business.register.RegisterMembro;
+import br.ufpe.cin.reuso.model.business.register.RegisterTipo;
 import br.ufpe.cin.reuso.model.business.register.RegisterPublicacao;
 import br.ufpe.cin.reuso.model.persistence.dao.impl.PublicacaoDAO;
 
@@ -19,6 +21,7 @@ import br.ufpe.cin.reuso.model.persistence.dao.impl.PublicacaoDAO;
 public class ControllerReuso {
 
 	private RegisterMembro registerMembro = null;
+	private RegisterTipo registerTipo = null;
 	
 	private RegisterPublicacao registerPublicacao = null;
 
@@ -41,6 +44,10 @@ public class ControllerReuso {
 		}else if (object instanceof Publicacao) {
 			return registerPublicacao.inserir((Publicacao)object);
 		}
+		else if (object instanceof Tipo)
+		{
+			return registerTipo.inserir((Tipo)object);
+		}
 		else
 		{
 			throw new OperacaoInvalidaException();
@@ -53,6 +60,10 @@ public class ControllerReuso {
 			return registerMembro.remover((Membro)object);
 		}else if (object instanceof Publicacao) {
 			return registerPublicacao.remover((Publicacao)object);
+		}
+		else if (object instanceof Tipo)
+		{
+			return registerTipo.remover((Tipo)object);
 		}
 		else
 		{
@@ -69,6 +80,10 @@ public class ControllerReuso {
 		}else if (object instanceof Publicacao) {
 			return registerPublicacao.merge((Publicacao)object);
 		}
+		else if (object instanceof Tipo)
+		{
+			return registerTipo.merge((Tipo)object);
+		}
 		else
 		{
 			throw new OperacaoInvalidaException();
@@ -82,6 +97,10 @@ public class ControllerReuso {
 			return registerMembro.buscarPorChave(((Membro)object).getCodigo());
 		}else if (object instanceof Publicacao) {
 			return registerPublicacao.buscarPorChave(((Publicacao)object).getId().toString());
+		}
+		else if (object instanceof Tipo)
+		{
+			return registerTipo.buscarPorChave(((Tipo)object).getId());
 		}
 		else
 		{
@@ -119,6 +138,21 @@ public class ControllerReuso {
 				return result;
 			}
 		}
+		else if (object instanceof Tipo)
+		{
+			if(((Tipo)object).getId() == null || ((Tipo)object).getId() == 0)
+			{
+				return registerTipo.buscarPorExemplo((Tipo)object,ordenacoes);
+			} else {
+				List result = new ArrayList();
+				Object element = registerTipo.buscarPorChave(((Tipo)object).getId());
+				if(element != null){
+					result.add(element);
+				}
+				return result;
+			}
+			
+		}
 		else
 		{
 			throw new OperacaoInvalidaException();
@@ -134,6 +168,7 @@ public class ControllerReuso {
 	private ControllerReuso()
     {
 		registerMembro = RegisterMembro.getInstance();
+		registerTipo = RegisterTipo.getInstance();
 		registerPublicacao = RegisterPublicacao.getInstance();
     }
 

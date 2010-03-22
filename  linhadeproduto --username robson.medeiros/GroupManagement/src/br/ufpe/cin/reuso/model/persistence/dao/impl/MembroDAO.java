@@ -1,7 +1,15 @@
 package br.ufpe.cin.reuso.model.persistence.dao.impl;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import br.ufpe.cin.reuso.model.business.entities.Login;
 import br.ufpe.cin.reuso.model.business.entities.Membro;
@@ -21,6 +29,24 @@ public class MembroDAO extends GenericDAO<Membro> {
 		return membroDAO;
 	}
 	
+	public List buscarPorExemplo(Membro objeto, Order[] ordenacoes) {
+		Session session = (Session) getEntityManager().getDelegate();
+		Example example = criaExemplo(objeto);
+		Criteria criteria = session.createCriteria(objeto.getClass()).add(
+				example);
+		
+		if(objeto.getTipo() != null && objeto.getTipo().getId() != 0){
+			criteria.createCriteria("tipo", "tipo");
+			criteria.add(Restrictions.eq("tipo.id", objeto.getTipo().getId()));
+			
+		}
+		
+		for (int i = 0; i < ordenacoes.length; i++) {
+			criteria.addOrder((org.hibernate.criterion.Order) ordenacoes[i]);
+		}
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return (List) criteria.list();
+	}	
 	public Membro validaLogin(Login login) {
 		Membro membro;
 		//Collection<PerfilModulo> perfilModulos;

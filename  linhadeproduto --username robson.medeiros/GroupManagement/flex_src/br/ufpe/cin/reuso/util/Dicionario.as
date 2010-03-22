@@ -52,7 +52,7 @@ package br.ufpe.cin.reuso.util
 		public static const MEMBRO_PESQUISADOR:String = 'Pesquisador';
 		public static const MEMBRO_DOUTORADO:String = 'Doutorado';
 		public static const MEMBRO_MESTRADO:String = 'Mestrado';
-		public static const MEMBRO_INICIACAO:String = 'Iniciação';
+		public static const MEMBRO_INICIACAO:String = 'Iniciação Científica';
 		public static const MEMBRO_ATIVO:String = 'Ativo';
 		public static const MEMBRO_FORMER_MEMBER:String = 'Former Member';
 		

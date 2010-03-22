@@ -12,6 +12,13 @@
 
 	<mx:Script>
 		<![CDATA[
+			import br.ufpe.cin.reuso.vo.TipoVO;
+			import br.ufpe.cin.reuso.events.TipoEvent;
+			import br.ufpe.cin.reuso.view.components.ReportIframe;
+			import mx.utils.Base64Decoder;
+			import mx.utils.Base64Encoder;
+			import org.utils.ByteArrayUtil;
+			import mx.utils.ObjectUtil;
 			import flexunit.flexui.controls.right.SelectedTestCaseForm;
 			import br.ufpe.cin.reuso.view.reports.report.templates.TemplateLista;
 			import br.ufpe.cin.reuso.view.reports.report.dataproviders.DPTemplateLista;
@@ -78,6 +85,9 @@
 			[Bindable]
 			private static var ico_remover:Class;
 			
+			[Bindable]
+			private var membro:MembroVO;
+			
 			public static const AC_SEARCH:uint = 0;
 			
 			public static const AC_INSERT:uint = 1;
@@ -120,13 +130,44 @@
 			[Bindable]
 			private var dpAtivo:ArrayCollection = new ArrayCollection();
 			
+			private var fileRef:FileReference;
+
+            private function browseAndUpload():void {
+            	var arr:Array = [];
+                arr.push(new FileFilter("Images .gif .jpeg .jpg .png", ".gif;*.jpeg;*.jpg;*.png"));
+                fileRef.browse(arr);
+            }
+            
+            private function removerFoto():void {
+            	this.cadFoto.source = null;
+            }
+
+            private function fileRef_select(evt:Event):void {
+				fileRef.load();
+            }
+
+            private function fileRef_progress(evt:ProgressEvent):void {
+//                progressBar.visible = true;
+            }
+
+            private function fileRef_complete(evt:Event):void {
+
+				this.cadFoto.source = fileRef.data;
+            }
+			
 			private function initForm():void
 			{
-				this.dpTipo.addItem({ label: "", data: null });
-				this.dpTipo.addItem({ label: Dicionario.MEMBRO_ESTUDANTE, data: Dicionario.MEMBRO_ESTUDANTE });
-				this.dpTipo.addItem({ label: Dicionario.MEMBRO_PESQUISADOR, data: Dicionario.MEMBRO_PESQUISADOR });
-				this.dpTipo.addItem({ label: Dicionario.MEMBRO_PROFESSOR, data: Dicionario.MEMBRO_PROFESSOR });
 				
+				fileRef = new FileReference();
+                fileRef.addEventListener(Event.SELECT, fileRef_select);
+                fileRef.addEventListener(ProgressEvent.PROGRESS, fileRef_progress);
+                fileRef.addEventListener(Event.COMPLETE, fileRef_complete);
+                
+                var handlers:Callbacks = new Callbacks(onResult_Tipo);
+				var event:TipoEvent = new TipoEvent(TipoEvent.EVENT_PESQUISAR, handlers);
+				event.params = new TipoVO();
+				event.dispatch();
+                
 				this.dpTipoEstudante.addItem({ label: "", data: null });
 				this.dpTipoEstudante.addItem({ label: Dicionario.MEMBRO_DOUTORADO, data: Dicionario.MEMBRO_DOUTORADO });
 				this.dpTipoEstudante.addItem({ label: Dicionario.MEMBRO_MESTRADO, data: Dicionario.MEMBRO_MESTRADO });
@@ -138,6 +179,18 @@
 				
 			}
 
+			private function onResult_Tipo(result:ArrayCollection):void
+			{
+				var data:ArrayCollection = new ArrayCollection();
+				data.addItem({label: "", data: null, item: null});
+
+				for (var i:uint = 0; i < result.length; i++)
+				{
+					var d:TipoVO = result.getItemAt(i) as TipoVO;
+					data.addItem({label: d.nome, data: d.id, item: d});
+				}
+				this.dpTipo = data;
+			}
 			
 			private function getOrdenacao():Array
 			{
@@ -146,28 +199,50 @@
 			
 			private function setEntidade( action:uint ):void
 			{
-				var f:MembroVO = new MembroVO();
-				
 				if (( action == AC_UPDATE ) || ( action == AC_DETAIL ))
 				{
-					f = this.consDataGrid.selectedItem as MembroVO;
+					this.membro = this.consDataGrid.selectedItem as MembroVO;
 				}
 				
-				this.cadCodigo.text = f.codigo;
-				this.cadNome.text = f.nome;
-				this.cadAtivo.selectedItem = f.ativo;
-				this.cadCidade.text = f.cidade;
+				this.cadCodigo.text = membro.codigo;
+				this.cadNome.text = membro.nome;
+				this.cadAtivo.selectedItem = membro.ativo;
+				this.cadCidade.text = membro.cidade;
 				this.cadConfirmarSenha.text = "";
 				this.cadSenha.text = "";
-				this.cadCoOrientador.text = f.coOrientador;
-				this.cadOrientador.text = f.orientador;
-				this.cadDepartamento.text = f.departamento;
-				this.cadEmail.text = f.email;
-//				this.cadFoto
-				this.cadSite.text = f.website;
-				this.cadTelefone.text = f.telefone;
-				this.cadTipo.selectedItem = f.tipo;
-				this.cadTipoEstudante.selectedItem = f.tipoEstudante;
+				this.cadCoOrientador.text = membro.coOrientador;
+				this.cadOrientador.text = membro.orientador;
+				this.cadDepartamento.text = membro.departamento;
+				this.cadEmail.text = membro.email;
+				
+				if(membro.foto != null){
+					var base64Dec:Base64Decoder;
+					base64Dec = new Base64Decoder();
+	                base64Dec.decode(membro.foto);
+	                this.cadFoto.source = base64Dec.toByteArray();
+				} else {
+	                this.cadFoto.source = null;
+				}
+				this.cadSite.text = membro.website;
+				this.cadTelefone.text = membro.telefone;
+				
+				if (membro.tipo != null)
+				{
+					this.cadTipo.selectedItem = membro.tipo.id;
+					if(membro.tipo.nome == Dicionario.MEMBRO_ESTUDANTE){
+						this.cadTipoEstudante.enabled = true;
+					}else{
+						this.cadTipoEstudante.enabled = false;
+						
+					}
+				}
+				else
+				{
+					this.cadTipo.selectedItem = null;
+				}
+				
+				this.cadTipoEstudante.selectedItem = membro.tipoEstudante;
+				
 			}
 			
 			private function DispararEvento( action:uint ):void
@@ -182,7 +257,9 @@
 					f.codigo = this.consCodigo.text;
 					f.nome = this.consNome.text;
 					f.ativo = this.consAtivo.selectedLabel;
-					f.tipo = this.consTipo.selectedLabel;
+					if(this.consTipo.selectedItem.item != null){
+						f.tipo = this.consTipo.selectedItem.item as TipoVO;
+					}
 				}
 				else if (( action == AC_INSERT ) || ( action == AC_INSERT_AND_NEW ) || ( action == AC_UPDATE ))
 				{
@@ -191,15 +268,28 @@
 					f.nome = this.cadNome.text;
 					f.ativo = this.cadAtivo.selectedLabel;
 					f.cidade = this.cadCidade.text;
-					f.passwd = this.cadSenha.text;
+					if(this.cadSenha.text != ""){
+						f.passwd = this.cadSenha.text;
+					}else{
+						f.passwd = this.membro.passwd;
+					}
 					f.coOrientador = this.cadCoOrientador.text;
 					f.orientador = this.cadOrientador.text;
 					f.departamento = this.cadDepartamento.text;
 					f.email = this.cadEmail.text;
-//					this.cadFoto
+					if(this.cadFoto.source != null){
+						var base64Enc:Base64Encoder;
+	
+		                base64Enc = new Base64Encoder();
+		                base64Enc.encodeBytes(this.cadFoto.source as ByteArray);
+						f.foto =  base64Enc.toString();
+						f.fotoByte = this.cadFoto.source as ByteArray;
+					} else {
+						f.foto = null;
+					}
 					f.website = this.cadSite.text;
 					f.telefone = this.cadTelefone.text;
-					f.tipo = this.cadTipo.selectedLabel;
+					f.tipo = this.cadTipo.selectedItem.item as TipoVO;
 					f.tipoEstudante = this.cadTipoEstudante.selectedLabel;
 				}
 				else if ( action == AC_DELETE )
@@ -293,6 +383,20 @@
 				this.cadTipo.visible = true;
 				this.cadTipoEstudante.visible = true;
 				
+				this.cadNome.editable = true;
+				this.cadAtivo.enabled = true;
+				this.cadCidade.editable = true;
+				this.cadSenha.editable = true;
+				this.cadConfirmarSenha.editable = true;
+				this.cadCoOrientador.editable = true;
+				this.cadOrientador.editable = true;
+				this.cadDepartamento.editable = true;
+				this.cadEmail.editable = true;
+				this.cadSite.editable = true;
+				this.cadTelefone.editable = true;
+				this.cadTipo.enabled = true;
+				this.cadTipoEstudante.enabled = true;
+				
 				if ( this.action == AC_UPDATE )
 				{
 					this.BtnSalvarENovo.visible = false;
@@ -329,17 +433,56 @@
 			
 			private function salvar():void
 			{
+				if (validarDados())
+				{
+					this.DispararEvento( this.action );
+				}
+			}
+			
+			private function validarDados():Boolean
+			{
+				if (this.cadSenha.text != "" && this.cadSenha.text != this.cadConfirmarSenha.text)
+				{
+					Alert.show("Senhas não confere!", Dicionario.ALERT_TITLE_ERROR);
+					return false;
+				}
+				if(this.cadCodigo.text == ""){
+					Alert.show("Campo Código é obrigatório.", Dicionario.ALERT_TITLE_ERROR);
+					return false;
+					
+				}
+				if(this.cadNome.text == ""){
+					Alert.show("Campo Nome é obrigatório.", Dicionario.ALERT_TITLE_ERROR);
+					return false;
+					
+				}
+				if(this.cadTipo.selectedLabel == ""){
+					Alert.show("Campo Tipo é obrigatório.", Dicionario.ALERT_TITLE_ERROR);
+					return false;
+				}
+				if(this.cadTipo.selectedLabel == "Estudante" && this.cadTipoEstudante.selectedLabel == ""){
+					Alert.show("Campo Tipo Estudante é obrigatório para o tipo Estudante.", Dicionario.ALERT_TITLE_ERROR);
+					return false;
+				}
+				if(this.cadAtivo.selectedLabel == ""){
+					Alert.show("Campo Ativo é obrigatório.", Dicionario.ALERT_TITLE_ERROR);
+					return false;
+				}
 				
-				this.DispararEvento( this.action );
+				return true;
 			}
 			
 			private function salvarENovo():void
 			{
-				this.DispararEvento( AC_INSERT_AND_NEW );
+				if (validarDados())
+				{
+					this.DispararEvento( AC_INSERT_AND_NEW );
+				}
 			}
 			
 			private function incluir():void
 			{
+				this.membro = new MembroVO();
 				this.openCadastro( AC_INSERT );
 			}
 			
@@ -425,6 +568,16 @@
 				this.limparCampos();
 			}
 			
+			public function mudaTipo():void
+			{
+				if(this.cadTipo.selectedLabel == Dicionario.MEMBRO_ESTUDANTE){
+					this.cadTipoEstudante.enabled = true;
+				} else {
+					this.cadTipoEstudante.selectedIndex = 0;
+					this.cadTipoEstudante.enabled = false;
+				}
+			}
+			
 			public function limparCampos():void
 			{
 				this.cadCodigo.text = "";
@@ -432,39 +585,51 @@
 				this.cadAtivo.selectedIndex = 0;
 				this.cadCidade.text = "";
 				this.cadSenha.text = "";
+				this.cadConfirmarSenha.text = "";
 				this.cadCoOrientador.text = "";
 				this.cadOrientador.text = "";
 				this.cadDepartamento.text = "";
 				this.cadEmail.text = "";
 				this.cadSite.text = "";
 				this.cadTelefone.text = "";
+				this.cadFoto.source = null;
 				this.cadTipo.selectedIndex = 0;
 				this.cadTipoEstudante.selectedIndex = 0;
 			}
 			
-			private function listar():void
+			private function getTipo(item:Object, column:DataGridColumn):String
 			{
-				var janela:PreviewWindow = new PreviewWindow();
-				janela.width = Application.application.width;
-				janela.height = Application.application.height;
-				var template:DPTemplateLista = new DPTemplateLista();
-				template.dpLista = this.dpRegistros;
-				template.titulo = this.titutoReport;
-				template.dtGrid = this.consDataGrid;
-				template.ordenacao = this.getOrdenacao();
-				var doc:Document = new Document( new TemplateLista() , template , PaperFormat.A4 );
-				PopUpManager.addPopUp( janela , this , true );
-				janela.previewComponent.doc = doc;
+				if ((item as MembroVO) != null)
+				{
+					var f:MembroVO = item as MembroVO;
+					return f.tipo.nome;
+				}
+				return null;
 			}
 			
-			private function validarDados():Boolean
+			private function listar():void
 			{
-				if ( cadNome.text.length <= 0 )
-				{
-					Alert.show( "Favor informa a descrição!" , Dicionario.ALERT_TITLE_ERROR );
-					return false;
-				}
-				return true;
+//				var janela:PreviewWindow = new PreviewWindow();
+//				janela.width = Application.application.width;
+//				janela.height = Application.application.height;
+//				var template:DPTemplateLista = new DPTemplateLista();
+//				template.dpLista = this.dpRegistros;
+//				template.titulo = this.titutoReport;
+//				template.dtGrid = this.consDataGrid;
+//				template.ordenacao = this.getOrdenacao();
+//				var doc:Document = new Document( new TemplateLista() , template , PaperFormat.A4 );
+//				PopUpManager.addPopUp( janela , this , true );
+//				janela.previewComponent.doc = doc;
+
+				// chama a janela de recibo.
+				var janela:ReportIframe = new ReportIframe();
+				janela.width = this.width;
+				janela.height = this.height;
+				janela.url = "Relatorio.do";
+				janela.titulo = 'Relatório';
+				PopUpManager.addPopUp(janela, this, true);
+				PopUpManager.centerPopUp(janela);
+				janela.refresh();
 			}
 			
 			public function SortDataGrid():void
@@ -502,7 +667,7 @@
 						  width="100"
 						  x="10"
 						  y="31"
-						  />
+						   tabIndex="1"/>
 
 			<mx:Label text="Nome"
 					  x="118"
@@ -514,7 +679,7 @@
 						  width="255"
 						  x="118"
 						  y="31"
-						  />
+						   tabIndex="2"/>
 
 			<mx:Label text="Tipo"
 					  x="381"
@@ -528,7 +693,7 @@
 					   width="96"
 					   x="616"
 					   y="61"
-					   />
+					    tabIndex="5"/>
 
 			<mx:Label text="{Dicionario.REGISTROS_ENCONTRADOS}"
 					  x="10"
@@ -570,6 +735,7 @@
 									   id="dataGridColumnTipo"
 									   width="200"
 									   wordWrap="true"
+									   labelFunction="getTipo"
 									   />
 									   
 					<mx:DataGridColumn dataField="ativo"
@@ -588,7 +754,7 @@
 					   label="{Dicionario.BTN_INCLUIR}"
 					   left="10"
 					   width="100"
-					   />
+					    tabIndex="6"/>
 
 			<mx:Button bottom="10"
 					   click="editar();"
@@ -597,7 +763,7 @@
 					   label="{Dicionario.BTN_EDITAR}"
 					   left="114"
 					   width="100"
-					   />
+					    tabIndex="7"/>
 
 			<mx:Button bottom="10"
 					   click="excluir();"
@@ -606,7 +772,7 @@
 					   label="{Dicionario.BTN_EXCLUIR}"
 					   left="218"
 					   width="100"
-					   />
+					    tabIndex="8"/>
 
 			<mx:Button bottom="10"
 					   click="detalhar();"
@@ -615,7 +781,7 @@
 					   label="{Dicionario.BTN_DETALHAR}"
 					   left="322"
 					   width="100"
-					   />
+					    tabIndex="9"/>
 
 			<mx:Button bottom="10"
 					   click="listar();"
@@ -624,7 +790,7 @@
 					   label="{Dicionario.BTN_LISTAR}"
 					   left="426"
 					   width="100"
-					   />
+					    tabIndex="10"/>
 
 			<mx:Button bottom="10"
 					   click="cancelarConsulta();"
@@ -633,9 +799,9 @@
 					   label="{Dicionario.BTN_FECHAR}"
 					   right="10"
 					   width="100"
-					   />
-			<mx:ComboBox x="381" y="31" width="196" id="consTipo" dataProvider="{this.dpTipo}"></mx:ComboBox>
-			<mx:ComboBox x="585" y="31" width="127" id="consAtivo" dataProvider="{this.dpAtivo}"></mx:ComboBox>
+					    tabIndex="11"/>
+			<mx:ComboBox x="381" y="31" width="196" id="consTipo" dataProvider="{this.dpTipo}" tabIndex="3"></mx:ComboBox>
+			<mx:ComboBox x="585" y="31" width="127" id="consAtivo" dataProvider="{this.dpAtivo}" tabIndex="4"></mx:ComboBox>
 			<mx:Label x="585" y="13" text="Ativo"/>
 
 		</mx:Canvas>
@@ -656,7 +822,7 @@
 						  width="112"
 						  x="10"
 						  y="28"
-						  />
+						   tabIndex="1"/>
 
 			<mx:Label text="Nome"
 					  x="10"
@@ -667,7 +833,7 @@
 						  width="488"
 						  x="10"
 						  y="76"
-						  />
+						   tabIndex="4"/>
 
 			<mx:Button bottom="10"
 					   click="salvar();"
@@ -676,7 +842,7 @@
 					   label="{Dicionario.BTN_SALVAR}"
 					   left="10"
 					   width="96"
-					   />
+					    tabIndex="17"/>
 
 			<mx:Button bottom="10"
 					   click="salvarENovo();"
@@ -685,7 +851,7 @@
 					   label="{Dicionario.BTN_SALVAR_E_NOVO}"
 					   left="114"
 					   width="122"
-					   />
+					    tabIndex="18"/>
 
 			<mx:Button bottom="10"
 					   click="cancelarCadastro();"
@@ -694,35 +860,44 @@
 					   label="{Dicionario.BTN_CANCELAR}"
 					   right="10"
 					   width="96"
-					   />
-			<mx:TextInput x="170" y="28" displayAsPassword="true" id="cadSenha"/>
+					    tabIndex="19"/>
+			<mx:TextInput x="170" y="28" displayAsPassword="true" id="cadSenha" tabIndex="2"/>
 			<mx:Label x="170" y="10" text="Senha"/>
 			<mx:Label x="338" y="10" text="Confirmar Senha"/>
-			<mx:TextInput x="338" y="28" displayAsPassword="true" id="cadConfirmarSenha"/>
-			<view:ComboBoxFindSelected x="10" y="123" width="226" id="cadTipo" dataProvider="{this.dpTipo}"/>
+			<mx:TextInput x="338" y="28" displayAsPassword="true" id="cadConfirmarSenha" tabIndex="3"/>
+			<view:ComboBoxFindSelected x="10" y="123" width="226" id="cadTipo" dataProvider="{this.dpTipo}" change="mudaTipo();" tabIndex="5"/>
 			<mx:Label x="12" y="106" text="Tipo"/>
 			<mx:Label x="259" y="106" text="Tipo de Estudante"/>
-			<view:ComboBoxFindSelected x="259" y="123" width="239" id="cadTipoEstudante" dataProvider="{this.dpTipoEstudante}"/>
+			<view:ComboBoxFindSelected x="259" y="123" width="239" id="cadTipoEstudante" dataProvider="{this.dpTipoEstudante}" tabIndex="6"/>
 			<mx:Label x="10" y="200" text="Departamento"/>
-			<mx:TextInput x="10" y="216" width="224" id="cadDepartamento"/>
+			<mx:TextInput x="10" y="216" width="224" id="cadDepartamento" tabIndex="11"/>
 			<mx:Label x="10" y="153" text="Orientador"/>
 			<mx:Label x="259" y="153" text="Co-Orientador"/>
-			<mx:TextInput x="10" y="170" width="226" id="cadOrientador"></mx:TextInput>
-			<mx:TextInput x="259" y="170" width="239" id="cadCoOrientador"></mx:TextInput>
+			<mx:TextInput x="10" y="170" width="226" id="cadOrientador" tabIndex="7"></mx:TextInput>
+			<mx:TextInput x="259" y="170" width="239" id="cadCoOrientador" tabIndex="8"></mx:TextInput>
 			<mx:Label x="259" y="200" text="E-mail"/>
-			<mx:TextInput x="259" y="216" width="362" id="cadEmail"/>
-			<mx:TextInput x="10" y="261" width="224" id="cadTelefone"/>
-			<mx:TextInput x="259" y="261" width="362" id="cadSite"/>
+			<mx:TextInput x="259" y="216" width="362" id="cadEmail" tabIndex="12"/>
+			<mx:TextInput x="10" y="261" width="224" id="cadTelefone" tabIndex="13"/>
+			<mx:TextInput x="259" y="261" width="362" id="cadSite" tabIndex="14"/>
 			<mx:Label x="10" y="246" text="Telefone"/>
 			<mx:Label x="259" y="246" text="Web Site"/>
 			<mx:Label x="10" y="291" text="Cidade"/>
-			<mx:TextInput x="10" y="307" width="224" id="cadCidade"/>
+			<mx:TextInput x="10" y="307" width="224" id="cadCidade" tabIndex="15"/>
 			<mx:Label x="259" y="291" text="Ativo"/>
-			<view:ComboBoxFindSelected x="259" y="307" id="cadAtivo" dataProvider="{this.dpAtivo}" width="178"/>
+			<view:ComboBoxFindSelected x="259" y="307" id="cadAtivo" dataProvider="{this.dpAtivo}" width="178" tabIndex="16"/>
 			<mx:Image x="520" y="28" width="101" height="130" id="cadFoto"/>
 			<mx:Label x="520" y="10" text="Foto"/>
-			<mx:Button icon="{ico_adicionar}" x="520" y="170" id="BtnAdicionarFoto"/>
-			<mx:Button icon="{ico_remover}" x="581" y="170" id="BtnExcluirFoto"/>
+			<mx:Button icon="{ico_adicionar}" click="browseAndUpload();" x="520" y="170" id="BtnAdicionarFoto" tabIndex="9"/>
+			<mx:Button icon="{ico_remover}" x="581" y="170" id="BtnExcluirFoto" click="removerFoto();" tabIndex="10"/>
+			<mx:VRule x="520" y="28" height="130"/>
+			<mx:HRule x="520" y="158"/>
+			<mx:VRule x="621" y="28" height="132" width="2"/>
+			<mx:HRule x="521" y="27"/>
+			<mx:Label x="55" y="10" text="*" color="#FC0202"/>
+			<mx:Label x="45" y="58" text="*" color="#FC0202"/>
+			<mx:Label x="45" y="106" text="*" color="#FC0202"/>
+			<mx:Label x="295" y="291" text="*" color="#FC0202"/>
+			<mx:Label x="10" y="403" text="(*) - Campos Obrigatórios" color="#FC0202"/>
 
 		</mx:Canvas>
 	</mx:ViewStack>
