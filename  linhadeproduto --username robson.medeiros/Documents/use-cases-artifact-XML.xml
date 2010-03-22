@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<rgms xmlns="user-view.target.v20100323">
+
+<feature>Feature
+               
+	<featureId>0001</featureId><name>Membros</name>
+
+               <useCase>Use Cases
+
+                        <id>UC_01</id><name>Criar um novo Membro</name>
+                        <description></description>
+                        <setup></setup>
+
+                        	<flow>Main Flow
+                              	<description></description>
+                              	<fromSteps></fromSteps>
+                              	<toSteps></toSteps>
+                              	<steps>
+                                     	<stepId></stepId><action></action><condition></condition><response></response>
+                              	</steps>
+                        	</flow>
+
+			<flow>Alternative Flows
+                              	<description></description>
+                              	<fromSteps></fromSteps>
+                              	<toSteps></toSteps>
+                              	<steps>
+                                     	<stepId></stepId><action></action><condition></condition><response></response>
+                              	</steps>
+                        	</flow>
+
+			<flow>Exception Flows
+                              	<description></description>
+                              	<fromSteps></fromSteps>
+                              	<toSteps></toSteps>
+                              	<steps>
+                                     	<stepId></stepId><action></action><condition></condition><response></response>
+                              	</steps>
+                        	</flow>
+
+	</useCase>
+
+</feature>
+
+
+<feature>Feature
+               
+	<featureId>0002</featureId><name>Publicações</name>
+
+               <useCase>Use Cases
+
+                        <id>UC_01</id><name>Criar uma nova Publicação</name>
+                        <description></description>
+                        <setup></setup>
+
+                        	<flow>Main Flow
+                              	<description></description>
+                              	<fromSteps></fromSteps>
+                              	<toSteps></toSteps>
+                              	<steps>
+                                     	<stepId></stepId><action></action><condition></condition><response></response>
+                              	</steps>
+                        	</flow>
+
+			<flow>Alternative Flows
+                              	<description></description>
+                              	<fromSteps></fromSteps>
+                              	<toSteps></toSteps>
+                              	<steps>
+                                     	<stepId></stepId><action></action><condition></condition><response></response>
+                              	</steps>
+                        	</flow>
+
+			<flow>Exception Flows
+                              	<description></description>
+                              	<fromSteps></fromSteps>
+                              	<toSteps></toSteps>
+                              	<steps>
+                                     	<stepId></stepId><action></action><condition></condition><response></response>
+                              	</steps>
+                        	</flow>
+
+	</useCase>
+
+</feature>
+
+<feature>Feature
+               
+	<featureId>0003</featureId><name>Relatórios</name>
+
+               <useCase>Use Cases
+
+                        <id>UC_01</id><name>Listar Membros de acordo com o seu tipo</name>
+                        <description></description>
+                        <setup></setup>
+
+                        	<flow>Main Flow
+                              	<description></description>
+                              	<fromSteps></fromSteps>
+                              	<toSteps></toSteps>
+                              	<steps>
+                                     	<stepId></stepId><action></action><condition></condition><response></response>
+                              	</steps>
+                        	</flow>
+
+			<flow>Alternative Flows
+                              	<description></description>
+                              	<fromSteps></fromSteps>
+                              	<toSteps></toSteps>
+                              	<steps>
+                                     	<stepId></stepId><action></action><condition></condition><response></response>
+                              	</steps>
+                        	</flow>
+
+			<flow>Exception Flows
+                              	<description></description>
+                              	<fromSteps></fromSteps>
+                              	<toSteps></toSteps>
+                              	<steps>
+                                     	<stepId></stepId><action></action><condition></condition><response></response>
+                              	</steps>
+                        	</flow>
+
+	</useCase>
+
+</feature>
+
+</rgms>
