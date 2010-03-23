@@ -8,9 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.w3c.tools.codec.Base64Decoder;
-
-import biz.source_code.base64Coder.Base64Coder;
 import br.ufpe.cin.reuso.controller.FacadeReuso;
 import br.ufpe.cin.reuso.exceptions.OperacaoInvalidaException;
 import br.ufpe.cin.reuso.model.business.entities.Membro;
