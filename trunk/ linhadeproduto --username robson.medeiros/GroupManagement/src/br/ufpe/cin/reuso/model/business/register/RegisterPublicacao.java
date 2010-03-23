@@ -32,6 +32,7 @@ public class RegisterPublicacao {
     	boolean retorno = true;
 		try {
 			iRegister.begin();
+			((Publicacao)publicacao).setId(null);
 			iRegister.salvar((Publicacao) publicacao);
 			
 		} catch (Exception e) {

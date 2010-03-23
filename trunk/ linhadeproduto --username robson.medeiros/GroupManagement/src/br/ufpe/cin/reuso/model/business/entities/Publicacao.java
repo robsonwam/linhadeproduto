@@ -6,10 +6,13 @@ import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 public class Publicacao implements Serializable {
 	@Id
+	@GeneratedValue(strategy=IDENTITY)
 	private Integer id;
 
 	private String tipo;
