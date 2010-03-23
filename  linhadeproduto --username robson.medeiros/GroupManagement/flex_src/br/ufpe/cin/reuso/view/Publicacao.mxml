@@ -12,6 +12,8 @@
 
 	<mx:Script>
 		<![CDATA[
+			import br.ufpe.cin.reuso.events.PublicacaoEvent;
+			import br.ufpe.cin.reuso.vo.PublicacaoVO;
 			import flexunit.flexui.controls.right.SelectedTestCaseForm;
 			import br.ufpe.cin.reuso.view.reports.report.templates.TemplateLista;
 			import br.ufpe.cin.reuso.view.reports.report.dataproviders.DPTemplateLista;
@@ -78,6 +80,9 @@
 			[Bindable]
 			private static var ico_remover:Class;
 			
+			[Bindable]
+			private var publicacao:PublicacaoVO;
+			
 			public static const AC_SEARCH:uint = 0;
 			
 			public static const AC_INSERT:uint = 1;
@@ -94,7 +99,7 @@
 			
 			private var action:uint = 0;
 			
-			public var titutoReport:String = "Membro";
+			public var titutoReport:String = "Publicacao";
 			
 			public const VS_CONSULTA:uint = 0;
 			
@@ -106,7 +111,7 @@
 			
 			private var dataFieldTipo:String = "tipo";
 			
-			private var dataFieldAtivo:String = "ativo";
+			//private var dataFieldAtivo:String = "ativo";
 			
 			[Bindable]
 			private var dpRegistros:ArrayCollection = new ArrayCollection();
@@ -114,122 +119,114 @@
 			[Bindable]
 			private var dpTipo:ArrayCollection = new ArrayCollection();
 			
-			[Bindable]
-			private var dpTipoEstudante:ArrayCollection = new ArrayCollection();
+//			[Bindable]
+//			private var dpTipoEstudante:ArrayCollection = new ArrayCollection();
 			
-			[Bindable]
-			private var dpAtivo:ArrayCollection = new ArrayCollection();
+//			[Bindable]
+//			private var dpAtivo:ArrayCollection = new ArrayCollection();
 			
 			private function initForm():void
 			{
 				this.dpTipo.addItem({ label: "", data: null });
-				this.dpTipo.addItem({ label: Dicionario.MEMBRO_ESTUDANTE, data: Dicionario.MEMBRO_ESTUDANTE });
-				this.dpTipo.addItem({ label: Dicionario.MEMBRO_PESQUISADOR, data: Dicionario.MEMBRO_PESQUISADOR });
-				this.dpTipo.addItem({ label: Dicionario.MEMBRO_PROFESSOR, data: Dicionario.MEMBRO_PROFESSOR });
+				this.dpTipo.addItem({ label: Dicionario.PUBLICACAO_ARTIGO_CONFERENCIA, data: Dicionario.PUBLICACAO_ARTIGO_CONFERENCIA });
+				this.dpTipo.addItem({ label: Dicionario.PUBLICACAO_ARTIGO_REVISTA, data: Dicionario.PUBLICACAO_ARTIGO_REVISTA });
+				this.dpTipo.addItem({ label: Dicionario.PUBLICACAO_TESE, data: Dicionario.PUBLICACAO_TESE });
+				this.dpTipo.addItem({ label: Dicionario.PUBLICACAO_DISSERTACAO, data: Dicionario.PUBLICACAO_DISSERTACAO });
 				
-				this.dpTipoEstudante.addItem({ label: "", data: null });
-				this.dpTipoEstudante.addItem({ label: Dicionario.MEMBRO_DOUTORADO, data: Dicionario.MEMBRO_DOUTORADO });
-				this.dpTipoEstudante.addItem({ label: Dicionario.MEMBRO_MESTRADO, data: Dicionario.MEMBRO_MESTRADO });
-				this.dpTipoEstudante.addItem({ label: Dicionario.MEMBRO_INICIACAO, data: Dicionario.MEMBRO_INICIACAO });
-				
-				this.dpAtivo.addItem({ label: "", data: null });
-				this.dpAtivo.addItem({ label: Dicionario.MEMBRO_ATIVO, data: Dicionario.MEMBRO_ATIVO });
-				this.dpAtivo.addItem({ label: Dicionario.MEMBRO_FORMER_MEMBER, data: Dicionario.MEMBRO_FORMER_MEMBER });
+//				this.dpTipoEstudante.addItem({ label: "", data: null });
+//				this.dpTipoEstudante.addItem({ label: Dicionario.MEMBRO_DOUTORADO, data: Dicionario.MEMBRO_DOUTORADO });
+//				this.dpTipoEstudante.addItem({ label: Dicionario.MEMBRO_MESTRADO, data: Dicionario.MEMBRO_MESTRADO });
+//				this.dpTipoEstudante.addItem({ label: Dicionario.MEMBRO_INICIACAO, data: Dicionario.MEMBRO_INICIACAO });
+//				
+//				this.dpAtivo.addItem({ label: "", data: null });
+//				this.dpAtivo.addItem({ label: Dicionario.MEMBRO_ATIVO, data: Dicionario.MEMBRO_ATIVO });
+//				this.dpAtivo.addItem({ label: Dicionario.MEMBRO_FORMER_MEMBER, data: Dicionario.MEMBRO_FORMER_MEMBER });
 				
 			}
 
 			
 			private function getOrdenacao():Array
 			{
-				return [ new SortField( this.dataFieldCodigo , true ) , new SortField( this.dataFieldNome , true ) , new SortField( this.dataFieldTipo , true ), new SortField( this.dataFieldAtivo , true )];
+				return [ new SortField( this.dataFieldCodigo , true ) , new SortField( this.dataFieldNome , true ) , new SortField( this.dataFieldTipo , true )];
 			}
 			
 			private function setEntidade( action:uint ):void
 			{
-				var f:MembroVO = new MembroVO();
-				
 				if (( action == AC_UPDATE ) || ( action == AC_DETAIL ))
 				{
-					f = this.consDataGrid.selectedItem as MembroVO;
+					this.publicacao = this.consDataGrid.selectedItem as PublicacaoVO;
 				}
 				
-				this.cadCodigo.text = f.codigo;
-				this.cadNome.text = f.nome;
-				this.cadAtivo.selectedItem = f.ativo;
-				this.cadCidade.text = f.cidade;
-				this.cadConfirmarSenha.text = "";
-				this.cadSenha.text = "";
-				this.cadCoOrientador.text = f.coOrientador;
-				this.cadOrientador.text = f.orientador;
-				this.cadDepartamento.text = f.departamento;
-				this.cadEmail.text = f.email;
-//				this.cadFoto
-				this.cadSite.text = f.website;
-				this.cadTelefone.text = f.telefone;
-				this.cadTipo.selectedItem = f.tipo;
-				this.cadTipoEstudante.selectedItem = f.tipoEstudante;
+				this.cadCodigo.text = publicacao.id.toString();
+				this.cadTitulo.text = publicacao.title;
+				this.cadTipo.selectedItem = publicacao.tipo;
+				this.cadConferencia.text = publicacao.conference;
+				this.cadJornal.text = publicacao.jornal;
+				this.cadInstituicao.text = publicacao.school;
+				//this.cadArquivo = publicacao.arquivo;
+				this.cadAno.text = publicacao.ano.toString();
+				this.cadVolume.text = publicacao.volume;
+				this.cadNumero.text = publicacao.numero.toString();
+				this.cadPaginas.text = publicacao.pages.toString();
+				this.cadMes.text = publicacao.mes.toString();
 			}
 			
 			private function DispararEvento( action:uint ):void
 			{
 				var handlers:Callbacks = null;
-				var event:MembroEvent = null;
-				var f:MembroVO = new MembroVO();
+				var event:PublicacaoEvent = null;
+				var f:PublicacaoVO = new PublicacaoVO();
 				
 				if ( action == AC_SEARCH )
 				{
 					// Pega os dados da tela de pesquisa
-					f.codigo = this.consCodigo.text;
-					f.nome = this.consNome.text;
-					f.ativo = this.consAtivo.selectedLabel;
-					f.tipo = this.consTipo.selectedLabel;
+					f.id = int(this.consCodigo.text);
+					f.title = this.cadTitulo.text;
+					f.tipo = this.cadTipo.selectedLabel;
 				}
 				else if (( action == AC_INSERT ) || ( action == AC_INSERT_AND_NEW ) || ( action == AC_UPDATE ))
 				{
 					// Pega os dados da tela de cadastro
-					f.codigo = this.cadCodigo.text;
-					f.nome = this.cadNome.text;
-					f.ativo = this.cadAtivo.selectedLabel;
-					f.cidade = this.cadCidade.text;
-					f.passwd = this.cadSenha.text;
-					f.coOrientador = this.cadCoOrientador.text;
-					f.orientador = this.cadOrientador.text;
-					f.departamento = this.cadDepartamento.text;
-					f.email = this.cadEmail.text;
-//					this.cadFoto
-					f.website = this.cadSite.text;
-					f.telefone = this.cadTelefone.text;
+					f.id = int(this.cadCodigo.text);
+					f.title = this.cadTitulo.text;
+					f.conference = this.cadConferencia.text;
+					f.jornal = this.cadJornal.text;
+					f.school = this.cadInstituicao.text;
+					f.ano = int(this.cadAno.text);
+					f.volume = this.cadVolume.text;
+					f.numero = this.cadNumero.text;
+					f.pages = int(this.cadPaginas.text);
+					f.mes = int(this.cadMes.text);
 					f.tipo = this.cadTipo.selectedLabel;
-					f.tipoEstudante = this.cadTipoEstudante.selectedLabel;
 				}
 				else if ( action == AC_DELETE )
 				{
 					// Pega os dados no datagrid na tela de conculta
-					f = this.consDataGrid.selectedItem as MembroVO;
+					f = this.consDataGrid.selectedItem as PublicacaoVO;
 				}
 				
 				if ( action == AC_SEARCH )
 				{
 					handlers = new Callbacks( onResult_Pesquisar );
-					event = new MembroEvent( MembroEvent.EVENT_PESQUISAR , handlers );
+					event = new PublicacaoEvent( PublicacaoEvent.EVENT_PESQUISAR , handlers );
 					
 				}
 				else if ( action == AC_INSERT )
 				{
 					handlers = new Callbacks( onResult_SalvarInsert );
-					event = new MembroEvent( MembroEvent.EVENT_INSERIR , handlers );
+					event = new PublicacaoEvent( PublicacaoEvent.EVENT_INSERIR , handlers );
 					
 				}
 				else if ( action == AC_INSERT_AND_NEW )
 				{
 					handlers = new Callbacks( onResult_SalvarENovo );
-					event = new MembroEvent( MembroEvent.EVENT_INSERIR , handlers );
+					event = new PublicacaoEvent( PublicacaoEvent.EVENT_INSERIR , handlers );
 					
 				}
 				else if ( action == AC_UPDATE )
 				{
 					handlers = new Callbacks( onResult_SalvarUpdate );
-					event = new MembroEvent( MembroEvent.EVENT_EDITAR , handlers );
+					event = new PublicacaoEvent( PublicacaoEvent.EVENT_EDITAR , handlers );
 					
 				}
 				else if ( action == AC_DELETE )
@@ -237,7 +234,7 @@
 					if (( this.consDataGrid.selectedItem as MembroVO ) != null )
 					{
 						handlers = new Callbacks( onResult_Excluir );
-						event = new MembroEvent( MembroEvent.EVENT_EXCLUIR , handlers );
+						event = new PublicacaoEvent( PublicacaoEvent.EVENT_EXCLUIR , handlers );
 					}
 					else
 					{
@@ -277,45 +274,42 @@
 			{
 				
 				this.cadCodigo.enabled = true;
-				this.cadNome.enabled = true;
+				this.cadTitulo.enabled = true;
+				this.cadConferencia.enabled = true;
+				this.cadJornal.enabled = true;
+				this.cadInstituicao.enabled = true;
 				this.BtnSalvar.visible = true;
 				this.BtnSalvarENovo.visible = true;
-				this.cadAtivo.visible = true;
-				this.cadCidade.visible = true;
-				this.cadSenha..visible = true;
-				this.cadCoOrientador.visible = true;
-				this.cadOrientador.visible = true;
-				this.cadDepartamento.visible = true;
-				this.cadEmail.visible = true;
-				this.cadFoto.visible = true;
-				this.cadSite.visible = true;
-				this.cadTelefone.visible = true;
+				this.cadAno.visible = true;
+				this.cadArquivo.visible = true;
+				this.cadMes.visible = true;
+				this.cadNumero.visible = true;
+				this.cadPaginas.visible = true;
 				this.cadTipo.visible = true;
-				this.cadTipoEstudante.visible = true;
-				
+				this.cadVolume.visible = true;
+								
 				if ( this.action == AC_UPDATE )
 				{
 					this.BtnSalvarENovo.visible = false;
 				}
 				else if ( this.action == AC_DETAIL )
 				{
-					this.cadNome.editable = false;
-					this.cadAtivo.enabled = false;
-					this.cadCidade.editable = false;
-					this.cadSenha.editable = false;
-					this.cadConfirmarSenha.editable = false;
-					this.cadCoOrientador.editable = false;
-					this.cadOrientador.editable = false;
-					this.cadDepartamento.editable = false;
-					this.cadEmail.editable = false;
-					this.cadSite.editable = false;
-					this.cadTelefone.editable = false;
-					this.cadTipo.enabled = false;
-					this.cadTipoEstudante.enabled = false;
+					this.cadCodigo.enabled = false;
+					this.cadTitulo.enabled = false;
+					this.cadConferencia.enabled = false;
+					this.cadJornal.enabled = false;
+					this.cadInstituicao.enabled = false;
+					this.cadAno.visible = false;
+					this.cadArquivo.visible = false;
+					this.cadMes.visible = false;
+					this.cadNumero.visible = false;
+					this.cadPaginas.visible = false;
+					this.cadTipo.visible = false;
+					this.cadVolume.visible = false;
 					this.BtnSalvar.visible = false;
 					this.BtnSalvarENovo.visible = false;
-					this.BtnAdicionarFoto.visible = false;
-					this.BtnExcluirFoto.visible = false;
+					this.BtnAdicionarArquivo.visible = false;
+					this.BtnExcluirArquivo.visible = false;
 				}
 				
 				this.setEntidade( this.action );
@@ -428,18 +422,17 @@
 			public function limparCampos():void
 			{
 				this.cadCodigo.text = "";
-				this.cadNome.text = "";
-				this.cadAtivo.selectedIndex = 0;
-				this.cadCidade.text = "";
-				this.cadSenha.text = "";
-				this.cadCoOrientador.text = "";
-				this.cadOrientador.text = "";
-				this.cadDepartamento.text = "";
-				this.cadEmail.text = "";
-				this.cadSite.text = "";
-				this.cadTelefone.text = "";
+				this.cadTitulo.text = "";
+				this.cadConferencia.text = "";
+				this.cadJornal.text = "";
+				this.cadInstituicao.text = "";
+				this.cadAno.text = "";
+				this.cadArquivo.text = "";
+				this.cadMes.visible = "";
+				this.cadNumero.text = "";
+				this.cadPaginas.text = "";
 				this.cadTipo.selectedIndex = 0;
-				this.cadTipoEstudante.selectedIndex = 0;
+				this.cadVolume.text = "";				
 			}
 			
 			private function listar():void
@@ -459,7 +452,7 @@
 			
 			private function validarDados():Boolean
 			{
-				if ( cadNome.text.length <= 0 )
+				if ( cadTitulo.text.length <= 0 )
 				{
 					Alert.show( "Favor informa a descrição!" , Dicionario.ALERT_TITLE_ERROR );
 					return false;
@@ -526,8 +519,8 @@
 					   id="BtnPesquisar"
 					   label="{Dicionario.BTN_PESQUISAR}"
 					   width="96"
-					   x="616"
-					   y="61"
+					   x="620"
+					   y="31"
 					   />
 
 			<mx:Label text="{Dicionario.REGISTROS_ENCONTRADOS}"
@@ -553,14 +546,14 @@
 						 >
 
 				<mx:columns>
-					<mx:DataGridColumn dataField="codigo"
+					<mx:DataGridColumn dataField="id"
 									   headerText="Código"
 									   id="dataGridColumnCodigo"
 									   width="80"
 									   />
 
-					<mx:DataGridColumn dataField="nome"
-									   headerText="Nome"
+					<mx:DataGridColumn dataField="title"
+									   headerText="Título"
 									   id="dataGridColumnNome"
 									   wordWrap="true"
 									   />
@@ -569,13 +562,6 @@
 									   headerText="Tipo"
 									   id="dataGridColumnTipo"
 									   width="200"
-									   wordWrap="true"
-									   />
-									   
-					<mx:DataGridColumn dataField="ativo"
-									   headerText="Ativo"
-									   id="dataGridColumnAtivo"
-									   width="80"
 									   wordWrap="true"
 									   />
 				</mx:columns>
@@ -635,8 +621,6 @@
 					   width="100"
 					   />
 			<mx:ComboBox x="381" y="31" width="196" id="consTipo" dataProvider="{this.dpTipo}"></mx:ComboBox>
-			<mx:ComboBox x="585" y="31" width="127" id="consAtivo" dataProvider="{this.dpAtivo}"></mx:ComboBox>
-			<mx:Label x="585" y="13" text="Ativo"/>
 
 		</mx:Canvas>
 
@@ -658,12 +642,12 @@
 						  y="28"
 						  />
 
-			<mx:Label text="Nome"
+			<mx:Label text="Título"
 					  x="10"
 					  y="58"
 					  />
 
-			<mx:TextInput id="cadNome"
+			<mx:TextInput id="cadTitulo"
 						  width="488"
 						  x="10"
 						  y="76"
@@ -695,34 +679,28 @@
 					   right="10"
 					   width="96"
 					   />
-			<mx:TextInput x="170" y="28" displayAsPassword="true" id="cadSenha"/>
-			<mx:Label x="170" y="10" text="Senha"/>
-			<mx:Label x="338" y="10" text="Confirmar Senha"/>
-			<mx:TextInput x="338" y="28" displayAsPassword="true" id="cadConfirmarSenha"/>
 			<view:ComboBoxFindSelected x="10" y="123" width="226" id="cadTipo" dataProvider="{this.dpTipo}"/>
 			<mx:Label x="12" y="106" text="Tipo"/>
-			<mx:Label x="259" y="106" text="Tipo de Estudante"/>
-			<view:ComboBoxFindSelected x="259" y="123" width="239" id="cadTipoEstudante" dataProvider="{this.dpTipoEstudante}"/>
-			<mx:Label x="10" y="200" text="Departamento"/>
-			<mx:TextInput x="10" y="216" width="224" id="cadDepartamento"/>
-			<mx:Label x="10" y="153" text="Orientador"/>
-			<mx:Label x="259" y="153" text="Co-Orientador"/>
-			<mx:TextInput x="10" y="170" width="226" id="cadOrientador"></mx:TextInput>
-			<mx:TextInput x="259" y="170" width="239" id="cadCoOrientador"></mx:TextInput>
-			<mx:Label x="259" y="200" text="E-mail"/>
-			<mx:TextInput x="259" y="216" width="362" id="cadEmail"/>
-			<mx:TextInput x="10" y="261" width="224" id="cadTelefone"/>
-			<mx:TextInput x="259" y="261" width="362" id="cadSite"/>
-			<mx:Label x="10" y="246" text="Telefone"/>
-			<mx:Label x="259" y="246" text="Web Site"/>
-			<mx:Label x="10" y="291" text="Cidade"/>
-			<mx:TextInput x="10" y="307" width="224" id="cadCidade"/>
-			<mx:Label x="259" y="291" text="Ativo"/>
-			<view:ComboBoxFindSelected x="259" y="307" id="cadAtivo" dataProvider="{this.dpAtivo}" width="178"/>
-			<mx:Image x="520" y="28" width="101" height="130" id="cadFoto"/>
-			<mx:Label x="520" y="10" text="Foto"/>
-			<mx:Button icon="{ico_adicionar}" x="520" y="170" id="BtnAdicionarFoto"/>
-			<mx:Button icon="{ico_remover}" x="581" y="170" id="BtnExcluirFoto"/>
+			<mx:Label x="10" y="316" text="Volume"/>
+			<mx:TextInput x="10" y="332" width="224" id="cadVolume"/>
+			<mx:Label x="10" y="269" text="Ano"/>
+			<mx:Label x="259" y="269" text="Mês"/>
+			<mx:TextInput x="10" y="286" width="226" id="cadAno"></mx:TextInput>
+			<mx:TextInput x="259" y="286" width="239" id="cadMes"></mx:TextInput>
+			<mx:Label x="259" y="316" text="Número"/>
+			<mx:TextInput x="259" y="332" width="239" id="cadNumero"/>
+			<mx:TextInput x="10" y="377" width="224" id="cadPaginas"/>
+			<mx:Label x="10" y="362" text="Páginas"/>
+			<mx:Button icon="{ico_adicionar}" x="570" y="153" id="BtnAdicionarArquivo"/>
+			<mx:Button icon="{ico_remover}" x="618" y="153" id="BtnExcluirArquivo"/>
+			<mx:TextInput x="259" y="123" width="399" id="cadArquivo"/>
+			<mx:Label x="259" y="106" text="Arquivo"/>
+			<mx:TextInput x="10" y="176" width="226" id="cadConferencia"/>
+			<mx:TextInput x="10" y="225" width="226" id="cadJornal"/>
+			<mx:TextInput x="259" y="176" width="239" id="cadInstituicao"/>
+			<mx:Label x="10" y="157" text="Conferência"/>
+			<mx:Label x="10" y="206" text="Jornal"/>
+			<mx:Label x="259" y="157" text="Instituição"/>
 
 		</mx:Canvas>
 	</mx:ViewStack>

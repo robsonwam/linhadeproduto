@@ -44,7 +44,7 @@ private function openWindow(windowIndex:uint, modal:Boolean = true):void
 private var windows:Array = new Array(
 	null //1
 	, br.ufpe.cin.reuso.view.Membro //2
-	, null //3
+	, br.ufpe.cin.reuso.view.Publicacao //3
 	, null //4
 //	, br.com.r2jm.sauderesidencia.view.PerfilAcesso //19
 	, null);

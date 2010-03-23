@@ -56,7 +56,11 @@ package br.ufpe.cin.reuso.util
 		public static const MEMBRO_ATIVO:String = 'Ativo';
 		public static const MEMBRO_FORMER_MEMBER:String = 'Former Member';
 		
-		
+		//Publicacao
+		public static const PUBLICACAO_ARTIGO_CONFERENCIA:String = 'Artigo de conferência';
+		public static const PUBLICACAO_ARTIGO_REVISTA:String = 'Artigo de revista';
+		public static const PUBLICACAO_TESE:String = 'Tese';
+		public static const PUBLICACAO_DISSERTACAO:String = 'Dissertação';
 
 		public function Dicionario()
 		{
