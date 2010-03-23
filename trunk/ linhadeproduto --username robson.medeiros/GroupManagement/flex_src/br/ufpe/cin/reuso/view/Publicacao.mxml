@@ -99,15 +99,15 @@
 			
 			private var action:uint = 0;
 			
-			public var titutoReport:String = "Publicacao";
+			public var titutoReport:String = "Publicação";
 			
 			public const VS_CONSULTA:uint = 0;
 			
 			public const VS_CADASTRO:uint = 1;
 			
-			private var dataFieldCodigo:String = "codigo";
+			private var dataFieldCodigo:String = "id";
 			
-			private var dataFieldNome:String = "nome";
+			private var dataFieldNome:String = "title";
 			
 			private var dataFieldTipo:String = "tipo";
 			
@@ -164,11 +164,11 @@
 				this.cadJornal.text = publicacao.jornal;
 				this.cadInstituicao.text = publicacao.school;
 				//this.cadArquivo = publicacao.arquivo;
-				this.cadAno.text = publicacao.ano.toString();
+				this.cadAno.value  = publicacao.ano;
 				this.cadVolume.text = publicacao.volume;
 				this.cadNumero.text = publicacao.numero.toString();
-				this.cadPaginas.text = publicacao.pages.toString();
-				this.cadMes.text = publicacao.mes.toString();
+				this.cadPaginas.value = publicacao.pages;
+				this.cadMes.value = publicacao.mes;
 			}
 			
 			private function DispararEvento( action:uint ):void
@@ -192,11 +192,11 @@
 					f.conference = this.cadConferencia.text;
 					f.jornal = this.cadJornal.text;
 					f.school = this.cadInstituicao.text;
-					f.ano = int(this.cadAno.text);
+					f.ano = this.cadAno.value;
 					f.volume = this.cadVolume.text;
 					f.numero = int(this.cadNumero.text);
-					f.pages = int(this.cadPaginas.text);
-					f.mes = int(this.cadMes.text);
+					f.pages = this.cadPaginas.value;
+					f.mes = this.cadMes.value;
 					f.tipo = this.cadTipo.selectedLabel;
 				}
 				else if ( action == AC_DELETE )
@@ -231,7 +231,7 @@
 				}
 				else if ( action == AC_DELETE )
 				{
-					if (( this.consDataGrid.selectedItem as MembroVO ) != null )
+					if (( this.consDataGrid.selectedItem as PublicacaoVO ) != null )
 					{
 						handlers = new Callbacks( onResult_Excluir );
 						event = new PublicacaoEvent( PublicacaoEvent.EVENT_EXCLUIR , handlers );
@@ -273,7 +273,7 @@
 			private function cbViewStackChance():void
 			{
 				
-				this.cadCodigo.enabled = true;
+				this.cadCodigo.enabled = false;
 				this.cadTitulo.enabled = true;
 				this.cadConferencia.enabled = true;
 				this.cadJornal.enabled = true;
@@ -427,11 +427,11 @@
 				this.cadConferencia.text = "";
 				this.cadJornal.text = "";
 				this.cadInstituicao.text = "";
-				this.cadAno.text = "";
+				this.cadAno.value = 1900;
 				this.cadArquivo.text = "";
-				this.cadMes.visible = "";
+				this.cadMes.value = 0;
 				this.cadNumero.text = "";
-				this.cadPaginas.text = "";
+				this.cadPaginas.value = 0;
 				this.cadTipo.selectedIndex = 0;
 				this.cadVolume.text = "";				
 			}
@@ -682,16 +682,13 @@
 					   />
 			<view:ComboBoxFindSelected x="10" y="123" width="226" id="cadTipo" dataProvider="{this.dpTipo}"/>
 			<mx:Label x="12" y="106" text="Tipo"/>
-			<mx:Label x="10" y="316" text="Volume"/>
-			<mx:TextInput x="10" y="332" width="224" id="cadVolume"/>
-			<mx:Label x="10" y="269" text="Ano"/>
-			<mx:Label x="259" y="269" text="Mês"/>
-			<mx:TextInput x="10" y="286" width="226" id="cadAno"></mx:TextInput>
-			<mx:TextInput x="259" y="286" width="239" id="cadMes"></mx:TextInput>
-			<mx:Label x="259" y="316" text="Número"/>
-			<mx:TextInput x="259" y="332" width="239" id="cadNumero"/>
-			<mx:TextInput x="10" y="377" width="224" id="cadPaginas"/>
-			<mx:Label x="10" y="362" text="Páginas"/>
+			<mx:Label x="10" y="255" text="Volume"/>
+			<mx:TextInput x="10" y="271" width="224" id="cadVolume"/>
+			<mx:Label x="259" y="208" text="Ano"/>
+			<mx:Label x="354" y="208" text="Mês"/>
+			<mx:Label x="259" y="255" text="Número"/>
+			<mx:TextInput x="259" y="271" width="153" id="cadNumero"/>
+			<mx:Label x="429" y="255" text="Páginas"/>
 			<mx:Button icon="{ico_adicionar}" x="570" y="153" id="BtnAdicionarArquivo"/>
 			<mx:Button icon="{ico_remover}" x="618" y="153" id="BtnExcluirArquivo"/>
 			<mx:TextInput x="259" y="123" width="399" id="cadArquivo"/>
@@ -702,6 +699,9 @@
 			<mx:Label x="10" y="157" text="Conferência"/>
 			<mx:Label x="10" y="206" text="Jornal"/>
 			<mx:Label x="259" y="157" text="Instituição"/>
+			<mx:NumericStepper x="354" y="225" id="cadMes" maximum="12" minimum="1"/>
+			<mx:NumericStepper x="259" y="225" width="71" id="cadAno" minimum="1900" maximum="2999"/>
+			<mx:NumericStepper x="429" y="271" id="cadPaginas" minimum="0" maximum="10000"/>
 
 		</mx:Canvas>
 	</mx:ViewStack>
