@@ -71,8 +71,8 @@ public class RegisterPublicacao {
 		return retorno;
 	}
 
-	public Object buscarPorChave(String string) {
-		return iRegister.buscarPorChave(string);
+	public Object buscarPorChave(Integer integer) {
+		return iRegister.buscarPorChave(integer);
 	}
 
 	@SuppressWarnings("unchecked")

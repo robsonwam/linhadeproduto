@@ -229,9 +229,13 @@
 				if (membro.tipo != null)
 				{
 					this.cadTipo.selectedItem = membro.tipo.id;
-					if(membro.tipo.nome == Dicionario.MEMBRO_ESTUDANTE){
+					if(membro.tipo.nome == Dicionario.MEMBRO_ESTUDANTE && action != AC_DETAIL){
 						this.cadTipoEstudante.enabled = true;
+						this.cadCoOrientador.enabled = true;
+						this.cadOrientador.enabled = true;
 					}else{
+						this.cadCoOrientador.enabled = false;
+						this.cadOrientador.enabled = false;
 						this.cadTipoEstudante.enabled = false;
 						
 					}
@@ -388,14 +392,14 @@
 				this.cadCidade.editable = true;
 				this.cadSenha.editable = true;
 				this.cadConfirmarSenha.editable = true;
-				this.cadCoOrientador.editable = true;
-				this.cadOrientador.editable = true;
 				this.cadDepartamento.editable = true;
 				this.cadEmail.editable = true;
 				this.cadSite.editable = true;
 				this.cadTelefone.editable = true;
 				this.cadTipo.enabled = true;
-				this.cadTipoEstudante.enabled = true;
+				this.cadTipoEstudante.enabled = false;
+				this.cadCoOrientador.enabled = false;
+				this.cadOrientador.enabled = false;
 				
 				if ( this.action == AC_UPDATE )
 				{
@@ -572,9 +576,15 @@
 			{
 				if(this.cadTipo.selectedLabel == Dicionario.MEMBRO_ESTUDANTE){
 					this.cadTipoEstudante.enabled = true;
+					this.cadCoOrientador.enabled = true;
+					this.cadOrientador.enabled = true;
 				} else {
 					this.cadTipoEstudante.selectedIndex = 0;
 					this.cadTipoEstudante.enabled = false;
+					this.cadCoOrientador.enabled = false;
+					this.cadOrientador.enabled = false;
+					this.cadCoOrientador.text = "";
+					this.cadOrientador.text = "";
 				}
 			}
 			

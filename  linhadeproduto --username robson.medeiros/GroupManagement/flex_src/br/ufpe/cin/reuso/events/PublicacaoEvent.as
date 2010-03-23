@@ -14,7 +14,7 @@ package br.ufpe.cin.reuso.events
 		public static const EVENT_EDITAR:String = "EditarPublicacao";
 		public static const EVENT_EXCLUIR:String = "ExcluirPublicacao";
 		public var params:PublicacaoVO = null;
-		public var ordernarPor:String = "codigo";
+		public var ordernarPor:String = "id";
 
 
 		public function PublicacaoEvent( type:String, callback:Callbacks = null )

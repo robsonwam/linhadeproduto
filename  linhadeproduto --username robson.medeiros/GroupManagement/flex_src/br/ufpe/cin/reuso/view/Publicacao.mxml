@@ -4,7 +4,7 @@
 				height="550"
 				layout="absolute"
 				showCloseButton="true"
-				title="Membro"
+				title="Publicação"
 				width="750"
 				xmlns:mx="http://www.adobe.com/2006/mxml"
 				xmlns:view="br.ufpe.cin.reuso.view.components.*"
@@ -181,8 +181,8 @@
 				{
 					// Pega os dados da tela de pesquisa
 					f.id = int(this.consCodigo.text);
-					f.title = this.cadTitulo.text;
-					f.tipo = this.cadTipo.selectedLabel;
+					f.title = this.consTitulo.text;
+					f.tipo = this.consTipos.selectedLabel;
 				}
 				else if (( action == AC_INSERT ) || ( action == AC_INSERT_AND_NEW ) || ( action == AC_UPDATE ))
 				{
@@ -194,7 +194,7 @@
 					f.school = this.cadInstituicao.text;
 					f.ano = int(this.cadAno.text);
 					f.volume = this.cadVolume.text;
-					f.numero = this.cadNumero.text;
+					f.numero = int(this.cadNumero.text);
 					f.pages = int(this.cadPaginas.text);
 					f.mes = int(this.cadMes.text);
 					f.tipo = this.cadTipo.selectedLabel;
@@ -334,6 +334,7 @@
 			
 			private function incluir():void
 			{
+				this.publicacao = new PublicacaoVO();
 				this.openCadastro( AC_INSERT );
 			}
 			
@@ -497,12 +498,12 @@
 						  y="31"
 						  />
 
-			<mx:Label text="Nome"
+			<mx:Label text="Título"
 					  x="118"
 					  y="13"
 					  />
 
-			<mx:TextInput id="consNome"
+			<mx:TextInput id="consTitulo"
 						  maxChars="60"
 						  width="255"
 						  x="118"
@@ -620,7 +621,7 @@
 					   right="10"
 					   width="100"
 					   />
-			<mx:ComboBox x="381" y="31" width="196" id="consTipo" dataProvider="{this.dpTipo}"></mx:ComboBox>
+			<mx:ComboBox x="381" y="31" width="196" id="consTipos" dataProvider="{this.dpTipo}"></mx:ComboBox>
 
 		</mx:Canvas>
 

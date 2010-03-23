@@ -95,7 +95,7 @@ public class ControllerReuso {
 		{
 			return registerMembro.buscarPorChave(((Membro)object).getCodigo());
 		}else if (object instanceof Publicacao) {
-			return registerPublicacao.buscarPorChave(((Publicacao)object).getId().toString());
+			return registerPublicacao.buscarPorChave(((Publicacao)object).getId());
 		}
 		else if (object instanceof Tipo)
 		{
@@ -125,12 +125,12 @@ public class ControllerReuso {
 			
 		}else if (object instanceof Publicacao)
 		{
-			if(((Publicacao)object).getId().toString() == null || ((Publicacao)object).getId().toString() == "")
+			if(((Publicacao)object).getId().toString() == null || ((Publicacao)object).getId() == 0)
 			{
 				return registerPublicacao.buscarPorExemplo((Publicacao)object,ordenacoes);
 			} else {
 				List result = new ArrayList();
-				Object element = registerMembro.buscarPorChave(((Publicacao)object).getId().toString());
+				Object element = registerPublicacao.buscarPorChave(((Publicacao)object).getId());
 				if(element != null){
 					result.add(element);
 				}
