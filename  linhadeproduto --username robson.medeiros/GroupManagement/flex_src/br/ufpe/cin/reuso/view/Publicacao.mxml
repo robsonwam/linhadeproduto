@@ -275,18 +275,24 @@
 				
 				this.cadCodigo.enabled = false;
 				this.cadTitulo.enabled = true;
-				this.cadConferencia.enabled = true;
-				this.cadJornal.enabled = true;
-				this.cadInstituicao.enabled = true;
+				this.cadConferencia.enabled = false;
+				this.cadJornal.enabled = false;
+				this.cadInstituicao.enabled = false;
 				this.BtnSalvar.visible = true;
 				this.BtnSalvarENovo.visible = true;
-				this.cadAno.visible = true;
-				this.cadArquivo.visible = true;
-				this.cadMes.visible = true;
-				this.cadNumero.visible = true;
-				this.cadPaginas.visible = true;
-				this.cadTipo.visible = true;
-				this.cadVolume.visible = true;
+				this.cadAno.enabled = false;
+				this.cadArquivo.enabled = true;
+				this.cadMes.enabled = false;
+				this.cadNumero.enabled = false;
+				this.cadPaginas.enabled = false;
+				this.cadTipo.enabled = true;
+				this.cadVolume.enabled = false;
+				
+				this.campoObgTitulo.visible = true;
+				this.campoObgConferencia.visible = false;
+				this.campoObgInstituicao.visible = false;
+				this.campoObgJornal.visible = false;
+				this.campoObgAno.visible = false;
 								
 				if ( this.action == AC_UPDATE )
 				{
@@ -323,8 +329,39 @@
 			
 			private function salvar():void
 			{
-				
-				this.DispararEvento( this.action );
+				if (validarDados())
+				{
+					this.DispararEvento( this.action );
+				}
+			}
+			
+			private function validarDados():Boolean
+			{
+				if ( cadTitulo.text.length <= 0 )
+				{
+					Alert.show( "Favor informa a descrição!" , Dicionario.ALERT_TITLE_ERROR );
+					return false;
+				}
+				if(this.cadTipo.selectedLabel == Dicionario.PUBLICACAO_ARTIGO_CONFERENCIA){
+					if(this.cadConferencia.text == ""){
+					Alert.show("Campo conferência é obrigatório", Dicionario.ALERT_TITLE_ERROR);
+					return false;
+					}
+				}
+				if(this.cadTipo.selectedLabel == Dicionario.PUBLICACAO_ARTIGO_REVISTA){
+					if(this.cadJornal.text == ""){
+					Alert.show("Campo jornal é obrigatório", Dicionario.ALERT_TITLE_ERROR);
+					return false;
+					}
+				}
+				if(this.cadTipo.selectedLabel == Dicionario.PUBLICACAO_DISSERTACAO ||
+						this.cadTipo.selectedLabel == Dicionario.PUBLICACAO_TESE){
+					if(this.cadInstituicao.text == ""){
+					Alert.show("Campo instituição é obrigatório", Dicionario.ALERT_TITLE_ERROR);
+					return false;
+					}
+				}
+				return true;
 			}
 			
 			private function salvarENovo():void
@@ -420,6 +457,72 @@
 				this.limparCampos();
 			}
 			
+			public function mudaTipo():void
+			{
+				if(this.cadTipo.selectedLabel == Dicionario.PUBLICACAO_ARTIGO_REVISTA){
+					this.cadConferencia.enabled = false;
+					this.cadInstituicao.enabled = false;
+					this.cadVolume.enabled = false;
+					this.cadJornal.enabled = true;
+					this.cadNumero.enabled = true;
+					this.cadPaginas.enabled = true;
+					this.cadAno.enabled = true;
+					this.cadMes.enabled = false;
+					
+					this.campoObgJornal.visible = true;
+					this.campoObgConferencia.visible = false;
+					this.campoObgInstituicao.visible = false;
+					this.campoObgAno.visible = true;
+					
+				}else if(this.cadTipo.selectedLabel == Dicionario.PUBLICACAO_ARTIGO_CONFERENCIA){
+					this.cadConferencia.enabled = true;
+					this.cadInstituicao.enabled = false;
+					this.cadVolume.enabled = false;
+					this.cadJornal.enabled = false;
+					this.cadNumero.enabled = false;
+					this.cadPaginas.enabled = true;
+					this.cadAno.enabled = true;
+					this.cadMes.enabled = true;
+					
+					this.campoObgJornal.visible = false;
+					this.campoObgConferencia.visible = true;
+					this.campoObgInstituicao.visible = false;
+					this.campoObgAno.visible = true;
+					
+				}else if(this.cadTipo.selectedLabel == Dicionario.PUBLICACAO_DISSERTACAO || 
+							this.cadTipo.selectedLabel == Dicionario.PUBLICACAO_TESE){
+					this.cadConferencia.enabled = false;
+					this.cadInstituicao.enabled = true;
+					this.cadVolume.enabled = false;
+					this.cadJornal.enabled = false;
+					this.cadNumero.enabled = false;
+					this.cadPaginas.enabled = false;
+					this.cadAno.enabled = true;
+					this.cadMes.enabled = true;
+					
+					this.campoObgJornal.visible = false;
+					this.campoObgConferencia.visible = false;
+					this.campoObgInstituicao.visible = true;
+					this.campoObgAno.visible = true;
+					
+				}else {
+					this.cadConferencia.enabled = false;
+					this.cadInstituicao.enabled = false;
+					this.cadVolume.enabled = false;
+					this.cadJornal.enabled = false;
+					this.cadNumero.enabled = false;
+					this.cadPaginas.enabled = false;
+					this.cadAno.enabled = false;
+					this.cadMes.enabled = false;
+					
+					this.campoObgJornal.visible = false;
+					this.campoObgConferencia.visible = false;
+					this.campoObgInstituicao.visible = false;
+					this.campoObgAno.visible = false;
+					
+				}
+			}
+			
 			public function limparCampos():void
 			{
 				this.cadCodigo.text = "";
@@ -449,16 +552,6 @@
 				var doc:Document = new Document( new TemplateLista() , template , PaperFormat.A4 );
 				PopUpManager.addPopUp( janela , this , true );
 				janela.previewComponent.doc = doc;
-			}
-			
-			private function validarDados():Boolean
-			{
-				if ( cadTitulo.text.length <= 0 )
-				{
-					Alert.show( "Favor informa a descrição!" , Dicionario.ALERT_TITLE_ERROR );
-					return false;
-				}
-				return true;
 			}
 			
 			public function SortDataGrid():void
@@ -680,7 +773,7 @@
 					   right="10"
 					   width="96"
 					   />
-			<view:ComboBoxFindSelected x="10" y="123" width="226" id="cadTipo" dataProvider="{this.dpTipo}"/>
+			<view:ComboBoxFindSelected x="10" y="123" width="226" id="cadTipo" dataProvider="{this.dpTipo}" change="mudaTipo();"/>
 			<mx:Label x="12" y="106" text="Tipo"/>
 			<mx:Label x="10" y="255" text="Volume"/>
 			<mx:TextInput x="10" y="271" width="224" id="cadVolume"/>
@@ -702,6 +795,11 @@
 			<mx:NumericStepper x="354" y="225" id="cadMes" maximum="12" minimum="1"/>
 			<mx:NumericStepper x="259" y="225" width="71" id="cadAno" minimum="1900" maximum="2999"/>
 			<mx:NumericStepper x="429" y="271" id="cadPaginas" minimum="0" maximum="10000"/>
+			<mx:Label x="54" y="58" text="*" color="#FC0202" id="campoObgTitulo"/>
+			<mx:Label x="288" y="208" text="*" color="#FC0202" id="campoObgAno"/>
+			<mx:Label x="330" y="157" text="*" color="#FC0202" id="campoObgInstituicao"/>
+			<mx:Label x="87" y="157" text="*" color="#FC0202" id="campoObgConferencia"/>
+			<mx:Label x="54" y="206" text="*" color="#FC0202" id="campoObgJornal"/>
 
 		</mx:Canvas>
 	</mx:ViewStack>
