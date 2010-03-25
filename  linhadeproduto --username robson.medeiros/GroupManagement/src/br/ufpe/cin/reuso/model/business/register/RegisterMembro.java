@@ -31,6 +31,7 @@ public class RegisterMembro {
     public boolean inserir(Object membro){
     	boolean retorno = true;
 		try {
+			((Membro)membro).setIdMembro(null);
 			iRegister.begin();
 			iRegister.salvar((Membro) membro);
 			
@@ -70,8 +71,8 @@ public class RegisterMembro {
 		return retorno;
 	}
 
-	public Object buscarPorChave(String string) {
-		return iRegister.buscarPorChave(string);
+	public Object buscarPorChave(Integer integer) {
+		return iRegister.buscarPorChave(integer);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.criterion.Order;
+
 import br.ufpe.cin.reuso.controller.FacadeReuso;
 import br.ufpe.cin.reuso.exceptions.OperacaoInvalidaException;
 import br.ufpe.cin.reuso.model.business.entities.Membro;
@@ -22,7 +24,7 @@ public class Foto extends HttpServlet{
 		Membro membro = new Membro();
 		membro.setCodigo(id);
 		try {
-			membro = (Membro) FacadeReuso.getInstance().buscarPorChave(membro);
+			membro = (Membro) FacadeReuso.getInstance().buscaPorExemplo(membro, Order.asc("codigo")).get(0);
 		} catch (OperacaoInvalidaException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

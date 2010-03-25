@@ -1,7 +1,6 @@
 package br.ufpe.cin.reuso.relatorio;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -15,6 +14,7 @@ import org.hibernate.criterion.Order;
 import br.ufpe.cin.reuso.controller.FacadeReuso;
 import br.ufpe.cin.reuso.exceptions.OperacaoInvalidaException;
 import br.ufpe.cin.reuso.model.business.entities.Membro;
+import br.ufpe.cin.reuso.model.business.entities.Publicacao;
 import br.ufpe.cin.reuso.model.business.entities.Tipo;
 
 public class Relatorio extends HttpServlet{
@@ -27,7 +27,8 @@ public class Relatorio extends HttpServlet{
 			 Membro membro = new Membro();
 			 membro.setCodigo(membroCodigo);
 			 try {
-				membro = (Membro) FacadeReuso.getInstance().buscarPorChave(membro);
+				membro = (Membro) FacadeReuso.getInstance().buscaPorExemplo(membro, Order.asc("codigo")).get(0);
+				membro =(Membro) FacadeReuso.getInstance().buscarPorChave(membro);
 			} catch (OperacaoInvalidaException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
