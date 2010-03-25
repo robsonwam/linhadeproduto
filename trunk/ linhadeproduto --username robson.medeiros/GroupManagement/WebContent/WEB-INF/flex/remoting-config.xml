@@ -3,20 +3,8 @@
     class="flex.messaging.services.RemotingService">
 
     <adapters>
-        <adapter-definition id="java-object" class="flex.messaging.services.remoting.adapters.JavaAdapter" default="false"/>
-        <adapter-definition id="hibernate-object" class="net.digitalprimates.persistence.hibernate.HibernateAdapter" default="true">
-                <properties>
-                        <hibernate>
-                                <sessionFactory>
-                                        <class>net.digitalprimates.persistence.hibernate.utils.HibernateUtil</class>
-                                        <getCurrentSessionMethod>getCurrentSession</getCurrentSessionMethod>                            
-                                </sessionFactory>
-                        </hibernate>
-                </properties>
-         
-        </adapter-definition>
+        <adapter-definition id="java-object" class="flex.messaging.services.remoting.adapters.JavaAdapter" default="true"/>
     </adapters>
-
 
     <default-channels>
         <channel ref="my-amf"/>

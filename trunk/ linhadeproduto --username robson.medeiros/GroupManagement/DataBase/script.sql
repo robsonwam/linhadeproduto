@@ -1,6 +1,6 @@
 /*
 Created		13/3/2010
-Modified		22/3/2010
+Modified		25/3/2010
 Project		
 Model			
 Company		
@@ -54,6 +54,7 @@ Drop table "membro" Restrict;
 
 Create table "membro"
 (
+	"id_membro" Serial NOT NULL,
 	"codigo" Char(10) NOT NULL,
 	"passwd" Char(20),
 	"nome" Varchar NOT NULL,
@@ -69,7 +70,7 @@ Create table "membro"
 	"ativo" Varchar,
 	"orientador" Varchar,
 	"co_orientador" Varchar,
- primary key ("codigo")
+ primary key ("id_membro")
 ) Without Oids;
 
 
@@ -94,8 +95,8 @@ Create table "publicacao"
 Create table "autor"
 (
 	"id" Integer NOT NULL,
-	"codigo" Char(10) NOT NULL,
- primary key ("id","codigo")
+	"id_membro" Integer NOT NULL,
+ primary key ("id","id_membro")
 ) Without Oids;
 
 
@@ -121,7 +122,7 @@ Create table "tipo"
 
 /* Create Foreign Keys */
 
-Alter table "autor" add  foreign key ("codigo") references "membro" ("codigo") on update restrict on delete restrict;
+Alter table "autor" add  foreign key ("id_membro") references "membro" ("id_membro") on update restrict on delete restrict;
 
 Alter table "autor" add  foreign key ("id") references "publicacao" ("id") on update restrict on delete restrict;
 

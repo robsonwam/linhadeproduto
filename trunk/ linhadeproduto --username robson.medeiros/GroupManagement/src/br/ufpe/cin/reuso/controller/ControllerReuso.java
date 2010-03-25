@@ -93,7 +93,7 @@ public class ControllerReuso {
 	public Object buscarPorChave(Object object) throws OperacaoInvalidaException {
 		if (object instanceof Membro)
 		{
-			return registerMembro.buscarPorChave(((Membro)object).getCodigo());
+			return registerMembro.buscarPorChave(((Membro)object).getIdMembro());
 		}else if (object instanceof Publicacao) {
 			return registerPublicacao.buscarPorChave(((Publicacao)object).getId());
 		}
@@ -111,12 +111,12 @@ public class ControllerReuso {
 	public List buscaPorExemplo(Object object, Order[] ordenacoes) throws OperacaoInvalidaException {
 		if (object instanceof Membro)
 		{
-			if(((Membro)object).getCodigo() == null || ((Membro)object).getCodigo() == "")
+			if(((Membro)object).getIdMembro() == null || ((Membro)object).getIdMembro() == 0)
 			{
 				return registerMembro.buscarPorExemplo((Membro)object,ordenacoes);
 			} else {
 				List result = new ArrayList();
-				Object element = registerMembro.buscarPorChave(((Membro)object).getCodigo());
+				Object element = registerMembro.buscarPorChave(((Membro)object).getIdMembro());
 				if(element != null){
 					result.add(element);
 				}

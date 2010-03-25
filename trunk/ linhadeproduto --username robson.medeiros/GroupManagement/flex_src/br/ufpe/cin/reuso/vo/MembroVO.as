@@ -8,6 +8,8 @@ package br.ufpe.cin.reuso.vo
 	[RemoteClass( alias="br.ufpe.cin.reuso.model.business.entities.Membro" )]
 	public class MembroVO
 	{
+		
+		public var idMembro:int;
 		public var codigo:String;
 		public var passwd:String;
 		public var nome:String;

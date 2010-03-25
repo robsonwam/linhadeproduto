@@ -1,10 +1,13 @@
 package br.ufpe.cin.reuso.model.business.entities;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.io.Serializable;
 import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -14,16 +17,16 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Membro implements Serializable {
 	@Id
+	@Column(name="id_membro")
+	@GeneratedValue(strategy=IDENTITY)
+	private Integer idMembro;
+
 	private String codigo;
 
 	private String passwd;
 
 	private String nome;
 
-	@ManyToOne
-	@JoinColumn(name="tipo")
-	private Tipo tipo;
-	
 	@Column(name="tipo_estudante")
 	private String tipoEstudante;
 
@@ -39,19 +42,23 @@ public class Membro implements Serializable {
 
 	private String foto;
 
+	@Column(name="foto_byte")
+	private byte[] fotoByte;
+
 	private String ativo;
 
 	private String orientador;
 
 	@Column(name="co_orientador")
 	private String coOrientador;
-	
-	@Column(name="foto_byte")
-	private byte[] fotoByte;
+
+	@ManyToOne
+	@JoinColumn(name="tipo")
+	private Tipo tipo;
 
 	@ManyToMany
 	@JoinTable(name="autor",
-		joinColumns=@JoinColumn(name="codigo"),
+		joinColumns=@JoinColumn(name="id_membro"),
 		inverseJoinColumns=@JoinColumn(name="id"))
 	private Collection<Publicacao> publicacaoCollection;
 
@@ -59,6 +66,14 @@ public class Membro implements Serializable {
 
 	public Membro() {
 		super();
+	}
+
+	public Integer getIdMembro() {
+		return this.idMembro;
+	}
+
+	public void setIdMembro(Integer idMembro) {
+		this.idMembro = idMembro;
 	}
 
 	public String getCodigo() {
@@ -85,12 +100,12 @@ public class Membro implements Serializable {
 		this.nome = nome;
 	}
 
-	public Tipo getTipo() {
-		return this.tipo;
+	public String getTipoEstudante() {
+		return this.tipoEstudante;
 	}
 
-	public void setTipo(Tipo tipo) {
-		this.tipo = tipo;
+	public void setTipoEstudante(String tipoEstudante) {
+		this.tipoEstudante = tipoEstudante;
 	}
 
 	public String getDepartamento() {
@@ -141,6 +156,14 @@ public class Membro implements Serializable {
 		this.foto = foto;
 	}
 
+	public byte[] getFotoByte() {
+		return this.fotoByte;
+	}
+
+	public void setFotoByte(byte[] fotoByte) {
+		this.fotoByte = fotoByte;
+	}
+
 	public String getAtivo() {
 		return this.ativo;
 	}
@@ -165,6 +188,14 @@ public class Membro implements Serializable {
 		this.coOrientador = coOrientador;
 	}
 
+	public Tipo getTipo() {
+		return this.tipo;
+	}
+
+	public void setTipo(Tipo tipo) {
+		this.tipo = tipo;
+	}
+
 	public Collection<Publicacao> getPublicacaoCollection() {
 		return this.publicacaoCollection;
 	}
@@ -173,19 +204,30 @@ public class Membro implements Serializable {
 		this.publicacaoCollection = publicacaoCollection;
 	}
 
-	public String getTipoEstudante() {
-		return tipoEstudante;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((idMembro == null) ? 0 : idMembro.hashCode());
+		return result;
 	}
 
-	public void setTipoEstudante(String tipoEstudante) {
-		this.tipoEstudante = tipoEstudante;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Membro other = (Membro) obj;
+		if (idMembro == null) {
+			if (other.idMembro != null)
+				return false;
+		} else if (!idMembro.equals(other.idMembro))
+			return false;
+		return true;
 	}
 
-	public byte[] getFotoByte() {
-		return fotoByte;
-	}
-
-	public void setFotoByte(byte[] fotoByte) {
-		this.fotoByte = fotoByte;
-	}
 }

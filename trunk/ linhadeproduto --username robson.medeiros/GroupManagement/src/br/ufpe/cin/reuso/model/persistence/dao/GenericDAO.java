@@ -108,7 +108,7 @@ public abstract class GenericDAO<T> implements IRegister<T> {
 	 * * Busca o objeto uma vez passado sua chave como parâmetro. * * @param
 	 * chave * identificador * @return Objeto do tipo T
 	 */
-	public final T buscarPorChave(Object chave) {
+	public T buscarPorChave(Object chave) {
 		T instance = null;
 		try {
 			instance = (T) getEntityManager().find(getClassePersistente(),

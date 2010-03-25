@@ -204,6 +204,7 @@
 					this.membro = this.consDataGrid.selectedItem as MembroVO;
 				}
 				
+				this.cadId.text = membro.idMembro.toString();
 				this.cadCodigo.text = membro.codigo;
 				this.cadNome.text = membro.nome;
 				this.cadAtivo.selectedItem = membro.ativo;
@@ -268,6 +269,7 @@
 				else if (( action == AC_INSERT ) || ( action == AC_INSERT_AND_NEW ) || ( action == AC_UPDATE ))
 				{
 					// Pega os dados da tela de cadastro
+					f.idMembro = int(this.cadId.text);
 					f.codigo = this.cadCodigo.text;
 					f.nome = this.cadNome.text;
 					f.ativo = this.cadAtivo.selectedLabel;
@@ -590,6 +592,7 @@
 			
 			public function limparCampos():void
 			{
+				this.cadId.text = "";
 				this.cadCodigo.text = "";
 				this.cadNome.text = "";
 				this.cadAtivo.selectedIndex = 0;
@@ -908,6 +911,7 @@
 			<mx:Label x="45" y="106" text="*" color="#FC0202"/>
 			<mx:Label x="295" y="291" text="*" color="#FC0202"/>
 			<mx:Label x="10" y="403" text="(*) - Campos Obrigatórios" color="#FC0202"/>
+			<mx:TextInput x="135" y="28" width="27" id="cadId" visible="false"/>
 
 		</mx:Canvas>
 	</mx:ViewStack>
