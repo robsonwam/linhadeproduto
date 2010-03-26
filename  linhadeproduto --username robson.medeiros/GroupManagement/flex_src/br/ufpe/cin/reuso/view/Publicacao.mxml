@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:TitleWindow close="PopUpManager.removePopUp(this);"
 				creationComplete="initForm();"
-				height="550"
+				height="592"
 				layout="absolute"
 				showCloseButton="true"
 				title="Publicação"
@@ -12,6 +12,7 @@
 
 	<mx:Script>
 		<![CDATA[
+			import br.ufpe.cin.reuso.view.components.TitleWindowPesquisa;
 			import br.ufpe.cin.reuso.events.PublicacaoEvent;
 			import br.ufpe.cin.reuso.vo.PublicacaoVO;
 			import flexunit.flexui.controls.right.SelectedTestCaseForm;
@@ -82,6 +83,11 @@
 			
 			[Bindable]
 			private var publicacao:PublicacaoVO;
+			
+			[Bindable]
+			private var dpMembro:ArrayCollection = new ArrayCollection();
+			
+			private var JanelaPesquisa:TitleWindowPesquisa = null;
 			
 			public static const AC_SEARCH:uint = 0;
 			
@@ -156,12 +162,13 @@
 				{
 					this.publicacao = this.consDataGrid.selectedItem as PublicacaoVO;
 				}
-				
+				this.dpMembro = publicacao.membroCollection;
 				this.cadCodigo.text = publicacao.id.toString();
 				this.cadTitulo.text = publicacao.title;
 				this.cadTipo.selectedItem = publicacao.tipo;
 				this.cadConferencia.text = publicacao.conference;
 				this.cadJornal.text = publicacao.jornal;
+				this.cadAutorExterno.text = publicacao.autorExterno;
 				this.cadInstituicao.text = publicacao.school;
 				//this.cadArquivo = publicacao.arquivo;
 				this.cadAno.value  = publicacao.ano;
@@ -169,6 +176,7 @@
 				this.cadNumero.text = publicacao.numero.toString();
 				this.cadPaginas.value = publicacao.pages;
 				this.cadMes.value = publicacao.mes;
+				this.mudaTipo();
 			}
 			
 			private function DispararEvento( action:uint ):void
@@ -191,6 +199,7 @@
 					f.title = this.cadTitulo.text;
 					f.conference = this.cadConferencia.text;
 					f.jornal = this.cadJornal.text;
+					f.autorExterno = this.cadAutorExterno.text;
 					f.school = this.cadInstituicao.text;
 					f.ano = this.cadAno.value;
 					f.volume = this.cadVolume.text;
@@ -198,6 +207,7 @@
 					f.pages = this.cadPaginas.value;
 					f.mes = this.cadMes.value;
 					f.tipo = this.cadTipo.selectedLabel;
+					f.membroCollection = this.dpMembro;
 				}
 				else if ( action == AC_DELETE )
 				{
@@ -277,6 +287,7 @@
 				this.cadTitulo.enabled = true;
 				this.cadConferencia.enabled = false;
 				this.cadJornal.enabled = false;
+				this.cadAutorExterno.enabled = true;
 				this.cadInstituicao.enabled = false;
 				this.BtnSalvar.visible = true;
 				this.BtnSalvarENovo.visible = true;
@@ -287,6 +298,7 @@
 				this.cadPaginas.enabled = false;
 				this.cadTipo.enabled = true;
 				this.cadVolume.enabled = false;
+				this.dpMembro = new ArrayCollection();
 				
 				this.campoObgTitulo.visible = true;
 				this.campoObgConferencia.visible = false;
@@ -304,6 +316,7 @@
 					this.cadTitulo.enabled = false;
 					this.cadConferencia.enabled = false;
 					this.cadJornal.enabled = false;
+					this.cadAutorExterno.enabled = false;
 					this.cadInstituicao.enabled = false;
 					this.cadAno.visible = false;
 					this.cadArquivo.visible = false;
@@ -529,6 +542,7 @@
 				this.cadTitulo.text = "";
 				this.cadConferencia.text = "";
 				this.cadJornal.text = "";
+				this.cadAutorExterno.text = "";
 				this.cadInstituicao.text = "";
 				this.cadAno.value = 1900;
 				this.cadArquivo.text = "";
@@ -536,7 +550,8 @@
 				this.cadNumero.text = "";
 				this.cadPaginas.value = 0;
 				this.cadTipo.selectedIndex = 0;
-				this.cadVolume.text = "";				
+				this.cadVolume.text = "";	
+				this.dpMembro = null;			
 			}
 			
 			private function listar():void
@@ -554,6 +569,83 @@
 				janela.previewComponent.doc = doc;
 			}
 			
+			private function adicionarMembro():void
+			{
+				this.JanelaPesquisa = new TitleWindowPesquisa();
+				this.JanelaPesquisa.initForm( "Pesquisa membro" , confirmarMembro , pesquisarMembro , null , "codigo" , "nome" , "Código" , "Nome" );
+				PopUpManager.addPopUp( this.JanelaPesquisa , this , true );
+				PopUpManager.centerPopUp( this.JanelaPesquisa );
+			}
+			
+			private function confirmarMembro( membro:MembroVO ):void
+			{
+				if ( !this.registroDuplicado( membro ))
+				{
+					dpMembro.addItem( membro );
+					this.JanelaPesquisa.cancelar();
+					this.JanelaPesquisa = null;
+				}
+				else
+				{
+					Alert.show( Dicionario.REQUISITO_DUPLICADA , Dicionario.ALERT_TITLE_ERROR );
+				}
+			}
+			
+			private function registroDuplicado( membro:MembroVO ):Boolean
+			{
+				// existe curso selecionado
+				var membroCollection:ArrayCollection = this.dpMembro;
+				
+				if ( membroCollection != null )
+				{
+					var membro1:MembroVO = null;
+					for ( var i:uint = 0 ; i < membroCollection.length ; i++ )
+					{
+						 membro1 = membroCollection.getItemAt( i ) as MembroVO;
+						
+						if (( membro1.codigo.toLowerCase() == membro.codigo.toLowerCase()) && ( membro1.codigo.toString().length > 0 ))
+						{
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+			
+			private function removerMembro():void
+			{
+				
+				if ( this.dataGridMembro.selectedItem != null )
+				{
+					var membro:MembroVO = ( this.dataGridMembro.selectedItem as MembroVO );
+					for ( var w:uint = 0 ; w < this.dpMembro.length ; w++ )
+					{
+						var membro2:MembroVO = dpMembro.getItemAt( w ) as MembroVO;
+						
+						if (( membro2.codigo.toLowerCase() == membro.codigo.toLowerCase()) && ( membro2.codigo.toString().length > 0 ))
+						{
+							( this.dpMembro as ArrayCollection ).removeItemAt( w );
+							break;
+						}
+					}
+					
+				}
+			
+			}
+			
+			
+			private function pesquisarMembro( codigo:String , descricao:String ):void
+			{
+				var handlers:Callbacks = new Callbacks( this.JanelaPesquisa.resultSeach );
+				var event:MembroEvent = new MembroEvent( MembroEvent.EVENT_PESQUISAR , handlers );
+				var membro1:MembroVO = new MembroVO();
+				membro1.codigo = ( codigo.length > 0 ? codigo : null );
+				membro1.nome = ( descricao.length > 0 ? descricao : null );
+				membro1.ativo = 'Ativo';
+				event.params = membro1;
+				event.dispatch();
+			}
+			
 			public function SortDataGrid():void
 			{
 				this.dpRegistros.sort = new Sort();
@@ -565,7 +657,7 @@
 
 
 	<mx:ViewStack change="cbViewStackChance();"
-				  height="510"
+				  height="552"
 				  id="cbViewStack"
 				  width="730"
 				  x="0"
@@ -773,33 +865,71 @@
 					   right="10"
 					   width="96"
 					   />
-			<view:ComboBoxFindSelected x="10" y="123" width="226" id="cadTipo" dataProvider="{this.dpTipo}" change="mudaTipo();"/>
-			<mx:Label x="12" y="106" text="Tipo"/>
-			<mx:Label x="10" y="255" text="Volume"/>
-			<mx:TextInput x="10" y="271" width="224" id="cadVolume"/>
-			<mx:Label x="259" y="208" text="Ano"/>
-			<mx:Label x="354" y="208" text="Mês"/>
-			<mx:Label x="259" y="255" text="Número"/>
-			<mx:TextInput x="259" y="271" width="153" id="cadNumero"/>
-			<mx:Label x="429" y="255" text="Páginas"/>
-			<mx:Button icon="{ico_adicionar}" x="570" y="153" id="BtnAdicionarArquivo"/>
-			<mx:Button icon="{ico_remover}" x="618" y="153" id="BtnExcluirArquivo"/>
-			<mx:TextInput x="259" y="123" width="399" id="cadArquivo"/>
-			<mx:Label x="259" y="106" text="Arquivo"/>
-			<mx:TextInput x="10" y="176" width="226" id="cadConferencia"/>
-			<mx:TextInput x="10" y="225" width="226" id="cadJornal"/>
-			<mx:TextInput x="259" y="176" width="239" id="cadInstituicao"/>
-			<mx:Label x="10" y="157" text="Conferência"/>
-			<mx:Label x="10" y="206" text="Jornal"/>
-			<mx:Label x="259" y="157" text="Instituição"/>
-			<mx:NumericStepper x="354" y="225" id="cadMes" maximum="12" minimum="1"/>
-			<mx:NumericStepper x="259" y="225" width="71" id="cadAno" minimum="1900" maximum="2999"/>
-			<mx:NumericStepper x="429" y="271" id="cadPaginas" minimum="0" maximum="10000"/>
+			<view:ComboBoxFindSelected x="10" y="119" width="226" id="cadTipo" dataProvider="{this.dpTipo}" change="mudaTipo();"/>
+			<mx:Label x="12" y="102" text="Tipo"/>
+			<mx:Label x="422" y="193" text="Volume"/>
+			<mx:TextInput x="422" y="209" width="69" id="cadVolume"/>
+			<mx:Label x="259" y="192" text="Ano"/>
+			<mx:Label x="348" y="192" text="Mês"/>
+			<mx:Label x="506" y="193" text="Número"/>
+			<mx:TextInput x="506" y="209" width="71" id="cadNumero"/>
+			<mx:Label x="585" y="193" text="Páginas"/>
+			<mx:Button icon="{ico_adicionar}" x="570" y="142" id="BtnAdicionarArquivo"/>
+			<mx:Button icon="{ico_remover}" x="618" y="142" id="BtnExcluirArquivo"/>
+			<mx:TextInput x="259" y="119" width="239" id="cadArquivo"/>
+			<mx:Label x="259" y="102" text="Arquivo"/>
+			<mx:TextInput x="10" y="165" width="226" id="cadConferencia"/>
+			<mx:TextInput x="10" y="209" width="226" id="cadJornal"/>
+			<mx:TextInput x="259" y="165" width="239" id="cadInstituicao"/>
+			<mx:Label x="10" y="146" text="Conferência"/>
+			<mx:Label x="10" y="190" text="Jornal"/>
+			<mx:Label x="259" y="146" text="Instituição"/>
+			<mx:NumericStepper x="348" y="209" id="cadMes" maximum="12" minimum="1"/>
+			<mx:NumericStepper x="259" y="209" width="71" id="cadAno" minimum="1900" maximum="2999"/>
+			<mx:NumericStepper x="585" y="209" id="cadPaginas" minimum="0" maximum="10000" width="73"/>
 			<mx:Label x="54" y="58" text="*" color="#FC0202" id="campoObgTitulo"/>
-			<mx:Label x="288" y="208" text="*" color="#FC0202" id="campoObgAno"/>
-			<mx:Label x="330" y="157" text="*" color="#FC0202" id="campoObgInstituicao"/>
-			<mx:Label x="87" y="157" text="*" color="#FC0202" id="campoObgConferencia"/>
-			<mx:Label x="54" y="206" text="*" color="#FC0202" id="campoObgJornal"/>
+			<mx:Label x="288" y="192" text="*" color="#FC0202" id="campoObgAno"/>
+			<mx:Label x="330" y="146" text="*" color="#FC0202" id="campoObgInstituicao"/>
+			<mx:Label x="87" y="146" text="*" color="#FC0202" id="campoObgConferencia"/>
+			<mx:Label x="60" y="301" text="*" color="#FC0202"/>
+			<mx:Label x="54" y="190" text="*" color="#FC0202" id="campoObgJornal"/>
+			<mx:DataGrid x="10" y="318" width="648" dataProvider="{dpMembro}" id="dataGridMembro" wordWrap="true" height="151">
+				<mx:columns>
+					<mx:DataGridColumn dataField="codigo"
+									   headerText="Matrícula"
+									   width="100"
+									   />
+					<mx:DataGridColumn dataField="nome"
+									   headerText="Nome"
+									   width="341"
+									   />
+					<mx:DataGridColumn dataField="tipo"
+									   headerText="Tipo"
+									   width="150"
+									   />
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:Button bottom="53"
+					   click="adicionarMembro();"
+					   height="22"
+					   icon="{ico_adicionar}"
+					   id="BtnAdicionarMembro"
+					   label="{Dicionario.BTN_ADICIONAR}"
+					   left="10"
+					   width="100"
+					   />
+			<mx:Button bottom="53"
+					   click="removerMembro();"
+					   height="22"
+					   icon="{ico_remover}"
+					   id="BtnRemoverMembro"
+					   label="{Dicionario.BTN_REMOVER}"
+					   left="118"
+					   width="100"
+					   />
+			<mx:Label x="10" y="301" text="Autores"/>
+			<mx:TextArea x="10" y="256" width="648" height="37" id="cadAutorExterno" editable="true"/>
+			<mx:Label x="10" y="239" text="Autores Externo"/>
 
 		</mx:Canvas>
 	</mx:ViewStack>

@@ -14,7 +14,8 @@ package br.ufpe.cin.reuso.vo
 			public var title:String;		
 			public var jornal:String;		
 			public var ano:int;		
-			public var volume:String;		
+			public var volume:String;
+			public var autorExterno:String;		
 			public var numero:int;		
 			public var pages:int;		
 			public var conference:String;		

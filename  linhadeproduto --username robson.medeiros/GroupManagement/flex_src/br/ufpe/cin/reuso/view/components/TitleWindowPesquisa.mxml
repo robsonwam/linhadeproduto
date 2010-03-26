@@ -10,9 +10,9 @@
 
 	<mx:Script>
 		<![CDATA[
+			import br.ufpe.cin.reuso.util.Dicionario;
 			import mx.collections.ArrayCollection;
 			import mx.managers.PopUpManager;
-			import br.com.r2jm.sauderesidencia.util.Dicionario;
 			
 			[Embed( source='../../assets/images/pesquisar.png' )]
 			[Bindable]
