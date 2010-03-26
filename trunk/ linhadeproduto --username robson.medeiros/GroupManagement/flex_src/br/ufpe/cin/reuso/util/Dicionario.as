@@ -23,6 +23,7 @@ package br.ufpe.cin.reuso.util
 		public static const REGISTROS_NAO_SELECIONADO_EXCLUIR:String = "Selecione um registro para excluir."
 		public static const REGISTROS_NAO_SELECIONADO_INCLUIR:String = "Selecione um registro para cadastrar."
 		public static const CONFIRMAR_EXCLUSAO:String = "Deseja realmente excluir o registro?";
+		public static const REQUISITO_DUPLICADA:String = "Registro Duplicado!";
 
 		//BOTÕES DA TELA
 		public static const BTN_PESQUISAR:String = 'Pesquisar';

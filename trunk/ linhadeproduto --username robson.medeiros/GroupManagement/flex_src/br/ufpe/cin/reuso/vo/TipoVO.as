@@ -11,5 +11,11 @@ package br.ufpe.cin.reuso.vo
 		public var nome:String;
 		[ArrayElementType( "br.ufpe.cin.reuso.vo.MembroVO" )]
 		public var membroCollection:ArrayCollection;
+		
+		public function toString():String
+		{
+			return this.nome;
+		}
 	}
+	
 }

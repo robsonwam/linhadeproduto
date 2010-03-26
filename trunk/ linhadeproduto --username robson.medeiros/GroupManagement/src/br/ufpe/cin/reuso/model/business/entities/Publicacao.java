@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Column;
 
 @Entity
 public class Publicacao implements Serializable {
@@ -39,6 +40,9 @@ public class Publicacao implements Serializable {
 	private Integer mes;
 
 	private String school;
+	
+	@Column(name="autor_externo")
+	private String autorExterno;
 
 	@ManyToMany
 	@JoinTable(name="autor",
@@ -61,7 +65,7 @@ public class Publicacao implements Serializable {
 	}
 
 	public String getTipo() {
-		return this.tipo;
+		return this.tipo.trim();
 	}
 
 	public void setTipo(String tipo) {
@@ -179,6 +183,14 @@ public class Publicacao implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public String getAutorExterno() {
+		return autorExterno;
+	}
+
+	public void setAutorExterno(String autorExterno) {
+		this.autorExterno = autorExterno;
 	}
 
 }
