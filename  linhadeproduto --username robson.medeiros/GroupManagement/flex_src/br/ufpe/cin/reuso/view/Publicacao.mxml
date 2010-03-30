@@ -12,6 +12,9 @@
 
 	<mx:Script>
 		<![CDATA[
+			import br.ufpe.cin.reuso.events.GrupoPesquisaEvent;
+			import br.ufpe.cin.reuso.vo.GrupoPesquisaVO;
+			import flash.net.navigateToURL;
 			import br.ufpe.cin.reuso.view.components.TitleWindowPesquisa;
 			import br.ufpe.cin.reuso.events.PublicacaoEvent;
 			import br.ufpe.cin.reuso.vo.PublicacaoVO;
@@ -81,8 +84,18 @@
 			[Bindable]
 			private static var ico_remover:Class;
 			
+			[Embed( source='../assets/images/adobe.png' )]
+			[Bindable]
+			private static var ico_adobe:Class;
+			
+			[Bindable]
+			private var dpLinhaPesquisa:ArrayCollection = new ArrayCollection();
+			
 			[Bindable]
 			private var publicacao:PublicacaoVO;
+			
+			[Bindable]
+			private var dpArquivo:ByteArray;
 			
 			[Bindable]
 			private var dpMembro:ArrayCollection = new ArrayCollection();
@@ -130,9 +143,48 @@
 			
 //			[Bindable]
 //			private var dpAtivo:ArrayCollection = new ArrayCollection();
+
+			private var fileRef:FileReference;
+
+            private function browseAndUpload():void {
+            	var arr:Array = [];
+                arr.push(new FileFilter("Arquivo .pdf", "*.pdf"));
+                fileRef.browse(arr);
+            }
+            
+            private function removerPDF():void {
+            	this.cadArquivo.source = null;
+				this.dpArquivo = null;
+            }
+
+            private function fileRef_select(evt:Event):void {
+				fileRef.load();
+            }
+
+            private function fileRef_progress(evt:ProgressEvent):void {
+//                progressBar.visible = true;
+            }
+
+            private function fileRef_complete(evt:Event):void {
+
+				this.cadArquivo.source = ico_adobe;
+				this.dpArquivo = fileRef.data;
+            }
 			
 			private function initForm():void
 			{
+				dpMembro = new ArrayCollection();
+				
+				fileRef = new FileReference();
+				fileRef.addEventListener(Event.SELECT, fileRef_select);
+                fileRef.addEventListener(ProgressEvent.PROGRESS, fileRef_progress);
+                fileRef.addEventListener(Event.COMPLETE, fileRef_complete);
+                
+                var handlers:Callbacks = new Callbacks(onResult_LinhaPesquisa);
+				var event:GrupoPesquisaEvent = new GrupoPesquisaEvent(GrupoPesquisaEvent.EVENT_PESQUISAR, handlers);
+				event.params = new GrupoPesquisaVO();
+				event.dispatch();
+				
 				this.dpTipo.addItem({ label: "", data: null });
 				this.dpTipo.addItem({ label: Dicionario.PUBLICACAO_ARTIGO_CONFERENCIA, data: Dicionario.PUBLICACAO_ARTIGO_CONFERENCIA });
 				this.dpTipo.addItem({ label: Dicionario.PUBLICACAO_ARTIGO_REVISTA, data: Dicionario.PUBLICACAO_ARTIGO_REVISTA });
@@ -149,7 +201,19 @@
 //				this.dpAtivo.addItem({ label: Dicionario.MEMBRO_FORMER_MEMBER, data: Dicionario.MEMBRO_FORMER_MEMBER });
 				
 			}
+			
+			private function onResult_LinhaPesquisa(result:ArrayCollection):void
+			{
+				var data:ArrayCollection = new ArrayCollection();
+				data.addItem({label: "", data: null, item: null});
 
+				for (var i:uint = 0; i < result.length; i++)
+				{
+					var d:GrupoPesquisaVO = result.getItemAt(i) as GrupoPesquisaVO;
+					data.addItem({label: d.descricao, data: d.id, item: d});
+				}
+				this.dpLinhaPesquisa = data;
+			}
 			
 			private function getOrdenacao():Array
 			{
@@ -166,16 +230,33 @@
 				this.cadCodigo.text = publicacao.id.toString();
 				this.cadTitulo.text = publicacao.title;
 				this.cadTipo.selectedItem = publicacao.tipo;
+				if(publicacao.grupoPesquisa != null)
+				{
+					this.cadLinhaPesquisa.selectedItem = publicacao.grupoPesquisa.id;
+				}else{
+					this.cadLinhaPesquisa.selectedItem = null;
+				}
 				this.cadConferencia.text = publicacao.conference;
 				this.cadJornal.text = publicacao.jornal;
 				this.cadAutorExterno.text = publicacao.autorExterno;
 				this.cadInstituicao.text = publicacao.school;
-				//this.cadArquivo = publicacao.arquivo;
 				this.cadAno.value  = publicacao.ano;
 				this.cadVolume.text = publicacao.volume;
 				this.cadNumero.text = publicacao.numero.toString();
 				this.cadPaginas.value = publicacao.pages;
 				this.cadMes.value = publicacao.mes;
+				if(publicacao.hasArquivo){
+					this.cadArquivo.source = ico_adobe;
+//					var urlRequeste:URLRequest;
+//					urlRequeste = new URLRequest();
+//					
+//					urlRequeste.url="publicacao.pdf?id="+publicacao.id.toString();
+//					var urlStrem:URLStream;
+//					urlStrem = new URLStream();
+//					urlStrem.load(urlRequeste);
+//					urlStrem.readBytes(this.dpArquivo);
+//					this.dpArquivo = urlRequeste.data as ByteArray;
+				}
 				this.mudaTipo();
 			}
 			
@@ -196,6 +277,7 @@
 				{
 					// Pega os dados da tela de cadastro
 					f.id = int(this.cadCodigo.text);
+					f.arquivo = this.dpArquivo
 					f.title = this.cadTitulo.text;
 					f.conference = this.cadConferencia.text;
 					f.jornal = this.cadJornal.text;
@@ -207,6 +289,7 @@
 					f.pages = this.cadPaginas.value;
 					f.mes = this.cadMes.value;
 					f.tipo = this.cadTipo.selectedLabel;
+					f.grupoPesquisa = this.cadLinhaPesquisa.selectedItem.item as GrupoPesquisaVO;
 					f.membroCollection = this.dpMembro;
 				}
 				else if ( action == AC_DELETE )
@@ -291,14 +374,17 @@
 				this.cadInstituicao.enabled = false;
 				this.BtnSalvar.visible = true;
 				this.BtnSalvarENovo.visible = true;
+				this.BtnAdicionarMembro.visible = true;
+				this.BtnRemoverMembro.visible = true;
+				this.BtnAdicionarArquivo.visible = true;
+				this.BtnExcluirArquivo.visible = true;
 				this.cadAno.enabled = false;
-				this.cadArquivo.enabled = true;
 				this.cadMes.enabled = false;
 				this.cadNumero.enabled = false;
 				this.cadPaginas.enabled = false;
 				this.cadTipo.enabled = true;
+				this.cadLinhaPesquisa.enabled = true;
 				this.cadVolume.enabled = false;
-				this.dpMembro = new ArrayCollection();
 				
 				this.campoObgTitulo.visible = true;
 				this.campoObgConferencia.visible = false;
@@ -312,19 +398,20 @@
 				}
 				else if ( this.action == AC_DETAIL )
 				{
-					this.cadCodigo.enabled = false;
-					this.cadTitulo.enabled = false;
-					this.cadConferencia.enabled = false;
-					this.cadJornal.enabled = false;
-					this.cadAutorExterno.enabled = false;
-					this.cadInstituicao.enabled = false;
-					this.cadAno.visible = false;
-					this.cadArquivo.visible = false;
-					this.cadMes.visible = false;
-					this.cadNumero.visible = false;
-					this.cadPaginas.visible = false;
-					this.cadTipo.visible = false;
-					this.cadVolume.visible = false;
+//					this.cadCodigo.enabled = false;
+//					this.cadTitulo.enabled = false;
+//					this.cadConferencia.enabled = false;
+//					this.cadJornal.enabled = false;
+//					this.cadAutorExterno.enabled = false;
+//					this.cadInstituicao.enabled = false;
+//					this.cadAno.visible = false;
+//					this.cadMes.visible = false;
+//					this.cadNumero.visible = false;
+//					this.cadPaginas.visible = false;
+//					this.cadTipo.visible = false;
+//					this.cadVolume.visible = false;
+					this.BtnAdicionarMembro.visible = false;
+					this.BtnRemoverMembro.visible = false;
 					this.BtnSalvar.visible = false;
 					this.BtnSalvarENovo.visible = false;
 					this.BtnAdicionarArquivo.visible = false;
@@ -353,6 +440,10 @@
 				if ( cadTitulo.text.length <= 0 )
 				{
 					Alert.show( "Favor informa a descrição!" , Dicionario.ALERT_TITLE_ERROR );
+					return false;
+				}
+				if (this.dpMembro.length <= 0){
+					Alert.show("Deve haver ao menos um autor!", Dicionario.ALERT_TITLE_ERROR);
 					return false;
 				}
 				if(this.cadTipo.selectedLabel == Dicionario.PUBLICACAO_ARTIGO_CONFERENCIA){
@@ -539,19 +630,21 @@
 			public function limparCampos():void
 			{
 				this.cadCodigo.text = "";
+				this.cadArquivo.source = null;
 				this.cadTitulo.text = "";
 				this.cadConferencia.text = "";
 				this.cadJornal.text = "";
 				this.cadAutorExterno.text = "";
 				this.cadInstituicao.text = "";
 				this.cadAno.value = 1900;
-				this.cadArquivo.text = "";
 				this.cadMes.value = 0;
 				this.cadNumero.text = "";
 				this.cadPaginas.value = 0;
 				this.cadTipo.selectedIndex = 0;
+				this.cadLinhaPesquisa.selectedIndex = 0;
 				this.cadVolume.text = "";	
-				this.dpMembro = null;			
+				this.dpMembro = new ArrayCollection();
+				this.dpArquivo = null;			
 			}
 			
 			private function listar():void
@@ -581,6 +674,9 @@
 			{
 				if ( !this.registroDuplicado( membro ))
 				{
+					if(dpMembro == null){
+						dpMembro = new ArrayCollection();
+					}
 					dpMembro.addItem( membro );
 					this.JanelaPesquisa.cancelar();
 					this.JanelaPesquisa = null;
@@ -874,10 +970,8 @@
 			<mx:Label x="506" y="193" text="Número"/>
 			<mx:TextInput x="506" y="209" width="71" id="cadNumero"/>
 			<mx:Label x="585" y="193" text="Páginas"/>
-			<mx:Button icon="{ico_adicionar}" x="570" y="142" id="BtnAdicionarArquivo"/>
-			<mx:Button icon="{ico_remover}" x="618" y="142" id="BtnExcluirArquivo"/>
-			<mx:TextInput x="259" y="119" width="239" id="cadArquivo"/>
-			<mx:Label x="259" y="102" text="Arquivo"/>
+			<mx:Button icon="{ico_adicionar}" click="browseAndUpload();" x="570" y="142" id="BtnAdicionarArquivo"/>
+			<mx:Button icon="{ico_remover}" x="618" y="142" click="removerPDF();" id="BtnExcluirArquivo"/>
 			<mx:TextInput x="10" y="165" width="226" id="cadConferencia"/>
 			<mx:TextInput x="10" y="209" width="226" id="cadJornal"/>
 			<mx:TextInput x="259" y="165" width="239" id="cadInstituicao"/>
@@ -930,6 +1024,10 @@
 			<mx:Label x="10" y="301" text="Autores"/>
 			<mx:TextArea x="10" y="256" width="648" height="37" id="cadAutorExterno" editable="true"/>
 			<mx:Label x="10" y="239" text="Autores Externo"/>
+			<mx:Image x="570" y="58" width="88" height="76" id="cadArquivo"/>
+			<mx:Label x="570" y="41" text="Arquivo PDF"/>
+			<view:ComboBoxFindSelected x="259" y="119" width="239" id="cadLinhaPesquisa" dataProvider="{this.dpLinhaPesquisa}"/>
+			<mx:Label x="259" y="102" text="Linha de Pesquisa"/>
 
 		</mx:Canvas>
 	</mx:ViewStack>

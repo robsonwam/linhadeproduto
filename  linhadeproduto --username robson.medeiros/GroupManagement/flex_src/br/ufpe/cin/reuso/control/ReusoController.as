@@ -1,10 +1,12 @@
 package br.ufpe.cin.reuso.control
 {
 	
+	import br.ufpe.cin.reuso.commands.GrupoPesquisaCommand;
 	import br.ufpe.cin.reuso.commands.LoginCommand;
 	import br.ufpe.cin.reuso.commands.MembroCommand;
 	import br.ufpe.cin.reuso.commands.PublicacaoCommand;
 	import br.ufpe.cin.reuso.commands.TipoCommand;
+	import br.ufpe.cin.reuso.events.GrupoPesquisaEvent;
 	import br.ufpe.cin.reuso.events.LoginEvent;
 	import br.ufpe.cin.reuso.events.MembroEvent;
 	import br.ufpe.cin.reuso.events.PublicacaoEvent;
@@ -42,6 +44,12 @@ package br.ufpe.cin.reuso.control
 			this.addCommand( PublicacaoEvent.EVENT_INSERIR, PublicacaoCommand );
 			this.addCommand( PublicacaoEvent.EVENT_EDITAR, PublicacaoCommand );
 			this.addCommand( PublicacaoEvent.EVENT_EXCLUIR, PublicacaoCommand );
+
+			//GrupoPesquisa
+			this.addCommand( GrupoPesquisaEvent.EVENT_PESQUISAR, GrupoPesquisaCommand );
+			this.addCommand( GrupoPesquisaEvent.EVENT_INSERIR, GrupoPesquisaCommand );
+			this.addCommand( GrupoPesquisaEvent.EVENT_EDITAR, GrupoPesquisaCommand );
+			this.addCommand( GrupoPesquisaEvent.EVENT_EXCLUIR, GrupoPesquisaCommand );
 //
 //			//Parcela
 //			this.addCommand( ParcelaEvent.EVENT_PESQUISAR, ParcelaCommand );

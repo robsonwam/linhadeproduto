@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow close="PopUpManager.removePopUp(this);"
+				creationComplete="initForm(event);"
+				height="550"
+				layout="absolute"
+				showCloseButton="true"
+				title="Linha de Pesquisa"
+				width="750"
+				xmlns:mx="http://www.adobe.com/2006/mxml"
+				xmlns:view="br.ufpe.cin.reuso.view.components.*">
+
+	<view:CadastroBasico height="100%"
+						 id="cbCadastro"
+						 width="100%"/>
+
+	<mx:Script>
+		<![CDATA[
+			import br.ufpe.cin.reuso.util.Dicionario;
+			import br.ufpe.cin.reuso.events.GrupoPesquisaEvent;
+			import br.ufpe.cin.reuso.vo.GrupoPesquisaVO;
+			import mx.collections.SortField;
+			import mx.collections.Sort;
+			import mx.collections.ArrayCollection;
+
+			import mx.managers.PopUpManager;
+			import mx.core.Application;
+			import mx.rpc.events.ResultEvent;
+			import mx.controls.Alert;
+			import mx.binding.utils.BindingUtils;
+			import mx.events.FlexEvent;
+			import mx.events.CloseEvent;
+			import mx.validators.Validator;
+
+			import org.doc.PaperFormat;
+			import org.doc.Document;
+
+			import com.universalmind.cairngorm.events.Callbacks;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+
+			[Bindable]
+			private var cadastroBasico:CadastroBasico;
+
+			private function initForm(e:Event):void
+			{
+				this.cadastroBasico = cbCadastro;
+				this.cadastroBasico.funcPesquisar = pesquisar;
+				this.cadastroBasico.funcIncluir = incluirNovo;
+				this.cadastroBasico.funcEditar = editar;
+				this.cadastroBasico.funcExcluir = excluir;
+				this.cadastroBasico.funcDetalhar = detalhar;
+				this.cadastroBasico.funcCancelar = cancelarConsulta;
+				this.cadastroBasico.funcCancelar1 = cancelarCadastro;
+				this.cadastroBasico.titutoReport = this.title;
+				this.cadastroBasico.MODULO_ID = 5;
+			}
+
+			private function setEntidade(action:uint):void
+			{
+				var f:GrupoPesquisaVO = new GrupoPesquisaVO();
+
+				if ((action == CadastroBasico.AC_UPDATE) || (action == CadastroBasico.AC_DETAIL))
+				{
+					f = this.cadastroBasico.cbdgDataGrid.selectedItem as GrupoPesquisaVO;
+				}
+
+				this.cadastroBasico.cbcdCodigo.text = f.id.toString();
+				this.cadastroBasico.cbcdDescricao.text = f.descricao;
+			}
+
+
+			private function DispararEvento(action:uint):void
+			{
+				var handlers:Callbacks = null;
+				var event:GrupoPesquisaEvent = null;
+				var f:GrupoPesquisaVO = new GrupoPesquisaVO();
+
+				if (action == CadastroBasico.AC_SEARCH)
+				{
+					// Pega os dados da tela de pesquisa
+					f.id = this.cadastroBasico.getConsCodigo();
+					f.descricao = this.cadastroBasico.getConsDescricao();
+
+				}
+				else if ((action == CadastroBasico.AC_INSERT) || (action == CadastroBasico.AC_INSERT_AND_NEW) || (action == CadastroBasico.AC_UPDATE))
+				{
+					// Pega os dados da tela de cadastro
+					f.id = this.cadastroBasico.getCadCodigo();
+					f.descricao = this.cadastroBasico.getCadDescricao();
+
+				}
+				else if (action == CadastroBasico.AC_DELETE)
+				{
+
+					// Pega os dados no datagrid na tela de conculta
+					f = this.cadastroBasico.cbdgDataGrid.selectedItem as GrupoPesquisaVO;
+				}
+
+				if (action == CadastroBasico.AC_SEARCH)
+				{
+					handlers = new Callbacks(onResult_Pesquisar);
+					event = new GrupoPesquisaEvent(GrupoPesquisaEvent.EVENT_PESQUISAR, handlers);
+
+				}
+				else if (action == CadastroBasico.AC_INSERT)
+				{
+					handlers = new Callbacks(onResult_SalvarInsert);
+					event = new GrupoPesquisaEvent(GrupoPesquisaEvent.EVENT_INSERIR, handlers);
+
+				}
+				else if (action == CadastroBasico.AC_INSERT_AND_NEW)
+				{
+					handlers = new Callbacks(onResult_SalvarENovo);
+					event = new GrupoPesquisaEvent(GrupoPesquisaEvent.EVENT_INSERIR, handlers);
+
+				}
+				else if (action == CadastroBasico.AC_UPDATE)
+				{
+					handlers = new Callbacks(onResult_SalvarUpdate);
+					event = new GrupoPesquisaEvent(GrupoPesquisaEvent.EVENT_EDITAR, handlers);
+
+				}
+				else if (action == CadastroBasico.AC_DELETE)
+				{
+					if ((this.cadastroBasico.cbdgDataGrid.selectedItem as GrupoPesquisaVO) != null)
+					{
+						handlers = new Callbacks(onResult_Excluir);
+						event = new GrupoPesquisaEvent(GrupoPesquisaEvent.EVENT_EXCLUIR, handlers);
+					}
+					else
+					{
+						Alert.show(Dicionario.REGISTROS_NAO_SELECIONADO);
+					}
+				}
+
+				if (event != null)
+				{
+					event.params = f;
+					event.dispatch();
+				}
+			}
+
+			private function openCadastro(action:uint):void
+			{
+				this.cadastroBasico.funcCbViewStackChance = vsChange;
+				this.cadastroBasico.action = action;
+
+				if ((action == CadastroBasico.AC_UPDATE) || (action == CadastroBasico.AC_DETAIL))
+				{
+					if (this.cadastroBasico.cbdgDataGrid.selectedItem != null)
+					{
+						this.cadastroBasico.changeViewStack(this.cadastroBasico.VS_CADASTRO);
+					}
+					else
+					{
+						Alert.show(Dicionario.REGISTROS_NAO_SELECIONADO);
+					}
+				}
+				else
+				{
+					this.cadastroBasico.changeViewStack(this.cadastroBasico.VS_CADASTRO);
+				}
+			}
+
+			private function vsChange(action:uint):void
+			{
+
+				this.cadastroBasico.cbcdCodigo.enabled = false;
+				this.cadastroBasico.cbcdDescricao.enabled = true;
+				this.cadastroBasico.BtnSalvar.visible = true;
+				this.cadastroBasico.BtnSalvarENovo.visible = true;
+
+				if (action == CadastroBasico.AC_INSERT)
+				{
+					this.cadastroBasico.funcSalvar = salvarInsert;
+					this.cadastroBasico.funcSalvarENovo = salvarENovo;
+				}
+				else if (action == CadastroBasico.AC_UPDATE)
+				{
+					this.cadastroBasico.funcSalvar = salvarUpdate;
+					this.cadastroBasico.funcSalvarENovo = salvarENovo;
+					this.cadastroBasico.BtnSalvarENovo.visible = false;
+				}
+				else if (action == CadastroBasico.AC_DETAIL)
+				{
+					this.cadastroBasico.cbcdDescricao.enabled = false;
+					this.cadastroBasico.BtnSalvar.visible = false;
+					this.cadastroBasico.BtnSalvarENovo.visible = false;
+				}
+
+				this.setEntidade(action);
+			}
+
+			private function pesquisar():void
+			{
+				this.DispararEvento(CadastroBasico.AC_SEARCH);
+			}
+
+			private function salvarInsert():void
+			{
+				this.DispararEvento(CadastroBasico.AC_INSERT);
+			}
+
+			private function salvarENovo():void
+			{
+				this.DispararEvento(CadastroBasico.AC_INSERT_AND_NEW);
+			}
+
+			private function salvarUpdate():void
+			{
+				this.DispararEvento(CadastroBasico.AC_UPDATE);
+			}
+
+			private function excluir():void
+			{
+				if (this.cadastroBasico.cbdgDataGrid.selectedItem != null)
+				{
+					var a:Alert = Alert.show(Dicionario.CONFIRMAR_EXCLUSAO, "Confirmar", Alert.YES | Alert.NO, this, this.confirmarExclusao, null, Alert.NO);
+				}
+				else
+				{
+					Alert.show(Dicionario.REGISTROS_NAO_SELECIONADO);
+				}
+			}
+
+			private function confirmarExclusao(event:CloseEvent):void
+			{
+				if (event.detail == Alert.YES)
+				{
+					this.DispararEvento(CadastroBasico.AC_DELETE);
+				}
+			}
+
+			private function onResult_Pesquisar(result:ArrayCollection):void
+			{
+				this.cadastroBasico.dpRegistros = result as ArrayCollection;
+			}
+
+			private function onResult_SalvarInsert(result:Boolean):void
+			{
+				if (result)
+				{
+					this.cancelarCadastro();
+					this.pesquisar();
+				}
+			}
+
+			private function onResult_SalvarENovo(result:Boolean):void
+			{
+				if (result)
+				{
+					this.cadastroBasico.limparCampos();
+					this.cadastroBasico.setDescricaoFocus();
+				}
+			}
+
+			private function onResult_SalvarUpdate(result:Boolean):void
+			{
+				if (result)
+				{
+					this.cancelarCadastro();
+					this.pesquisar();
+				}
+			}
+
+			private function onResult_Excluir(result:Boolean):void
+			{
+				if (result)
+				{
+					Alert.show(Dicionario.OK_EXCLUIR);
+					this.pesquisar();
+				}
+			}
+
+			private function incluirNovo():void
+			{
+				this.openCadastro(CadastroBasico.AC_INSERT);
+			}
+
+			private function editar():void
+			{
+				this.openCadastro(CadastroBasico.AC_UPDATE);
+			}
+
+			private function detalhar():void
+			{
+				this.openCadastro(CadastroBasico.AC_DETAIL);
+			}
+
+			private function cancelarConsulta():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+
+			private function cancelarCadastro():void
+			{
+				this.cadastroBasico.changeViewStack(this.cadastroBasico.VS_CONSULTA);
+				this.cadastroBasico.limparCampos();
+			}
+		]]>
+	</mx:Script>
+</mx:TitleWindow>

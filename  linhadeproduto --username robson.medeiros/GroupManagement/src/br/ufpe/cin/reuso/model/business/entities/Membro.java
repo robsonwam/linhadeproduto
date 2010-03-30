@@ -41,6 +41,10 @@ public class Membro implements Serializable {
 	private String cidade;
 
 	private String foto;
+	
+	@ManyToOne
+	@JoinColumn(name="id_grupo_pesquisa")
+	private GrupoPesquisa grupoPesquisa;
 
 	@Column(name="foto_byte")
 	private byte[] fotoByte;
@@ -228,6 +232,14 @@ public class Membro implements Serializable {
 		} else if (!idMembro.equals(other.idMembro))
 			return false;
 		return true;
+	}
+
+	public GrupoPesquisa getGrupoPesquisa() {
+		return grupoPesquisa;
+	}
+
+	public void setGrupoPesquisa(GrupoPesquisa idGrupoPesquisa) {
+		this.grupoPesquisa = idGrupoPesquisa;
 	}
 
 }

@@ -4,23 +4,20 @@
 		   xmlns:mx="http://www.adobe.com/2006/mxml">
 	<mx:Script>
 		<![CDATA[
-			import br.com.r2jm.sauderesidencia.model.SaudeResidenciaModelLocator;
-			import br.com.r2jm.sauderesidencia.vo.PerfilAcessoVO;
-			import br.com.r2jm.sauderesidencia.vo.PerfilModuloVO;
 			import mx.collections.SortField;
 			import mx.collections.Sort;
 			import mx.managers.PopUpManager;
 			import mx.core.Application;
 			import org.doc.PaperFormat;
-			import br.com.r2jm.sauderesidencia.view.reports.report.templates.TemplateLista;
+			import br.ufpe.cin.reuso.view.reports.report.templates.TemplateLista;
 			import org.doc.Document;
-			import br.com.r2jm.sauderesidencia.view.reports.report.dataproviders.DPTemplateLista;
-			import br.com.r2jm.sauderesidencia.view.reports.report.custom.PreviewWindow;
+			import br.ufpe.cin.reuso.view.reports.report.dataproviders.DPTemplateLista;
+			import br.ufpe.cin.reuso.view.reports.report.custom.PreviewWindow;
 
 			import mx.controls.Alert;
 			import mx.collections.ArrayCollection;
 			import mx.binding.utils.BindingUtils;
-			import br.com.r2jm.sauderesidencia.util.Dicionario;
+			import br.ufpe.cin.reuso.util.Dicionario;
 
 			// Icones dos botões
 			[Embed(source='../../assets/images/novo.png')]
@@ -315,38 +312,6 @@
 				return true;
 			}
 
-			private function validarPerfil(action:uint):Boolean
-			{
-				var result:Boolean = false;
-				var perfilModulo:PerfilModuloVO = null;
-				var perfilAcesso:PerfilAcessoVO = SaudeResidenciaModelLocator.getInstance().userLogged.funcionario.perfilAcessoId;
-				for (var i:int; i < perfilAcesso.perfilModuloCollection.length; i++)
-				{
-					if ((perfilAcesso.perfilModuloCollection.getItemAt(i) as PerfilModuloVO).moduloId.moduloId == MODULO_ID)
-					{
-						perfilModulo = (perfilAcesso.perfilModuloCollection.getItemAt(i) as PerfilModuloVO);
-						break;
-					}
-				}
-				if (action == AC_INSERT)
-				{
-					result = perfilModulo.criar == "S" ? true : false;
-				}
-				else if (action == AC_DELETE)
-				{
-					result = perfilModulo.excluir == "S" ? true : false;
-				}
-				else if (action == AC_UPDATE)
-				{
-					result = perfilModulo.editar == "S" ? true : false;
-				}
-				else if (action == AC_SEARCH)
-				{
-					result = perfilModulo.consultar == "S" ? true : false;
-				}
-
-				return result;
-			}
 
 			public function SortDataGrid():void
 			{
@@ -393,7 +358,6 @@
 					  top="13"/>
 
 			<mx:Button click="pesquisar();"
-					   enabled="{validarPerfil(AC_SEARCH)}"
 					   icon="{ico_pesquisar}"
 					   id="BtnPesquisar"
 					   label="{Dicionario.BTN_PESQUISAR}"
@@ -435,7 +399,6 @@
 
 			<mx:Button bottom="10"
 					   click="incluir();"
-					   enabled="{validarPerfil(AC_INSERT)}"
 					   icon="{ico_incluir}"
 					   id="BtnIncluir"
 					   label="{Dicionario.BTN_INCLUIR}"
@@ -444,7 +407,6 @@
 
 			<mx:Button bottom="10"
 					   click="editar();"
-					   enabled="{validarPerfil(AC_UPDATE)}"
 					   icon="{ico_editar}"
 					   id="BtnEditar"
 					   label="{Dicionario.BTN_EDITAR}"
@@ -453,7 +415,6 @@
 
 			<mx:Button bottom="10"
 					   click="excluir();"
-					   enabled="{validarPerfil(AC_DELETE)}"
 					   icon="{ico_excluir}"
 					   id="BtnExcluir"
 					   label="{Dicionario.BTN_EXCLUIR}"

@@ -12,6 +12,9 @@
 
 	<mx:Script>
 		<![CDATA[
+			import flash.text.engine.GroupElement;
+			import br.ufpe.cin.reuso.vo.GrupoPesquisaVO;
+			import br.ufpe.cin.reuso.events.GrupoPesquisaEvent;
 			import br.ufpe.cin.reuso.vo.TipoVO;
 			import br.ufpe.cin.reuso.events.TipoEvent;
 			import br.ufpe.cin.reuso.view.components.ReportIframe;
@@ -125,6 +128,9 @@
 			private var dpTipo:ArrayCollection = new ArrayCollection();
 			
 			[Bindable]
+			private var dpLinhaPesquisa:ArrayCollection = new ArrayCollection();
+			
+			[Bindable]
 			private var dpTipoEstudante:ArrayCollection = new ArrayCollection();
 			
 			[Bindable]
@@ -134,7 +140,7 @@
 
             private function browseAndUpload():void {
             	var arr:Array = [];
-                arr.push(new FileFilter("Images .gif .jpeg .jpg .png", ".gif;*.jpeg;*.jpg;*.png"));
+                arr.push(new FileFilter("Images .jpeg .jpg", "*.jpeg;*.jpg"));
                 fileRef.browse(arr);
             }
             
@@ -163,6 +169,11 @@
                 fileRef.addEventListener(ProgressEvent.PROGRESS, fileRef_progress);
                 fileRef.addEventListener(Event.COMPLETE, fileRef_complete);
                 
+                var handlers:Callbacks = new Callbacks(onResult_LinhaPesquisa);
+				var event1:GrupoPesquisaEvent = new GrupoPesquisaEvent(GrupoPesquisaEvent.EVENT_PESQUISAR, handlers);
+				event1.params = new GrupoPesquisaVO();
+				event1.dispatch();
+                
                 var handlers:Callbacks = new Callbacks(onResult_Tipo);
 				var event:TipoEvent = new TipoEvent(TipoEvent.EVENT_PESQUISAR, handlers);
 				event.params = new TipoVO();
@@ -177,6 +188,19 @@
 				this.dpAtivo.addItem({ label: Dicionario.MEMBRO_ATIVO, data: Dicionario.MEMBRO_ATIVO });
 				this.dpAtivo.addItem({ label: Dicionario.MEMBRO_FORMER_MEMBER, data: Dicionario.MEMBRO_FORMER_MEMBER });
 				
+			}
+			
+			private function onResult_LinhaPesquisa(result:ArrayCollection):void
+			{
+				var data:ArrayCollection = new ArrayCollection();
+				data.addItem({label: "", data: null, item: null});
+
+				for (var i:uint = 0; i < result.length; i++)
+				{
+					var d:GrupoPesquisaVO = result.getItemAt(i) as GrupoPesquisaVO;
+					data.addItem({label: d.descricao, data: d.id, item: d});
+				}
+				this.dpLinhaPesquisa = data;
 			}
 
 			private function onResult_Tipo(result:ArrayCollection):void
@@ -226,6 +250,13 @@
 				}
 				this.cadSite.text = membro.website;
 				this.cadTelefone.text = membro.telefone;
+				
+				if (membro.grupoPesquisa != null)
+				{
+					this.cadLinhaPesquisa.selectedItem = membro.grupoPesquisa.id;
+				}else{
+					this.cadLinhaPesquisa.selectedItem = null;
+				}
 				
 				if (membro.tipo != null)
 				{
@@ -296,6 +327,7 @@
 					f.website = this.cadSite.text;
 					f.telefone = this.cadTelefone.text;
 					f.tipo = this.cadTipo.selectedItem.item as TipoVO;
+					f.grupoPesquisa = this.cadLinhaPesquisa.selectedItem.item as GrupoPesquisaVO;
 					f.tipoEstudante = this.cadTipoEstudante.selectedLabel;
 				}
 				else if ( action == AC_DELETE )
@@ -376,6 +408,8 @@
 				this.cadNome.enabled = true;
 				this.BtnSalvar.visible = true;
 				this.BtnSalvarENovo.visible = true;
+				this.BtnAdicionarFoto.visible = true;
+				this.BtnExcluirFoto.visible = true;
 				this.cadAtivo.visible = true;
 				this.cadCidade.visible = true;
 				this.cadSenha..visible = true;
@@ -399,6 +433,7 @@
 				this.cadSite.editable = true;
 				this.cadTelefone.editable = true;
 				this.cadTipo.enabled = true;
+				this.cadLinhaPesquisa.enabled = true;
 				this.cadTipoEstudante.enabled = false;
 				this.cadCoOrientador.enabled = false;
 				this.cadOrientador.enabled = false;
@@ -421,6 +456,7 @@
 					this.cadSite.editable = false;
 					this.cadTelefone.editable = false;
 					this.cadTipo.enabled = false;
+					this.cadLinhaPesquisa.enabled = false;
 					this.cadTipoEstudante.enabled = false;
 					this.BtnSalvar.visible = false;
 					this.BtnSalvarENovo.visible = false;
@@ -607,6 +643,7 @@
 				this.cadTelefone.text = "";
 				this.cadFoto.source = null;
 				this.cadTipo.selectedIndex = 0;
+				this.cadLinhaPesquisa.selectedIndex = 0;
 				this.cadTipoEstudante.selectedIndex = 0;
 			}
 			
@@ -912,6 +949,8 @@
 			<mx:Label x="295" y="291" text="*" color="#FC0202"/>
 			<mx:Label x="10" y="403" text="(*) - Campos Obrigatórios" color="#FC0202"/>
 			<mx:TextInput x="135" y="28" width="27" id="cadId" visible="false"/>
+			<view:ComboBoxFindSelected x="10" y="356" width="224" id="cadLinhaPesquisa" dataProvider="{this.dpLinhaPesquisa}" visible="true"/>
+			<mx:Label x="10" y="337" text="Linha de Pesquisa"/>
 
 		</mx:Canvas>
 	</mx:ViewStack>
