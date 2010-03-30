@@ -7,6 +7,6 @@
 <title></title>
 </head>
 <body>
-<jsp:forward page="MudaLingua.do?lingua=en"></jsp:forward>
+<jsp:forward page="MudaLingua.do"></jsp:forward>
 </body>
 </html>

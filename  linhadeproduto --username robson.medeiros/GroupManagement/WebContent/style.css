@@ -83,3 +83,5 @@ thead th {
 	padding: 0 8px 2px 8px;
 	white-space: nowrap;
 }
+#rodape { position: absolute; bottom: 90; left: 0; width: 10; height: 40px; padding-top: 10px; text-align: center; }
+
