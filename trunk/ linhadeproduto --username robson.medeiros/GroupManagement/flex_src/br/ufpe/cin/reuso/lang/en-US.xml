@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<lang>
+    <menu>
+        <menuitem label="File" >
+            <menuitem label="Open"  data="abrir" />
+            <menuitem label="Save" data="salvar" />
+        </menuitem>
+        <menuitem label="Help">
+            <menuitem label="About" data="sobre" />
+        </menuitem>
+    </menu>
+    <idiomas>
+        <idioma>es-ES</idioma>
+        <idioma>pt-BR</idioma>
+    </idiomas>
+    <botao>
+        <texto>Button</texto>
+        <alerta>This is an alert one in English</alerta>
+    </botao>
+    <texto>Simple text</texto>
+    <sobre>
+        <titulo>On the system of the Alemão</titulo>
+        <versao>Version 1.0</versao>
+        <desenvolvido>Developed for Eduardo Kraus. All rights reserved.</desenvolvido>
+    </sobre>
+    <saudacao>Welcome!</saudacao>
+    <instrucoes>Use a valid user-name and password to access the system.</instrucoes>
+    <canvas>
+    	<erroUsuarioSenha>Inform the user-name and password</erroUsuarioSenha>
+    	<usuario>User</usuario>
+    	<senha>Password</senha>
+    	<tooltipUsuario>User-name</tooltipUsuario>
+    	<tooltipSenha>Password</tooltipSenha>
+    </canvas>
+    <botaoEntrar>Sign in</botaoEntrar>
+    <membro>Member</membro>
+    <telaMembro>
+    	<label>
+	    	<codigo>Code</codigo>
+	    	<nome>Name</nome>
+	    	<tipo>Type</tipo>
+	    	<ativo>Active</ativo>
+	    	<registros>Records found:</registros>
+    	</label>
+    	<botao>
+    		<pesquisar>Search</pesquisar>
+    		<novo>New</novo>
+    		<editar>Edit</editar>
+    		<excluir>Remove</excluir>
+    		<detalhar>Detail</detalhar>
+    		<listar>List</listar>
+    		<fechar>Close</fechar>
+    	</botao>
+    	<dataGrid>
+    		<codigo>Code</codigo>
+    		<nome>Name</nome>
+    		<tipo>Type</tipo>
+    		<ativo>Active</ativo>
+    	</dataGrid>
+    	<titulo>Member</titulo>
+    </telaMembro>
+    
+    <telaEditarMembro>
+    	<label>
+	    	<codigo>Code</codigo>
+	    	<nome>Name</nome>
+	    	<tipo>Type</tipo>
+	    	<ativo>Active</ativo>
+	    	<senha>Password</senha>
+	    	<confirmarSenha>Confirm password</confirmarSenha>
+	    	<foto>Image</foto>
+	    	<tipoEstudante>Student type</tipoEstudante>
+	    	<orientador>Advisor</orientador>
+	    	<coorientador>Co-advisor</coorientador>
+	    	<departamento>Department</departamento>
+	    	<email>e-mail</email>
+	    	<telefone>Phone</telefone>
+	    	<website>Web site</website>
+	    	<cidade>City</cidade>
+	    	<linhaPesquisa>Research line</linhaPesquisa>
+	    	<camposObg>(*) - Required fields</camposObg>
+    	</label>
+    	<botao>
+    		<salvar>Save</salvar>
+    		<salvarNovo>Save and New</salvarNovo>
+    		<cancelar>Cancel</cancelar>
+   		</botao>
+    	<titulo>Member</titulo>
+    </telaEditarMembro>
+    
+    <telaPublicacao>
+    	<label>
+	    	<codigo>Code</codigo>
+	    	<titulo>Title</titulo>
+	    	<tipo>Type</tipo>
+	    	<registros>Records found:</registros>
+    	</label>
+    	<botao>
+    		<pesquisar>Search</pesquisar>
+    		<novo>New</novo>
+    		<editar>Edit</editar>
+    		<excluir>Remove</excluir>
+    		<detalhar>Detail</detalhar>
+    		<listar>List</listar>
+    		<fechar>Close</fechar>
+    	</botao>
+    	<dataGrid>
+    		<codigo>Code</codigo>
+    		<titulo>Title</titulo>
+    		<tipo>Type</tipo>
+    	</dataGrid>
+    	<titulo>Publication</titulo>
+    </telaPublicacao>
+    
+    <telaEditarPublicacao>
+    	<label>
+	    	<codigo>Code</codigo>
+	    	<titulo>Title</titulo>
+	    	<arquivo>PDF file</arquivo>
+	    	<tipo>Type</tipo>
+	    	<linhaPesquisa>Research line</linhaPesquisa>
+	    	<conferencia>Conference</conferencia>
+	    	<instituicao>Institution</instituicao>
+	    	<jornal>Jornal</jornal>
+	    	<ano>Year</ano>
+	    	<mes>Month</mes>
+	    	<volume>Volume</volume>
+	    	<numero>Number</numero>
+	    	<paginas>Pages</paginas>
+	    	<autoresExternos>External authors</autoresExternos>
+	    	<autores>Authors</autores>
+    	</label>
+    	<botao>
+    		<salvar>Save</salvar>
+    		<salvarNovo>Save and new</salvarNovo>
+    		<cancelar>Cancel</cancelar>
+    		<adicionar>Add</adicionar>
+    		<remover>Remove</remover>
+    	</botao>
+    	<dataGrid>
+    		<matricula>Registration</matricula>
+    		<nome>Name</nome>
+    		<tipo>Type</tipo>
+    	</dataGrid>
+    	<titulo>Publication</titulo>
+    </telaEditarPublicacao>
+    
+    <telaCadastroBasico>
+    	<label>
+	    	<codigo>Code</codigo>
+	    	<descricao>Description</descricao>
+	    	<registros>Records found:</registros>
+    	</label>
+    	<botao>
+    		<pesquisar>Search</pesquisar>
+    		<incluir>Include</incluir>
+    		<editar>Edit</editar>
+    		<excluir>Remove</excluir>
+    		<detalhar>Detail</detalhar>
+    		<listar>List</listar>
+    		<fechar>Close</fechar>
+    	</botao>
+    </telaCadastroBasico>
+    
+    <telaGrupoPesquisa>
+    	<titulo>Research Line</titulo>
+    </telaGrupoPesquisa>
+    
+</lang>

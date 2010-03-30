@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Panel width="398"
-		  height="322"
+		  height="418"
 		  defaultButton="{btnAuthentication}"
 		  layout="absolute"
+		  creationComplete="init()"
 		  title="Research Group Management System"
 		  verticalScrollPolicy="off"
 		  xmlns:mx="http://www.adobe.com/2006/mxml">
@@ -23,6 +24,7 @@
 			import mx.events.ValidationResultEvent;
 			import com.adobe.cairngorm.control.CairngormEventDispatcher;
 			import mx.controls.Alert;
+			import br.ufpe.cin.reuso.lang.src.Lang;
 
 			[Bindable]
 			private var model:ReusoModelLocator = ReusoModelLocator.getInstance();
@@ -34,6 +36,17 @@
 			private var formIsEmpty:Boolean = false;
 
 			private var focussedFormControl:DisplayObject;
+			
+			[Bindable]
+            public var linguagem:Lang;
+			
+			private function init():void
+            {
+                linguagem = new Lang;
+                // inicia em português brasil
+                linguagem.getLang('en-US');
+                model.linguagem = linguagem;
+            }
 
 			public function validateForm( event:Event ):void
 			{
@@ -72,22 +85,29 @@
 				lbLoginError.visible = false;
 				CairngormEventDispatcher.getInstance().dispatchEvent( event );
 			}
+			
+			private function getIcon(STRicon:String):String
+            {
+                // retorna a imagem
+                return "br/ufpe/cin/reuso/lang/img/" + STRicon + ".png";
+            }
+			
 		]]>
 	</mx:Script>
 
-	<mx:Image x="39"
-			  y="25"
+	<mx:Image x="49"
+			  y="46"
 			  source="br/ufpe/cin/reuso/assets/images/security.png"/>
-	<mx:HRule x="23"
-			  y="97"/>
-	<mx:Label text="Bem vindo!"
-			  x="131"
-			  y="25"
+	<mx:HRule x="32"
+			  y="129"/>
+	<mx:Label text="{linguagem.xml.saudacao}"
+			  x="140"
+			  y="57"
 			  width="216"
 			  fontSize="12"/>
-	<mx:Text text="Utilize um nome de usuário e senha válido para acessar o sistema."
-			 x="131"
-			 y="66"
+	<mx:Text text="{linguagem.xml.instrucoes}"
+			 x="140"
+			 y="98"
 			 width="228"
 			 height="36"
 			 textAlign="left"/>
@@ -96,22 +116,22 @@
 						minLength="1"
 						property="text"
 						required="true"
-						requiredFieldError="{Dicionario.ERROR_FIELD_REQUIRED}"
+						requiredFieldError="{linguagem.xml.canvas.erroUsuarioSenha}"
 						source="{txtUser}"/>
 
 	<mx:StringValidator id="reqPassword"
 						minLength="1"
 						property="text"
 						required="true"
-						requiredFieldError="{Dicionario.ERROR_FIELD_REQUIRED}"
+						requiredFieldError="{linguagem.xml.canvas.erroUsuarioSenha}"
 						source="{txtPassword}"/>
 
 	<mx:Canvas x="23"
-			   y="121"
+			   y="153"
 			   width="336"
 			   height="115"
 			   backgroundColor="#f9f9f9">
-		<mx:Label text="Usuário"
+		<mx:Label text="{linguagem.xml.canvas.usuario}"
 				  x="10"
 				  y="19"/>
 		<mx:TextInput id="txtUser"
@@ -119,8 +139,8 @@
 					  y="35"
 					  width="316"
 					  change="validateForm(event);"
-					  toolTip="Nome do usuário"/>
-		<mx:Label text="Senha"
+					  toolTip="{linguagem.xml.canvas.tooltipUsuario}"/>
+		<mx:Label text="{linguagem.xml.canvas.senha}"
 				  x="10"
 				  y="65"/>
 		<mx:TextInput id="txtPassword"
@@ -131,23 +151,32 @@
 					  displayAsPassword="true"
 					  keyDown="clearMessage();"
 					  keyUp="clearMessage();"
-					  toolTip="Senha"/>
+					  toolTip="{linguagem.xml.canvas.tooltipSenha}"/>
 	</mx:Canvas>
+	
+	<mx:Repeater id="rp" dataProvider="{linguagem.xml.idiomas.idioma}">
+                <mx:VBox>
+                       <mx:Image height="30" 
+                                 click="linguagem.getLang(String(event.currentTarget.getRepeaterItem()))" 
+                                 source="{ getIcon(String(rp.currentItem)) }" 
+                                 useHandCursor="true" buttonMode="true" />
+                </mx:VBox>
+            </mx:Repeater>
+	
 	<mx:Label id="lbLoginError"
 			  text="Informe o nome de usuário e senha"
 			  x="32"
-			  y="123"
+			  y="155"
 			  width="315"
 			  color="#DB0000"
 			  visible="true"/>
 
 	<mx:ControlBar horizontalAlign="right">
 		<mx:Button id="btnAuthentication"
-				   label="Entrar"
+				   label="{linguagem.xml.botaoEntrar}"
 				   click="ValidateUser()"
 				   enabled="{formIsValid}"
 				   keyDown="clearMessage();"
 				   keyUp="clearMessage();"/>
 	</mx:ControlBar>
-
 </mx:Panel>

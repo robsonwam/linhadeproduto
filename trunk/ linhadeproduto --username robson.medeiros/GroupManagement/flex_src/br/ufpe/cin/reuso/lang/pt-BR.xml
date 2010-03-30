@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<lang>
+    <menu>
+        <menuitem label="Arquivo" >
+            <menuitem label="Abrir"  data="abrir" />
+            <menuitem label="Salvar" data="salvar" />
+        </menuitem>
+        <menuitem label="Ajuda">
+            <menuitem label="Sobre" data="sobre" />
+        </menuitem>
+    </menu>
+    <idiomas>
+        <idioma>es-ES</idioma>
+        <idioma>en-US</idioma>
+    </idiomas>
+    <botao>
+        <texto>Botão</texto>
+        <alerta>Este é um alerta em Português</alerta>
+    </botao>
+    <texto>Texto Simples</texto>
+    <sobre>
+        <titulo>Sobre o sistema do Alemão</titulo>
+        <versao>Versão 1.0</versao>
+        <desenvolvido>Desenvolvido por Eduardo Kraus. Todos os direitos Reservados.</desenvolvido>
+    </sobre>
+    <saudacao>Bem vindo!</saudacao>
+    <instrucoes>Utilize um nome de usuário e senha válido para acessar o sistema.</instrucoes>
+    <canvas>
+    	<erroUsuarioSenha>Informe o nome de usuário e senha</erroUsuarioSenha>
+    	<usuario>Usuário</usuario>
+    	<senha>Senha</senha>
+    	<tooltipUsuario>Nome do usuário</tooltipUsuario>
+    	<tooltipSenha>Senha</tooltipSenha>
+    </canvas>
+    <botaoEntrar>Entrar</botaoEntrar>
+    <membro>Membro</membro>
+    <telaMembro>
+    	<label>
+	    	<codigo>Código</codigo>
+	    	<nome>Nome</nome>
+	    	<tipo>Tipo</tipo>
+	    	<ativo>Ativo</ativo>
+	    	<registros>Registros encontrados:</registros>
+    	</label>
+    	<botao>
+    		<pesquisar>Pesquisar</pesquisar>
+    		<novo>Novo</novo>
+    		<editar>Editar</editar>
+    		<excluir>Excluir</excluir>
+    		<detalhar>Detalhar</detalhar>
+    		<listar>Listar</listar>
+    		<fechar>Fechar</fechar>
+    	</botao>
+    	<dataGrid>
+    		<codigo>Código</codigo>
+    		<nome>Nome</nome>
+    		<tipo>Tipo</tipo>
+    		<ativo>Ativo</ativo>
+    	</dataGrid>
+    	<titulo>Membro</titulo>
+    </telaMembro>
+    
+    <telaEditarMembro>
+    	<label>
+	    	<codigo>Código</codigo>
+	    	<nome>Nome</nome>
+	    	<tipo>Tipo</tipo>
+	    	<ativo>Ativo</ativo>
+	    	<senha>Senha</senha>
+	    	<confirmarSenha>Confirmar senha</confirmarSenha>
+	    	<foto>Foto</foto>
+	    	<tipoEstudante>Tipo de estudante</tipoEstudante>
+	    	<orientador>Orientador</orientador>
+	    	<coorientador>Co-orientador</coorientador>
+	    	<departamento>Departamento</departamento>
+	    	<email>e-mail</email>
+	    	<telefone>Telefone</telefone>
+	    	<website>Web site</website>
+	    	<cidade>Cidade</cidade>
+	    	<linhaPesquisa>Linha de pesquisa</linhaPesquisa>
+	    	<camposObg>(*) - Campos Obrigatórios</camposObg>
+    	</label>
+    	<botao>
+    		<salvar>Salvar</salvar>
+    		<salvarNovo>Salvar e Novo</salvarNovo>
+    		<cancelar>Cancelar</cancelar>
+   		</botao>
+    	<titulo>Membro</titulo>
+    </telaEditarMembro>
+    
+    <telaPublicacao>
+    	<label>
+	    	<codigo>Código</codigo>
+	    	<titulo>Título</titulo>
+	    	<tipo>Tipo</tipo>
+	    	<registros>Registros encontrados:</registros>
+    	</label>
+    	<botao>
+    		<pesquisar>Pesquisar</pesquisar>
+    		<novo>Novo</novo>
+    		<editar>Editar</editar>
+    		<excluir>Excluir</excluir>
+    		<detalhar>Detalhar</detalhar>
+    		<listar>Listar</listar>
+    		<fechar>Fechar</fechar>
+    	</botao>
+    	<dataGrid>
+    		<codigo>Código</codigo>
+    		<titulo>Título</titulo>
+    		<tipo>Tipo</tipo>
+    	</dataGrid>
+    	<titulo>Publicação</titulo>
+    </telaPublicacao>
+    
+    <telaEditarPublicacao>
+    	<label>
+	    	<codigo>Código</codigo>
+	    	<titulo>Título</titulo>
+	    	<arquivo>Arquivo PDF</arquivo>
+	    	<tipo>Tipo</tipo>
+	    	<linhaPesquisa>Linha de pesquisa</linhaPesquisa>
+	    	<conferencia>Conferência</conferencia>
+	    	<instituicao>Instituição</instituicao>
+	    	<jornal>Jornal</jornal>
+	    	<ano>Ano</ano>
+	    	<mes>Mes</mes>
+	    	<volume>Volume</volume>
+	    	<numero>Número</numero>
+	    	<paginas>Páginas</paginas>
+	    	<autoresExternos>Autores externos</autoresExternos>
+	    	<autores>Autores</autores>
+    	</label>
+    	<botao>
+    		<salvar>Salvar</salvar>
+    		<salvarNovo>Salvar e Novo</salvarNovo>
+    		<cancelar>Cancelar</cancelar>
+    		<adicionar>Adicionar</adicionar>
+    		<remover>Remover</remover>
+    	</botao>
+    	<dataGrid>
+    		<matricula>Matrícula</matricula>
+    		<nome>Nome</nome>
+    		<tipo>Tipo</tipo>
+    	</dataGrid>
+    	<titulo>Publicação</titulo>
+    </telaEditarPublicacao>
+    
+    <telaCadastroBasico>
+    	<label>
+	    	<codigo>Código</codigo>
+	    	<descricao>Descriçao</descricao>
+	    	<registros>Registros encontrados:</registros>
+    	</label>
+    	<botao>
+    		<pesquisar>Pesquisar</pesquisar>
+    		<incluir>Incluir</incluir>
+    		<editar>Editar</editar>
+    		<excluir>Excluir</excluir>
+    		<detalhar>Detalhar</detalhar>
+    		<listar>Listar</listar>
+    		<fechar>Fechar</fechar>
+    	</botao>
+    </telaCadastroBasico>
+    
+    <telaGrupoPesquisa>
+    	<titulo>Linha de pesquisa</titulo>
+    </telaGrupoPesquisa>
+    
+</lang>

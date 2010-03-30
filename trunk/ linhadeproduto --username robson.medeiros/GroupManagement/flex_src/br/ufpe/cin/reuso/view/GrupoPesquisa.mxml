@@ -4,7 +4,7 @@
 				height="550"
 				layout="absolute"
 				showCloseButton="true"
-				title="Linha de Pesquisa"
+				title="{linguagem.xml.telaGrupoPesquisa.titulo}"
 				width="750"
 				xmlns:mx="http://www.adobe.com/2006/mxml"
 				xmlns:view="br.ufpe.cin.reuso.view.components.*">
@@ -36,12 +36,23 @@
 
 			import com.universalmind.cairngorm.events.Callbacks;
 			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import br.ufpe.cin.reuso.model.ReusoModelLocator;
+			import br.ufpe.cin.reuso.lang.src.Lang;
+			
+			[Bindable]
+			private var model:ReusoModelLocator = ReusoModelLocator.getInstance();
+			
+			[Bindable]
+            public var linguagem:Lang;
 
 			[Bindable]
 			private var cadastroBasico:CadastroBasico;
 
 			private function initForm(e:Event):void
 			{
+				linguagem = model.linguagem;
+				
 				this.cadastroBasico = cbCadastro;
 				this.cadastroBasico.funcPesquisar = pesquisar;
 				this.cadastroBasico.funcIncluir = incluirNovo;

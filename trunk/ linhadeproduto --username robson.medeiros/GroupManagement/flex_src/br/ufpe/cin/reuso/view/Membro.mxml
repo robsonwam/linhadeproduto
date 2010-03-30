@@ -4,7 +4,7 @@
 				height="550"
 				layout="absolute"
 				showCloseButton="true"
-				title="Membro"
+				title="{linguagem.xml.telaMembro.titulo}"
 				width="750"
 				xmlns:mx="http://www.adobe.com/2006/mxml"
 				xmlns:view="br.ufpe.cin.reuso.view.components.*"
@@ -46,6 +46,9 @@
 			
 			import com.universalmind.cairngorm.events.Callbacks;
 			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import br.ufpe.cin.reuso.model.ReusoModelLocator;
+			import br.ufpe.cin.reuso.lang.src.Lang;
 			
 			// Icones dos botões
 			[Embed( source='../assets/images/novo.png' )]
@@ -90,6 +93,12 @@
 			
 			[Bindable]
 			private var membro:MembroVO;
+			
+			[Bindable]
+			private var model:ReusoModelLocator = ReusoModelLocator.getInstance();
+			
+			[Bindable]
+            public var linguagem:Lang;
 			
 			public static const AC_SEARCH:uint = 0;
 			
@@ -163,6 +172,7 @@
 			
 			private function initForm():void
 			{
+				linguagem = model.linguagem;				
 				
 				fileRef = new FileReference();
                 fileRef.addEventListener(Event.SELECT, fileRef_select);
@@ -706,7 +716,7 @@
 				   width="100%"
 				   >
 
-			<mx:Label text="Código"
+			<mx:Label text="{linguagem.xml.telaMembro.label.codigo}"
 					  width="112"
 					  x="10"
 					  y="13"
@@ -719,7 +729,7 @@
 						  y="31"
 						   tabIndex="1"/>
 
-			<mx:Label text="Nome"
+			<mx:Label text="{linguagem.xml.telaMembro.label.nome}"
 					  x="118"
 					  y="13"
 					  />
@@ -731,7 +741,7 @@
 						  y="31"
 						   tabIndex="2"/>
 
-			<mx:Label text="Tipo"
+			<mx:Label text="{linguagem.xml.telaMembro.label.tipo}"
 					  x="381"
 					  y="13"
 					  />
@@ -739,13 +749,13 @@
 			<mx:Button click="pesquisar();"
 					   icon="{ico_pesquisar}"
 					   id="BtnPesquisar"
-					   label="{Dicionario.BTN_PESQUISAR}"
+					   label="{linguagem.xml.telaMembro.botao.pesquisar}"
 					   width="96"
 					   x="616"
 					   y="61"
 					    tabIndex="5"/>
 
-			<mx:Label text="{Dicionario.REGISTROS_ENCONTRADOS}"
+			<mx:Label text="{linguagem.xml.telaMembro.label.registros}"
 					  x="10"
 					  y="84"
 					  />
@@ -769,19 +779,19 @@
 
 				<mx:columns>
 					<mx:DataGridColumn dataField="codigo"
-									   headerText="Código"
+									   headerText="{linguagem.xml.telaMembro.dataGrid.codigo}"
 									   id="dataGridColumnCodigo"
 									   width="80"
 									   />
 
 					<mx:DataGridColumn dataField="nome"
-									   headerText="Nome"
+									   headerText="{linguagem.xml.telaMembro.dataGrid.nome}"
 									   id="dataGridColumnNome"
 									   wordWrap="true"
 									   />
 
 					<mx:DataGridColumn dataField="tipo"
-									   headerText="Tipo"
+									   headerText="{linguagem.xml.telaMembro.dataGrid.tipo}"
 									   id="dataGridColumnTipo"
 									   width="200"
 									   wordWrap="true"
@@ -789,7 +799,7 @@
 									   />
 									   
 					<mx:DataGridColumn dataField="ativo"
-									   headerText="Ativo"
+									   headerText="{linguagem.xml.telaMembro.dataGrid.ativo}"
 									   id="dataGridColumnAtivo"
 									   width="80"
 									   wordWrap="true"
@@ -801,7 +811,7 @@
 					   click="incluir();"
 					   icon="{ico_incluir}"
 					   id="BtnIncluir"
-					   label="{Dicionario.BTN_INCLUIR}"
+					   label="{linguagem.xml.telaMembro.botao.novo}"
 					   left="10"
 					   width="100"
 					    tabIndex="6"/>
@@ -810,7 +820,7 @@
 					   click="editar();"
 					   icon="{ico_editar}"
 					   id="BtnEditar"
-					   label="{Dicionario.BTN_EDITAR}"
+					   label="{linguagem.xml.telaMembro.botao.editar}"
 					   left="114"
 					   width="100"
 					    tabIndex="7"/>
@@ -819,7 +829,7 @@
 					   click="excluir();"
 					   icon="{ico_excluir}"
 					   id="BtnExcluir"
-					   label="{Dicionario.BTN_EXCLUIR}"
+					   label="{linguagem.xml.telaMembro.botao.excluir}"
 					   left="218"
 					   width="100"
 					    tabIndex="8"/>
@@ -828,7 +838,7 @@
 					   click="detalhar();"
 					   icon="{ico_detalhar}"
 					   id="BtnDetalhar"
-					   label="{Dicionario.BTN_DETALHAR}"
+					   label="{linguagem.xml.telaMembro.botao.detalhar}"
 					   left="322"
 					   width="100"
 					    tabIndex="9"/>
@@ -837,7 +847,7 @@
 					   click="listar();"
 					   icon="{ico_listar}"
 					   id="BtnListar"
-					   label="{Dicionario.BTN_LISTAR}"
+					   label="{linguagem.xml.telaMembro.botao.listar}"
 					   left="426"
 					   width="100"
 					    tabIndex="10"/>
@@ -846,13 +856,13 @@
 					   click="cancelarConsulta();"
 					   icon="{ico_cancelar}"
 					   id="BtnCancelar"
-					   label="{Dicionario.BTN_FECHAR}"
+					   label="{linguagem.xml.telaMembro.botao.fechar}"
 					   right="10"
 					   width="100"
 					    tabIndex="11"/>
 			<mx:ComboBox x="381" y="31" width="196" id="consTipo" dataProvider="{this.dpTipo}" tabIndex="3"></mx:ComboBox>
 			<mx:ComboBox x="585" y="31" width="127" id="consAtivo" dataProvider="{this.dpAtivo}" tabIndex="4"></mx:ComboBox>
-			<mx:Label x="585" y="13" text="Ativo"/>
+			<mx:Label x="585" y="13" text="{linguagem.xml.telaMembro.label.ativo}"/>
 
 		</mx:Canvas>
 
@@ -862,7 +872,7 @@
 				   >
 
 			<mx:Label enabled="true"
-					  text="Código"
+					  text="{linguagem.xml.telaEditarMembro.label.codigo}"
 					  width="112"
 					  x="10"
 					  y="10"
@@ -874,7 +884,7 @@
 						  y="28"
 						   tabIndex="1"/>
 
-			<mx:Label text="Nome"
+			<mx:Label text="{linguagem.xml.telaEditarMembro.label.nome}"
 					  x="10"
 					  y="58"
 					  />
@@ -889,7 +899,7 @@
 					   click="salvar();"
 					   icon="{ico_salvar}"
 					   id="BtnSalvar"
-					   label="{Dicionario.BTN_SALVAR}"
+					   label="{linguagem.xml.telaEditarMembro.botao.salvar}"
 					   left="10"
 					   width="96"
 					    tabIndex="17"/>
@@ -898,7 +908,7 @@
 					   click="salvarENovo();"
 					   icon="{ico_salvar}"
 					   id="BtnSalvarENovo"
-					   label="{Dicionario.BTN_SALVAR_E_NOVO}"
+					   label="{linguagem.xml.telaEditarMembro.botao.salvarNovo}"
 					   left="114"
 					   width="122"
 					    tabIndex="18"/>
@@ -907,36 +917,36 @@
 					   click="cancelarCadastro();"
 					   icon="{ico_cancelar}"
 					   id="BtnCancelar1"
-					   label="{Dicionario.BTN_CANCELAR}"
+					   label="{linguagem.xml.telaEditarMembro.botao.cancelar}"
 					   right="10"
 					   width="96"
 					    tabIndex="19"/>
 			<mx:TextInput x="170" y="28" displayAsPassword="true" id="cadSenha" tabIndex="2"/>
-			<mx:Label x="170" y="10" text="Senha"/>
-			<mx:Label x="338" y="10" text="Confirmar Senha"/>
+			<mx:Label x="170" y="10" text="{linguagem.xml.telaEditarMembro.label.senha}"/>
+			<mx:Label x="338" y="10" text="{linguagem.xml.telaEditarMembro.label.confirmarSenha}"/>
 			<mx:TextInput x="338" y="28" displayAsPassword="true" id="cadConfirmarSenha" tabIndex="3"/>
 			<view:ComboBoxFindSelected x="10" y="123" width="226" id="cadTipo" dataProvider="{this.dpTipo}" change="mudaTipo();" tabIndex="5"/>
-			<mx:Label x="12" y="106" text="Tipo"/>
-			<mx:Label x="259" y="106" text="Tipo de Estudante"/>
+			<mx:Label x="12" y="106" text="{linguagem.xml.telaEditarMembro.label.tipo}"/>
+			<mx:Label x="259" y="106" text="{linguagem.xml.telaEditarMembro.label.tipoEstudante}"/>
 			<view:ComboBoxFindSelected x="259" y="123" width="239" id="cadTipoEstudante" dataProvider="{this.dpTipoEstudante}" tabIndex="6"/>
-			<mx:Label x="10" y="200" text="Departamento"/>
+			<mx:Label x="10" y="200" text="{linguagem.xml.telaEditarMembro.label.departamento}"/>
 			<mx:TextInput x="10" y="216" width="224" id="cadDepartamento" tabIndex="11"/>
-			<mx:Label x="10" y="153" text="Orientador"/>
-			<mx:Label x="259" y="153" text="Co-Orientador"/>
+			<mx:Label x="10" y="153" text="{linguagem.xml.telaEditarMembro.label.orientador}"/>
+			<mx:Label x="259" y="153" text="{linguagem.xml.telaEditarMembro.label.coorientador}"/>
 			<mx:TextInput x="10" y="170" width="226" id="cadOrientador" tabIndex="7"></mx:TextInput>
 			<mx:TextInput x="259" y="170" width="239" id="cadCoOrientador" tabIndex="8"></mx:TextInput>
-			<mx:Label x="259" y="200" text="E-mail"/>
+			<mx:Label x="259" y="200" text="{linguagem.xml.telaEditarMembro.label.email}"/>
 			<mx:TextInput x="259" y="216" width="362" id="cadEmail" tabIndex="12"/>
 			<mx:TextInput x="10" y="261" width="224" id="cadTelefone" tabIndex="13"/>
 			<mx:TextInput x="259" y="261" width="362" id="cadSite" tabIndex="14"/>
-			<mx:Label x="10" y="246" text="Telefone"/>
-			<mx:Label x="259" y="246" text="Web Site"/>
-			<mx:Label x="10" y="291" text="Cidade"/>
+			<mx:Label x="10" y="246" text="{linguagem.xml.telaEditarMembro.label.telefone}"/>
+			<mx:Label x="259" y="246" text="{linguagem.xml.telaEditarMembro.label.website}"/>
+			<mx:Label x="10" y="291" text="{linguagem.xml.telaEditarMembro.label.cidade}"/>
 			<mx:TextInput x="10" y="307" width="224" id="cadCidade" tabIndex="15"/>
-			<mx:Label x="259" y="291" text="Ativo"/>
+			<mx:Label x="259" y="291" text="{linguagem.xml.telaEditarMembro.label.ativo}"/>
 			<view:ComboBoxFindSelected x="259" y="307" id="cadAtivo" dataProvider="{this.dpAtivo}" width="178" tabIndex="16"/>
 			<mx:Image x="520" y="28" width="101" height="130" id="cadFoto"/>
-			<mx:Label x="520" y="10" text="Foto"/>
+			<mx:Label x="520" y="10" text="{linguagem.xml.telaEditarMembro.label.foto}"/>
 			<mx:Button icon="{ico_adicionar}" click="browseAndUpload();" x="520" y="170" id="BtnAdicionarFoto" tabIndex="9"/>
 			<mx:Button icon="{ico_remover}" x="581" y="170" id="BtnExcluirFoto" click="removerFoto();" tabIndex="10"/>
 			<mx:VRule x="520" y="28" height="130"/>
@@ -947,10 +957,10 @@
 			<mx:Label x="45" y="58" text="*" color="#FC0202"/>
 			<mx:Label x="45" y="106" text="*" color="#FC0202"/>
 			<mx:Label x="295" y="291" text="*" color="#FC0202"/>
-			<mx:Label x="10" y="403" text="(*) - Campos Obrigatórios" color="#FC0202"/>
+			<mx:Label x="10" y="403" text="{linguagem.xml.telaEditarMembro.label.camposObg}" color="#FC0202"/>
 			<mx:TextInput x="135" y="28" width="27" id="cadId" visible="false"/>
 			<view:ComboBoxFindSelected x="10" y="356" width="224" id="cadLinhaPesquisa" dataProvider="{this.dpLinhaPesquisa}" visible="true"/>
-			<mx:Label x="10" y="337" text="Linha de Pesquisa"/>
+			<mx:Label x="10" y="337" text="{linguagem.xml.telaEditarMembro.label.linhaPesquisa}"/>
 
 		</mx:Canvas>
 	</mx:ViewStack>
