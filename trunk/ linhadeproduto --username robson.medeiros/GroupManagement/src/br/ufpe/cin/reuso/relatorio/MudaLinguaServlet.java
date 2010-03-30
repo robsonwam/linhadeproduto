@@ -16,10 +16,12 @@ public class MudaLinguaServlet extends HttpServlet {
 	      throws ServletException, IOException {
 		  	RequestDispatcher view = request.getRequestDispatcher("frame.html");
 	        String language = request.getParameter("lingua");
-	        Locale locale = new Locale(language);
-
-	        Config.set(request.getSession(), Config.FMT_LOCALE, locale);
-	        Config.set(request.getSession(), Config.FMT_FALLBACK_LOCALE, locale);
+	        if(language != null && !language.equals("")){
+	        	Locale locale = new Locale(language);
+	        	
+	        	Config.set(request.getSession(), Config.FMT_LOCALE, locale);
+	        	Config.set(request.getSession(), Config.FMT_FALLBACK_LOCALE, locale);
+	        }
 
 	        
 //	        response.sendRedirect("frame.html");

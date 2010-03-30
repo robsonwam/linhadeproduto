@@ -120,5 +120,19 @@
 </table>
 <br/>
 <a href="javascript:history.back(1)"><fmt:message key="campo.voltar"/></a>
+<div id="rodape">
+<tr>
+	<td>
+	<a href="MudaLingua.do?lingua=en" target="_parent">
+	<img src="imagens/en-US.png" width="40" height="20" />
+	</a>
+	</td>
+	<td>
+	<a href="MudaLingua.do?lingua=pt" target="_parent">
+	<img src="imagens/pt-BR.png" width="40" height="20"/>
+	</a>
+	</td>
+</tr>
+</div>
 </body>
 </html>
