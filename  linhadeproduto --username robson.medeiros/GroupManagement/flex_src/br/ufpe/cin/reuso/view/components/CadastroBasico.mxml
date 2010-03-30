@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas height="550"
 		   width="750"
+		   creationComplete="initForm();"
 		   xmlns:mx="http://www.adobe.com/2006/mxml">
 	<mx:Script>
 		<![CDATA[
@@ -18,7 +19,16 @@
 			import mx.collections.ArrayCollection;
 			import mx.binding.utils.BindingUtils;
 			import br.ufpe.cin.reuso.util.Dicionario;
-
+			
+			import br.ufpe.cin.reuso.model.ReusoModelLocator;
+			import br.ufpe.cin.reuso.lang.src.Lang;
+			
+			[Bindable]
+			private var model:ReusoModelLocator = ReusoModelLocator.getInstance();
+			
+			[Bindable]
+            public var linguagem:Lang;
+			
 			// Icones dos botões
 			[Embed(source='../../assets/images/novo.png')]
 			[Bindable]
@@ -163,6 +173,12 @@
 				this.cbcdDescricao.setFocus();
 			}
 
+			
+			private function initForm():void
+			{
+				linguagem = model.linguagem;
+			}
+			
 			private function cbViewStackChance():void
 			{
 				if (this.funcCbViewStackChance != null)
@@ -336,7 +352,7 @@
 				   width="100%">
 
 			<mx:Label left="10"
-					  text="{Dicionario.CB_CODIGO}"
+					  text="{linguagem.xml.telaCadastroBasico.label.codigo}"
 					  top="13"
 					  width="112"/>
 
@@ -354,19 +370,19 @@
 						  width="478"/>
 
 			<mx:Label left="130"
-					  text="{Dicionario.CB_DESCRICAO}"
+					  text="{linguagem.xml.telaCadastroBasico.label.descricao}"
 					  top="13"/>
 
 			<mx:Button click="pesquisar();"
 					   icon="{ico_pesquisar}"
 					   id="BtnPesquisar"
-					   label="{Dicionario.BTN_PESQUISAR}"
+					   label="{linguagem.xml.telaCadastroBasico.botao.pesquisar}"
 					   right="10"
 					   width="96"
 					   y="31"/>
 
 			<mx:Label left="10"
-					  text="{Dicionario.REGISTROS_ENCONTRADOS}"
+					  text="{linguagem.xml.telaCadastroBasico.label.registros}"
 					  top="69"/>
 
 			<mx:Label color="#FE0000"
@@ -401,7 +417,7 @@
 					   click="incluir();"
 					   icon="{ico_incluir}"
 					   id="BtnIncluir"
-					   label="{Dicionario.BTN_INCLUIR}"
+					   label="{linguagem.xml.telaCadastroBasico.botao.incluir}"
 					   left="10"
 					   width="100"/>
 
@@ -409,7 +425,7 @@
 					   click="editar();"
 					   icon="{ico_editar}"
 					   id="BtnEditar"
-					   label="{Dicionario.BTN_EDITAR}"
+					   label="{linguagem.xml.telaCadastroBasico.botao.editar}"
 					   left="114"
 					   width="100"/>
 
@@ -417,7 +433,7 @@
 					   click="excluir();"
 					   icon="{ico_excluir}"
 					   id="BtnExcluir"
-					   label="{Dicionario.BTN_EXCLUIR}"
+					   label="{linguagem.xml.telaCadastroBasico.botao.excluir}"
 					   left="218"
 					   width="100"/>
 
@@ -425,7 +441,7 @@
 					   click="detalhar();"
 					   icon="{ico_detalhar}"
 					   id="BtnDetalhar"
-					   label="{Dicionario.BTN_DETALHAR}"
+					   label="{linguagem.xml.telaCadastroBasico.botao.detalhar}"
 					   left="322"
 					   width="100"/>
 
@@ -433,7 +449,7 @@
 					   click="listar();"
 					   icon="{ico_listar}"
 					   id="BtnListar"
-					   label="{Dicionario.BTN_LISTAR}"
+					   label="{linguagem.xml.telaCadastroBasico.botao.listar}"
 					   left="426"
 					   width="100"/>
 
@@ -441,7 +457,7 @@
 					   click="cancelar();"
 					   icon="{ico_cancelar}"
 					   id="BtnCancelar"
-					   label="{Dicionario.BTN_FECHAR}"
+					   label="{linguagem.xml.telaCadastroBasico.botao.fechar}"
 					   right="10"
 					   width="96"/>
 		</mx:Canvas>

@@ -6,6 +6,7 @@ package br.ufpe.cin.reuso.model
 	import com.adobe.cairngorm.CairngormError;
 	import com.adobe.cairngorm.CairngormMessageCodes;
 	import com.adobe.cairngorm.model.IModelLocator;
+	import br.ufpe.cin.reuso.lang.src.Lang;
 
 	[Bindable]
 	public class ReusoModelLocator implements IModelLocator
@@ -61,6 +62,8 @@ package br.ufpe.cin.reuso.model
 		public static const SERVICES_SHOW_BUSY:Boolean = true;
 
 		public var userLogged:UsuarioVO;
+		
+        public var linguagem:Lang;
 
 		public var workflowState:uint = 0;
 

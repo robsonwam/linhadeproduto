@@ -4,7 +4,7 @@
 				height="592"
 				layout="absolute"
 				showCloseButton="true"
-				title="Publicação"
+				title="{linguagem.xml.telaPublicacao.titulo}"
 				width="750"
 				xmlns:mx="http://www.adobe.com/2006/mxml"
 				xmlns:view="br.ufpe.cin.reuso.view.components.*"
@@ -42,6 +42,9 @@
 			
 			import com.universalmind.cairngorm.events.Callbacks;
 			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import br.ufpe.cin.reuso.model.ReusoModelLocator;
+			import br.ufpe.cin.reuso.lang.src.Lang;
 			
 			// Icones dos botões
 			[Embed( source='../assets/images/novo.png' )]
@@ -138,6 +141,12 @@
 			[Bindable]
 			private var dpTipo:ArrayCollection = new ArrayCollection();
 			
+			[Bindable]
+			private var model:ReusoModelLocator = ReusoModelLocator.getInstance();
+			
+			[Bindable]
+            public var linguagem:Lang;
+			
 //			[Bindable]
 //			private var dpTipoEstudante:ArrayCollection = new ArrayCollection();
 			
@@ -173,6 +182,8 @@
 			
 			private function initForm():void
 			{
+				linguagem = model.linguagem;
+				
 				dpMembro = new ArrayCollection();
 				
 				fileRef = new FileReference();
@@ -766,7 +777,7 @@
 				   width="100%"
 				   >
 
-			<mx:Label text="Código"
+			<mx:Label text="{linguagem.xml.telaPublicacao.label.codigo}"
 					  width="112"
 					  x="10"
 					  y="13"
@@ -779,7 +790,7 @@
 						  y="31"
 						  />
 
-			<mx:Label text="Título"
+			<mx:Label text="{linguagem.xml.telaPublicacao.label.titulo}"
 					  x="118"
 					  y="13"
 					  />
@@ -791,7 +802,7 @@
 						  y="31"
 						  />
 
-			<mx:Label text="Tipo"
+			<mx:Label text="{linguagem.xml.telaPublicacao.label.tipo}"
 					  x="381"
 					  y="13"
 					  />
@@ -799,13 +810,13 @@
 			<mx:Button click="pesquisar();"
 					   icon="{ico_pesquisar}"
 					   id="BtnPesquisar"
-					   label="{Dicionario.BTN_PESQUISAR}"
+					   label="{linguagem.xml.telaPublicacao.botao.pesquisar}"
 					   width="96"
 					   x="620"
 					   y="31"
 					   />
 
-			<mx:Label text="{Dicionario.REGISTROS_ENCONTRADOS}"
+			<mx:Label text="{linguagem.xml.telaPublicacao.label.registros}"
 					  x="10"
 					  y="84"
 					  />
@@ -829,19 +840,19 @@
 
 				<mx:columns>
 					<mx:DataGridColumn dataField="id"
-									   headerText="Código"
+									   headerText="{linguagem.xml.telaPublicacao.dataGrid.codigo}"
 									   id="dataGridColumnCodigo"
 									   width="80"
 									   />
 
 					<mx:DataGridColumn dataField="title"
-									   headerText="Título"
+									   headerText="{linguagem.xml.telaPublicacao.dataGrid.titulo}"
 									   id="dataGridColumnNome"
 									   wordWrap="true"
 									   />
 
 					<mx:DataGridColumn dataField="tipo"
-									   headerText="Tipo"
+									   headerText="{linguagem.xml.telaPublicacao.dataGrid.tipo}"
 									   id="dataGridColumnTipo"
 									   width="200"
 									   wordWrap="true"
@@ -853,7 +864,7 @@
 					   click="incluir();"
 					   icon="{ico_incluir}"
 					   id="BtnIncluir"
-					   label="{Dicionario.BTN_INCLUIR}"
+					   label="{linguagem.xml.telaPublicacao.botao.novo}"
 					   left="10"
 					   width="100"
 					   />
@@ -862,7 +873,7 @@
 					   click="editar();"
 					   icon="{ico_editar}"
 					   id="BtnEditar"
-					   label="{Dicionario.BTN_EDITAR}"
+					   label="{linguagem.xml.telaPublicacao.botao.editar}"
 					   left="114"
 					   width="100"
 					   />
@@ -871,7 +882,7 @@
 					   click="excluir();"
 					   icon="{ico_excluir}"
 					   id="BtnExcluir"
-					   label="{Dicionario.BTN_EXCLUIR}"
+					   label="{linguagem.xml.telaPublicacao.botao.excluir}"
 					   left="218"
 					   width="100"
 					   />
@@ -880,7 +891,7 @@
 					   click="detalhar();"
 					   icon="{ico_detalhar}"
 					   id="BtnDetalhar"
-					   label="{Dicionario.BTN_DETALHAR}"
+					   label="{linguagem.xml.telaPublicacao.botao.detalhar}"
 					   left="322"
 					   width="100"
 					   />
@@ -889,7 +900,7 @@
 					   click="listar();"
 					   icon="{ico_listar}"
 					   id="BtnListar"
-					   label="{Dicionario.BTN_LISTAR}"
+					   label="{linguagem.xml.telaPublicacao.botao.listar}"
 					   left="426"
 					   width="100"
 					   />
@@ -898,7 +909,7 @@
 					   click="cancelarConsulta();"
 					   icon="{ico_cancelar}"
 					   id="BtnCancelar"
-					   label="{Dicionario.BTN_FECHAR}"
+					   label="{linguagem.xml.telaPublicacao.botao.fechar}"
 					   right="10"
 					   width="100"
 					   />
@@ -912,7 +923,7 @@
 				   >
 
 			<mx:Label enabled="true"
-					  text="Código"
+					  text="{linguagem.xml.telaEditarPublicacao.label.codigo}"
 					  width="112"
 					  x="10"
 					  y="10"
@@ -924,7 +935,7 @@
 						  y="28"
 						  />
 
-			<mx:Label text="Título"
+			<mx:Label text="{linguagem.xml.telaEditarPublicacao.label.titulo}"
 					  x="10"
 					  y="58"
 					  />
@@ -939,7 +950,7 @@
 					   click="salvar();"
 					   icon="{ico_salvar}"
 					   id="BtnSalvar"
-					   label="{Dicionario.BTN_SALVAR}"
+					   label="{linguagem.xml.telaEditarPublicacao.botao.salvar}"
 					   left="10"
 					   width="96"
 					   />
@@ -948,7 +959,7 @@
 					   click="salvarENovo();"
 					   icon="{ico_salvar}"
 					   id="BtnSalvarENovo"
-					   label="{Dicionario.BTN_SALVAR_E_NOVO}"
+					   label="{linguagem.xml.telaEditarPublicacao.botao.salvarNovo}"
 					   left="114"
 					   width="122"
 					   />
@@ -957,27 +968,27 @@
 					   click="cancelarCadastro();"
 					   icon="{ico_cancelar}"
 					   id="BtnCancelar1"
-					   label="{Dicionario.BTN_CANCELAR}"
+					   label="{linguagem.xml.telaEditarPublicacao.botao.cancelar}"
 					   right="10"
 					   width="96"
 					   />
 			<view:ComboBoxFindSelected x="10" y="119" width="226" id="cadTipo" dataProvider="{this.dpTipo}" change="mudaTipo();"/>
-			<mx:Label x="12" y="102" text="Tipo"/>
+			<mx:Label x="12" y="102" text="{linguagem.xml.telaEditarPublicacao.label.tipo}"/>
 			<mx:Label x="422" y="193" text="Volume"/>
 			<mx:TextInput x="422" y="209" width="69" id="cadVolume"/>
-			<mx:Label x="259" y="192" text="Ano"/>
-			<mx:Label x="348" y="192" text="Mês"/>
-			<mx:Label x="506" y="193" text="Número"/>
+			<mx:Label x="259" y="192" text="{linguagem.xml.telaEditarPublicacao.label.ano}"/>
+			<mx:Label x="348" y="192" text="{linguagem.xml.telaEditarPublicacao.label.mes}"/>
+			<mx:Label x="506" y="193" text="{linguagem.xml.telaEditarPublicacao.label.numero}"/>
 			<mx:TextInput x="506" y="209" width="71" id="cadNumero"/>
-			<mx:Label x="585" y="193" text="Páginas"/>
+			<mx:Label x="585" y="193" text="{linguagem.xml.telaEditarPublicacao.label.paginas}"/>
 			<mx:Button icon="{ico_adicionar}" click="browseAndUpload();" x="570" y="142" id="BtnAdicionarArquivo"/>
 			<mx:Button icon="{ico_remover}" x="618" y="142" click="removerPDF();" id="BtnExcluirArquivo"/>
 			<mx:TextInput x="10" y="165" width="226" id="cadConferencia"/>
 			<mx:TextInput x="10" y="209" width="226" id="cadJornal"/>
 			<mx:TextInput x="259" y="165" width="239" id="cadInstituicao"/>
-			<mx:Label x="10" y="146" text="Conferência"/>
-			<mx:Label x="10" y="190" text="Jornal"/>
-			<mx:Label x="259" y="146" text="Instituição"/>
+			<mx:Label x="10" y="146" text="{linguagem.xml.telaEditarPublicacao.label.conference}"/>
+			<mx:Label x="10" y="190" text="{linguagem.xml.telaEditarPublicacao.label.jornal}"/>
+			<mx:Label x="259" y="146" text="{linguagem.xml.telaEditarPublicacao.label.institution}"/>
 			<mx:NumericStepper x="348" y="209" id="cadMes" maximum="12" minimum="1"/>
 			<mx:NumericStepper x="259" y="209" width="71" id="cadAno" minimum="1900" maximum="2999"/>
 			<mx:NumericStepper x="585" y="209" id="cadPaginas" minimum="0" maximum="10000" width="73"/>
@@ -989,16 +1000,16 @@
 			<mx:Label x="54" y="190" text="*" color="#FC0202" id="campoObgJornal"/>
 			<mx:DataGrid x="10" y="318" width="648" dataProvider="{dpMembro}" id="dataGridMembro" wordWrap="true" height="151">
 				<mx:columns>
-					<mx:DataGridColumn dataField="codigo"
+					<mx:DataGridColumn dataField="{linguagem.xml.telaEditarPublicacao.dataGrid.codigo}"
 									   headerText="Matrícula"
 									   width="100"
 									   />
 					<mx:DataGridColumn dataField="nome"
-									   headerText="Nome"
+									   headerText="{linguagem.xml.telaEditarPublicacao.dataGrid.nome}"
 									   width="341"
 									   />
 					<mx:DataGridColumn dataField="tipo"
-									   headerText="Tipo"
+									   headerText="{linguagem.xml.telaEditarPublicacao.dataGrid.tipo}"
 									   width="150"
 									   />
 				</mx:columns>
@@ -1008,7 +1019,7 @@
 					   height="22"
 					   icon="{ico_adicionar}"
 					   id="BtnAdicionarMembro"
-					   label="{Dicionario.BTN_ADICIONAR}"
+					   label="{linguagem.xml.telaEditarPublicacao.botao.adicionar}"
 					   left="10"
 					   width="100"
 					   />
@@ -1017,17 +1028,17 @@
 					   height="22"
 					   icon="{ico_remover}"
 					   id="BtnRemoverMembro"
-					   label="{Dicionario.BTN_REMOVER}"
+					   label="{linguagem.xml.telaEditarPublicacao.botao.remover}"
 					   left="118"
 					   width="100"
 					   />
-			<mx:Label x="10" y="301" text="Autores"/>
+			<mx:Label x="10" y="301" text="{linguagem.xml.telaEditarPublicacao.label.autores}"/>
 			<mx:TextArea x="10" y="256" width="648" height="37" id="cadAutorExterno" editable="true"/>
-			<mx:Label x="10" y="239" text="Autores Externo"/>
+			<mx:Label x="10" y="239" text="{linguagem.xml.telaEditarPublicacao.label.autoresExternos}"/>
 			<mx:Image x="570" y="58" width="88" height="76" id="cadArquivo"/>
-			<mx:Label x="570" y="41" text="Arquivo PDF"/>
+			<mx:Label x="570" y="41" text="{linguagem.xml.telaEditarPublicacao.label.arquivo}"/>
 			<view:ComboBoxFindSelected x="259" y="119" width="239" id="cadLinhaPesquisa" dataProvider="{this.dpLinhaPesquisa}"/>
-			<mx:Label x="259" y="102" text="Linha de Pesquisa"/>
+			<mx:Label x="259" y="102" text="{linguagem.xml.telaEditarPublicacao.label.linhaPesquisa}"/>
 
 		</mx:Canvas>
 	</mx:ViewStack>
