@@ -1,6 +1,6 @@
 /*
 Created		13/3/2010
-Modified		25/3/2010
+Modified		30/3/2010
 Project		
 Model			
 Company		
@@ -38,6 +38,7 @@ Database		PostgreSQL 8.1
 
 
 /* Drop Tables */
+Drop table "grupo_pesquisa" Restrict;
 Drop table "tipo" Restrict;
 Drop table "autor" Restrict;
 Drop table "publicacao" Restrict;
@@ -55,7 +56,7 @@ Drop table "membro" Restrict;
 Create table "membro"
 (
 	"id_membro" Serial NOT NULL,
-	"codigo" Char(10) NOT NULL,
+	"codigo" Char(10) NOT NULL UNIQUE,
 	"passwd" Char(20),
 	"nome" Varchar NOT NULL,
 	"tipo" Integer,
@@ -70,6 +71,7 @@ Create table "membro"
 	"ativo" Varchar,
 	"orientador" Varchar,
 	"co_orientador" Varchar,
+	"id_grupo_pesquisa" Integer,
  primary key ("id_membro")
 ) Without Oids;
 
@@ -88,6 +90,8 @@ Create table "publicacao"
 	"conference" Varchar,
 	"mes" Integer,
 	"school" Varchar,
+	"autor_externo" Text,
+	"id_grupo_pesquisa" Integer,
  primary key ("id")
 ) Without Oids;
 
@@ -104,6 +108,14 @@ Create table "tipo"
 (
 	"id" Serial NOT NULL,
 	"nome" Varchar,
+ primary key ("id")
+) Without Oids;
+
+
+Create table "grupo_pesquisa"
+(
+	"id" Serial NOT NULL,
+	"descricao" Varchar,
  primary key ("id")
 ) Without Oids;
 
@@ -127,6 +139,10 @@ Alter table "autor" add  foreign key ("id_membro") references "membro" ("id_memb
 Alter table "autor" add  foreign key ("id") references "publicacao" ("id") on update restrict on delete restrict;
 
 Alter table "membro" add  foreign key ("tipo") references "tipo" ("id") on update restrict on delete restrict;
+
+Alter table "membro" add  foreign key ("id_grupo_pesquisa") references "grupo_pesquisa" ("id") on update restrict on delete restrict;
+
+Alter table "publicacao" add  foreign key ("id_grupo_pesquisa") references "grupo_pesquisa" ("id") on update restrict on delete restrict;
 
 
 

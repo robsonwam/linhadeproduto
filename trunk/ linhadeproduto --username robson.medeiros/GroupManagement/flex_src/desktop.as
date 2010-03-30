@@ -45,7 +45,7 @@ private var windows:Array = new Array(
 	null //1
 	, br.ufpe.cin.reuso.view.Membro //2
 	, br.ufpe.cin.reuso.view.Publicacao //3
-	, null //4
+	, br.ufpe.cin.reuso.view.GrupoPesquisa //4
 //	, br.com.r2jm.sauderesidencia.view.PerfilAcesso //19
 	, null);
 

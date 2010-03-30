@@ -28,7 +28,6 @@ public class Relatorio extends HttpServlet{
 			 membro.setCodigo(membroCodigo);
 			 try {
 				membro = (Membro) FacadeReuso.getInstance().buscaPorExemplo(membro, Order.asc("codigo")).get(0);
-				membro =(Membro) FacadeReuso.getInstance().buscarPorChave(membro);
 			} catch (OperacaoInvalidaException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

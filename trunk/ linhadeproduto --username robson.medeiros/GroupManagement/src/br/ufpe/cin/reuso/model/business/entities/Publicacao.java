@@ -5,13 +5,15 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.io.Serializable;
 import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.Column;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class Publicacao implements Serializable {
@@ -41,8 +43,15 @@ public class Publicacao implements Serializable {
 
 	private String school;
 	
+	@Transient
+	private Boolean hasArquivo; 
+	
 	@Column(name="autor_externo")
 	private String autorExterno;
+	
+	@ManyToOne
+	@JoinColumn(name="id_grupo_pesquisa")
+	private GrupoPesquisa grupoPesquisa;
 
 	@ManyToMany
 	@JoinTable(name="autor",
@@ -159,6 +168,19 @@ public class Publicacao implements Serializable {
 	public void setMembroCollection(Collection<Membro> membroCollection) {
 		this.membroCollection = membroCollection;
 	}
+	
+	public Boolean getHasArquivo(){
+		boolean retorno = false;
+		
+		if(this.arquivo != null && this.arquivo.length > 0){
+			retorno = true;
+		}
+		return retorno;
+	}
+
+	public void setHasArquivo(Boolean hasArquivo) {
+		this.hasArquivo = hasArquivo;
+	}
 
 	@Override
 	public int hashCode() {
@@ -191,6 +213,14 @@ public class Publicacao implements Serializable {
 
 	public void setAutorExterno(String autorExterno) {
 		this.autorExterno = autorExterno;
+	}
+
+	public GrupoPesquisa getGrupoPesquisa() {
+		return grupoPesquisa;
+	}
+
+	public void setGrupoPesquisa(GrupoPesquisa idGrupoPesquisa) {
+		this.grupoPesquisa = idGrupoPesquisa;
 	}
 
 }

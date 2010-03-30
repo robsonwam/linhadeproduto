@@ -31,6 +31,14 @@ version="2.5">
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	
+	<context-param>
+    	<param-name>
+      		javax.servlet.jsp.jstl.fmt.localizationContext
+    	</param-name>
+    	<param-value>br.ufpe.cin.reuso.relatorio.messages.messages</param-value>
+  	</context-param>
+	
 
 	<servlet-mapping>
 		<servlet-name>MessageBrokerServlet</servlet-name>
@@ -55,6 +63,56 @@ version="2.5">
 	<servlet-mapping>
 		<servlet-name>Foto</servlet-name>
 		<url-pattern>/Foto.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>PDF</servlet-name>
+		<servlet-class>br.ufpe.cin.reuso.relatorio.Arquivo</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>PDF</servlet-name>
+		<url-pattern>/publicacao.pdf</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>Publicacao</servlet-name>
+		<servlet-class>br.ufpe.cin.reuso.relatorio.PublicacaoServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>Publicacao</servlet-name>
+		<url-pattern>/Publicacao.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>PublicacaoMembro</servlet-name>
+		<servlet-class>br.ufpe.cin.reuso.relatorio.PublicacaoMembro</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>PublicacaoMembro</servlet-name>
+		<url-pattern>/PublicacaoMembro.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>bib</servlet-name>
+		<servlet-class>br.ufpe.cin.reuso.relatorio.BibTex</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>bib</servlet-name>
+		<url-pattern>/BibTex.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>lingua</servlet-name>
+		<servlet-class>br.ufpe.cin.reuso.relatorio.MudaLinguaServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>lingua</servlet-name>
+		<url-pattern>/MudaLingua.do</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>

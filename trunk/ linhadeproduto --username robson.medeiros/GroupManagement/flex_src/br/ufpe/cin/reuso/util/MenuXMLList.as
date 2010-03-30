@@ -37,6 +37,7 @@ package br.ufpe.cin.reuso.util
 			strMenu = strMenu + '<menuitem label="Cadastro">';
             strMenu = strMenu + '  <menuitem label="Membro" data="2"/>';
 			strMenu = strMenu + '  <menuitem label="Publicação" data="3"/>';
+			strMenu = strMenu + '  <menuitem label="Linha de Pesquisa" data="4"/>';
 			strMenu = strMenu + '</menuitem>';
 
 			strMenu = strMenu + '</>';
