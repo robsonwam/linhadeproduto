@@ -1,13 +1,15 @@
 <?xml version="1.0"?>
 <lang>
     <menu>
-        <menuitem label="Arquivo" >
-            <menuitem label="Abrir"  data="abrir" />
-            <menuitem label="Salvar" data="salvar" />
-        </menuitem>
-        <menuitem label="Ajuda">
-            <menuitem label="Sobre" data="sobre" />
-        </menuitem>
+        <menuitem label="Programa">
+  			<menuitem label="Mudar Senha" data="1"/>
+  			<menuitem label="Sair" data="-1"/>
+		</menuitem>		
+		<menuitem label="Cadastro">
+  			<menuitem label="Membro" data="2"/>
+  			<menuitem label="Publicação" data="3"/>
+  			<menuitem label="Linha de Pesquisa" data="4"/>
+		</menuitem>
     </menu>
     <idiomas>
         <idioma>es-ES</idioma>

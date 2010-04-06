@@ -38,14 +38,16 @@ public class PublicacaoMembro extends HttpServlet{
 		String[] membros = request.getParameterValues("membros");
 		Collection<Publicacao> publicacoes = new HashSet<Publicacao>();
 		try {
-			for (String idMembro : membros) {
-				Membro membro = new Membro();
-				membro.setIdMembro(Integer.parseInt(idMembro));
-				
-				membro = (Membro) FacadeReuso.getInstance().buscarPorChave(membro);
-				for (Publicacao publicacao : membro.getPublicacaoCollection()) {
-					if(!publicacoes.contains(publicacao)){
-						publicacoes.add(publicacao);
+			if(membros != null){
+				for (String idMembro : membros) {
+					Membro membro = new Membro();
+					membro.setIdMembro(Integer.parseInt(idMembro));
+					
+					membro = (Membro) FacadeReuso.getInstance().buscarPorChave(membro);
+					for (Publicacao publicacao : membro.getPublicacaoCollection()) {
+						if(!publicacoes.contains(publicacao)){
+							publicacoes.add(publicacao);
+						}
 					}
 				}
 			}
