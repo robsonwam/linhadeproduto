@@ -1,11 +1,17 @@
 package br.ufpe.cin.reuso.util
 {
+	import br.ufpe.cin.reuso.lang.src.Lang;
+	import br.ufpe.cin.reuso.model.ReusoModelLocator;
+	
 	import mx.collections.ArrayCollection;
-	import mx.controls.Alert;
-	import mx.utils.StringUtil;
 
 	public class MenuXMLList
 	{
+		[Bindable]
+        public var linguagem:Lang;
+        
+        [Bindable]
+		private var model:ReusoModelLocator = ReusoModelLocator.getInstance();
 		public function MenuXMLList()
 		{
 		}
@@ -23,22 +29,28 @@ package br.ufpe.cin.reuso.util
 
 		public function getMenu():XMLList
 		{
+			linguagem = model.linguagem;	
 			return createMenu();
 		}
 
 		private function createMenu( ):XMLList
 		{
 			var strMenu:String = '<>';
-			strMenu = strMenu + '<menuitem label="Programa">';
-            strMenu = strMenu + '  <menuitem label="Mudar Senha" data="1"/>';
-			strMenu = strMenu + '  <menuitem label="Sair" data="-1"/>';
-			strMenu = strMenu + '</menuitem>';
+			var strMenuXML:String = linguagem.xml.menu;
+			strMenuXML = strMenuXML.replace("<menu>","");
+			strMenuXML = strMenuXML.replace("</menu>","");
+			strMenu = strMenu + strMenuXML;
 			
-			strMenu = strMenu + '<menuitem label="Cadastro">';
-            strMenu = strMenu + '  <menuitem label="Membro" data="2"/>';
-			strMenu = strMenu + '  <menuitem label="Publicação" data="3"/>';
-			strMenu = strMenu + '  <menuitem label="Linha de Pesquisa" data="4"/>';
-			strMenu = strMenu + '</menuitem>';
+//			strMenu = strMenu + '<menuitem label="Programa">';
+//            strMenu = strMenu + '  <menuitem label="Mudar Senha" data="1"/>';
+//			strMenu = strMenu + '  <menuitem label="Sair" data="-1"/>';
+//			strMenu = strMenu + '</menuitem>';
+//			
+//			strMenu = strMenu + '<menuitem label="Cadastro">';
+//            strMenu = strMenu + '  <menuitem label="Membro" data="2"/>';
+//			strMenu = strMenu + '  <menuitem label="Publicação" data="3"/>';
+//			strMenu = strMenu + '  <menuitem label="Linha de Pesquisa" data="4"/>';
+//			strMenu = strMenu + '</menuitem>';
 
 			strMenu = strMenu + '</>';
 			return new XMLList( strMenu );
