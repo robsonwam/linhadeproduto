@@ -107,6 +107,16 @@
 					${membro.cidade}
 				</td>
 			</tr>
+			<c:if test="${initParam.linhaPesquisa eq true}">
+			<tr>
+				<td>
+					<fmt:message key="campo.linha_pesquisa"/>
+				</td>
+				<td>
+					${membro.grupoPesquisa.descricao}
+				</td>
+			</tr>
+			</c:if>
 			<tr>
 				<td>
 					<fmt:message key="campo.ativo"/>
@@ -152,6 +162,11 @@
 		<td>
 			<fmt:message key="campo.instituicao"/>
 		</td>
+		<c:if test="${initParam.linhaPesquisa eq true}">
+		<td>
+			<fmt:message key="campo.linha_pesquisa"/>
+		</td>
+		</c:if>
 		<td>
 			<fmt:message key="campo.pdf"/>
 		</td>
@@ -194,6 +209,11 @@
 		<td>
 			${publicacao.school}
 		</td>
+		<c:if test="${initParam.linhaPesquisa eq true}">
+		<td>
+			${publicacao.grupoPesquisa.descricao}
+		</td>
+		</c:if>
 		<td>
 			<c:if test="${publicacao.arquivo != null}">
 				<a href="publicacao.pdf?id=${publicacao.id}">

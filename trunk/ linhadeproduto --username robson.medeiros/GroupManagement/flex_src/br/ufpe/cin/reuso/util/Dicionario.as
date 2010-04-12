@@ -4,6 +4,7 @@ package br.ufpe.cin.reuso.util
 	[Bindable]
 	public class Dicionario
 	{
+		public static const LINHA_PESQUISA:Boolean = true;
 		public static const ALERT_TITLE_ERROR:String = 'Error!';
 		public static const ALERT_TITLE_OK:String = 'Mensagem';
 		public static const ALERT_TITLE_LEMBRETE:String = 'Lembrete!';
