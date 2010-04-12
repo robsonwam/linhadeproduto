@@ -959,8 +959,8 @@
 			<mx:Label x="295" y="291" text="*" color="#FC0202"/>
 			<mx:Label x="10" y="403" text="{linguagem.xml.telaEditarMembro.label.camposObg}" color="#FC0202"/>
 			<mx:TextInput x="135" y="28" width="27" id="cadId" visible="false"/>
-			<view:ComboBoxFindSelected x="10" y="356" width="224" id="cadLinhaPesquisa" dataProvider="{this.dpLinhaPesquisa}" visible="true"/>
-			<mx:Label x="10" y="337" text="{linguagem.xml.telaEditarMembro.label.linhaPesquisa}"/>
+			<view:ComboBoxFindSelected x="10" y="356" width="224" id="cadLinhaPesquisa" dataProvider="{this.dpLinhaPesquisa}" visible="{Dicionario.LINHA_PESQUISA}"/>
+			<mx:Label x="10" y="337" visible="{Dicionario.LINHA_PESQUISA}" text="{linguagem.xml.telaEditarMembro.label.linhaPesquisa}"/>
 
 		</mx:Canvas>
 	</mx:ViewStack>

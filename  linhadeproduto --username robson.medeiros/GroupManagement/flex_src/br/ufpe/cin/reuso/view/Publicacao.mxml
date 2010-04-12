@@ -1037,8 +1037,8 @@
 			<mx:Label x="10" y="239" text="{linguagem.xml.telaEditarPublicacao.label.autoresExternos}"/>
 			<mx:Image x="570" y="58" width="88" height="76" id="cadArquivo"/>
 			<mx:Label x="570" y="41" text="{linguagem.xml.telaEditarPublicacao.label.arquivo}"/>
-			<view:ComboBoxFindSelected x="259" y="119" width="239" id="cadLinhaPesquisa" dataProvider="{this.dpLinhaPesquisa}"/>
-			<mx:Label x="259" y="102" text="{linguagem.xml.telaEditarPublicacao.label.linhaPesquisa}"/>
+			<view:ComboBoxFindSelected x="259" y="119" width="239" id="cadLinhaPesquisa" visible="{Dicionario.LINHA_PESQUISA}" dataProvider="{this.dpLinhaPesquisa}"/>
+			<mx:Label x="259" y="102" visible="{Dicionario.LINHA_PESQUISA}" text="{linguagem.xml.telaEditarPublicacao.label.linhaPesquisa}"/>
 
 		</mx:Canvas>
 	</mx:ViewStack>

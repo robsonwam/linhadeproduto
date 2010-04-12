@@ -58,9 +58,14 @@
 		<td>
 			<fmt:message key="campo.conferencia"/>
 		</td>
-		<td>
+		<td> 
 			<fmt:message key="campo.instituicao"/>
 		</td>
+		<c:if test="${initParam.linhaPesquisa eq true}">
+		<td>
+			<fmt:message key="campo.linha_pesquisa"/>
+		</td>
+		</c:if>
 		<td>
 			<fmt:message key="campo.pdf"/>
 		</td>
@@ -103,6 +108,11 @@
 		<td>
 			${publicacao.school}
 		</td>
+		<c:if test="${initParam.linhaPesquisa eq true}">
+		<td>
+			${publicacao.grupoPesquisa.descricao}
+		</td>
+		</c:if>
 		<td>
 			<c:if test="${publicacao.arquivo != null}">
 				<a href="publicacao.pdf?id=${publicacao.id}">

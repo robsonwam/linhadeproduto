@@ -5,7 +5,7 @@
   			<menuitem label="Change Password" data="1"/>
   			<menuitem label="Exit" data="-1"/>
 		</menuitem>		
-		<menuitem label="Cadastro">
+		<menuitem label="Cadastre">
   			<menuitem label="Member" data="2"/>
   			<menuitem label="Publication" data="3"/>
   			<menuitem label="Research Line" data="4"/>
