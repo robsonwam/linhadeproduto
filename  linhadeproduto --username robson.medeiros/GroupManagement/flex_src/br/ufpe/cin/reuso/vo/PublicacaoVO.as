@@ -23,8 +23,10 @@ package br.ufpe.cin.reuso.vo
 			public var pages:int;		
 			public var conference:String;		
 			public var mes:int;		
-			public var school:String;		
+			public var school:String;
+			CONFIG::linhapesquisa{		
 			public var grupoPesquisa:GrupoPesquisaVO;
+			}
 			[ArrayElementType( "br.ufpe.cin.reuso.vo.MembroVO" )]
 			public var membroCollection:ArrayCollection;
 		}
