@@ -3,17 +3,20 @@ package br.ufpe.cin.reuso.teste;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import br.ufpe.cin.reuso.controller.FacadeReuso;
+import br.ufpe.cin.reuso.exceptions.ExclusaoInvalidaException;
 import br.ufpe.cin.reuso.exceptions.OperacaoInvalidaException;
+import br.ufpe.cin.reuso.model.business.entities.GrupoPesquisa;
 import br.ufpe.cin.reuso.model.business.entities.Membro;
 import br.ufpe.cin.reuso.model.business.entities.Publicacao;
 import br.ufpe.cin.reuso.model.business.entities.Tipo;
 
 public class CargaInicialTest {
 	
-	@Test
+	@Ignore
 	public void cargaInicialMembro() throws OperacaoInvalidaException{
 		Membro membro = new Membro();
 		membro.setAtivo("Ativo");
@@ -30,7 +33,7 @@ public class CargaInicialTest {
 		FacadeReuso.getInstance().inserir(membro);
 	}
 	
-	@Test
+	@Ignore
 	public void cargaInicialPublicacao() throws OperacaoInvalidaException{
 		Publicacao publicacao = new Publicacao();
 		publicacao.setAno(2000);
@@ -42,6 +45,16 @@ public class CargaInicialTest {
 		membros.add(membro);
 		publicacao.setMembroCollection(membros);
 		FacadeReuso.getInstance().inserir(publicacao);
+	}
+	
+	@Test
+	public void cartaInicialLinhaPesquisa() throws OperacaoInvalidaException, ExclusaoInvalidaException
+	{
+		GrupoPesquisa grupoPesquisa = new GrupoPesquisa();
+		grupoPesquisa.setDescricao("Pesquisa Teste");
+		FacadeReuso.getInstance().inserir(grupoPesquisa);
+		FacadeReuso.getInstance().remover(grupoPesquisa);
+		
 	}
 
 }

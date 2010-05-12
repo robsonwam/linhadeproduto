@@ -191,11 +191,12 @@
                 fileRef.addEventListener(ProgressEvent.PROGRESS, fileRef_progress);
                 fileRef.addEventListener(Event.COMPLETE, fileRef_complete);
                 
+                CONFIG::linhapesquisa{
                 var handlers:Callbacks = new Callbacks(onResult_LinhaPesquisa);
 				var event:GrupoPesquisaEvent = new GrupoPesquisaEvent(GrupoPesquisaEvent.EVENT_PESQUISAR, handlers);
 				event.params = new GrupoPesquisaVO();
 				event.dispatch();
-				
+                }
 				this.dpTipo.addItem({ label: "", data: null });
 				this.dpTipo.addItem({ label: Dicionario.PUBLICACAO_ARTIGO_CONFERENCIA, data: Dicionario.PUBLICACAO_ARTIGO_CONFERENCIA });
 				this.dpTipo.addItem({ label: Dicionario.PUBLICACAO_ARTIGO_REVISTA, data: Dicionario.PUBLICACAO_ARTIGO_REVISTA });
@@ -213,6 +214,7 @@
 				
 			}
 			
+			CONFIG::linhapesquisa{
 			private function onResult_LinhaPesquisa(result:ArrayCollection):void
 			{
 				var data:ArrayCollection = new ArrayCollection();
@@ -224,6 +226,7 @@
 					data.addItem({label: d.descricao, data: d.id, item: d});
 				}
 				this.dpLinhaPesquisa = data;
+			}
 			}
 			
 			private function getOrdenacao():Array
@@ -241,11 +244,13 @@
 				this.cadCodigo.text = publicacao.id.toString();
 				this.cadTitulo.text = publicacao.title;
 				this.cadTipo.selectedItem = publicacao.tipo;
+				CONFIG::linhapesquisa{
 				if(publicacao.grupoPesquisa != null)
 				{
 					this.cadLinhaPesquisa.selectedItem = publicacao.grupoPesquisa.id;
 				}else{
 					this.cadLinhaPesquisa.selectedItem = null;
+				}
 				}
 				this.cadConferencia.text = publicacao.conference;
 				this.cadJornal.text = publicacao.jornal;
@@ -300,7 +305,9 @@
 					f.pages = this.cadPaginas.value;
 					f.mes = this.cadMes.value;
 					f.tipo = this.cadTipo.selectedLabel;
+					CONFIG::linhapesquisa{
 					f.grupoPesquisa = this.cadLinhaPesquisa.selectedItem.item as GrupoPesquisaVO;
+					}
 					f.membroCollection = this.dpMembro;
 				}
 				else if ( action == AC_DELETE )
@@ -394,7 +401,9 @@
 				this.cadNumero.enabled = false;
 				this.cadPaginas.enabled = false;
 				this.cadTipo.enabled = true;
+				CONFIG::linhapesquisa{
 				this.cadLinhaPesquisa.enabled = true;
+				}
 				this.cadVolume.enabled = false;
 				
 				this.campoObgTitulo.visible = true;
@@ -652,7 +661,9 @@
 				this.cadNumero.text = "";
 				this.cadPaginas.value = 0;
 				this.cadTipo.selectedIndex = 0;
+				CONFIG::linhapesquisa{
 				this.cadLinhaPesquisa.selectedIndex = 0;
+				}
 				this.cadVolume.text = "";	
 				this.dpMembro = new ArrayCollection();
 				this.dpArquivo = null;			
@@ -1037,8 +1048,8 @@
 			<mx:Label x="10" y="239" text="{linguagem.xml.telaEditarPublicacao.label.autoresExternos}"/>
 			<mx:Image x="570" y="58" width="88" height="76" id="cadArquivo"/>
 			<mx:Label x="570" y="41" text="{linguagem.xml.telaEditarPublicacao.label.arquivo}"/>
-			<view:ComboBoxFindSelected x="259" y="119" width="239" id="cadLinhaPesquisa" visible="{Dicionario.LINHA_PESQUISA}" dataProvider="{this.dpLinhaPesquisa}"/>
-			<mx:Label x="259" y="102" visible="{Dicionario.LINHA_PESQUISA}" text="{linguagem.xml.telaEditarPublicacao.label.linhaPesquisa}"/>
+			<view:ComboBoxFindSelected x="259" y="119" width="239" id="cadLinhaPesquisa" visible="{CONFIG::linhapesquisa}" dataProvider="{this.dpLinhaPesquisa}"/>
+			<mx:Label x="259" y="102" visible="{CONFIG::linhapesquisa}" text="{linguagem.xml.telaEditarPublicacao.label.linhaPesquisa}"/>
 
 		</mx:Canvas>
 	</mx:ViewStack>

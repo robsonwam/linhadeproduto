@@ -25,7 +25,9 @@ package br.ufpe.cin.reuso.vo
 		public var ativo:String;
 		public var orientador:String;
 		public var coOrientador:String;
+		CONFIG::linhapesquisa{
 		public var grupoPesquisa:GrupoPesquisaVO;
+		}
 		[ArrayElementType( "br.ufpe.cin.reuso.vo.PublicacaoVO" )]
 		public var publicacaoCollection:ArrayCollection;
 	}

@@ -179,10 +179,12 @@
                 fileRef.addEventListener(ProgressEvent.PROGRESS, fileRef_progress);
                 fileRef.addEventListener(Event.COMPLETE, fileRef_complete);
                 
+                CONFIG::linhapesquisa{
                 var handlers:Callbacks = new Callbacks(onResult_LinhaPesquisa);
 				var event1:GrupoPesquisaEvent = new GrupoPesquisaEvent(GrupoPesquisaEvent.EVENT_PESQUISAR, handlers);
 				event1.params = new GrupoPesquisaVO();
 				event1.dispatch();
+                }
                 
                 var handlers:Callbacks = new Callbacks(onResult_Tipo);
 				var event:TipoEvent = new TipoEvent(TipoEvent.EVENT_PESQUISAR, handlers);
@@ -200,6 +202,7 @@
 				
 			}
 			
+			CONFIG::linhapesquisa{
 			private function onResult_LinhaPesquisa(result:ArrayCollection):void
 			{
 				var data:ArrayCollection = new ArrayCollection();
@@ -212,7 +215,8 @@
 				}
 				this.dpLinhaPesquisa = data;
 			}
-
+			}
+			
 			private function onResult_Tipo(result:ArrayCollection):void
 			{
 				var data:ArrayCollection = new ArrayCollection();
@@ -261,11 +265,13 @@
 				this.cadSite.text = membro.website;
 				this.cadTelefone.text = membro.telefone;
 				
+				CONFIG::linhapesquisa{
 				if (membro.grupoPesquisa != null)
 				{
 					this.cadLinhaPesquisa.selectedItem = membro.grupoPesquisa.id;
 				}else{
 					this.cadLinhaPesquisa.selectedItem = null;
+				}
 				}
 				
 				if (membro.tipo != null)
@@ -337,7 +343,9 @@
 					f.website = this.cadSite.text;
 					f.telefone = this.cadTelefone.text;
 					f.tipo = this.cadTipo.selectedItem.item as TipoVO;
+					CONFIG::linhapesquisa{
 					f.grupoPesquisa = this.cadLinhaPesquisa.selectedItem.item as GrupoPesquisaVO;
+					}
 					f.tipoEstudante = this.cadTipoEstudante.selectedLabel;
 				}
 				else if ( action == AC_DELETE )
@@ -443,7 +451,9 @@
 				this.cadSite.editable = true;
 				this.cadTelefone.editable = true;
 				this.cadTipo.enabled = true;
+				CONFIG::linhapesquisa{
 				this.cadLinhaPesquisa.enabled = true;
+				}
 				this.cadTipoEstudante.enabled = false;
 				this.cadCoOrientador.enabled = false;
 				this.cadOrientador.enabled = false;
@@ -466,7 +476,9 @@
 					this.cadSite.editable = false;
 					this.cadTelefone.editable = false;
 					this.cadTipo.enabled = false;
+					CONFIG::linhapesquisa{
 					this.cadLinhaPesquisa.enabled = false;
+					}
 					this.cadTipoEstudante.enabled = false;
 					this.BtnSalvar.visible = false;
 					this.BtnSalvarENovo.visible = false;
@@ -653,7 +665,9 @@
 				this.cadTelefone.text = "";
 				this.cadFoto.source = null;
 				this.cadTipo.selectedIndex = 0;
+				CONFIG::linhapesquisa{
 				this.cadLinhaPesquisa.selectedIndex = 0;
+				}
 				this.cadTipoEstudante.selectedIndex = 0;
 			}
 			
@@ -959,8 +973,8 @@
 			<mx:Label x="295" y="291" text="*" color="#FC0202"/>
 			<mx:Label x="10" y="403" text="{linguagem.xml.telaEditarMembro.label.camposObg}" color="#FC0202"/>
 			<mx:TextInput x="135" y="28" width="27" id="cadId" visible="false"/>
-			<view:ComboBoxFindSelected x="10" y="356" width="224" id="cadLinhaPesquisa" dataProvider="{this.dpLinhaPesquisa}" visible="{Dicionario.LINHA_PESQUISA}"/>
-			<mx:Label x="10" y="337" visible="{Dicionario.LINHA_PESQUISA}" text="{linguagem.xml.telaEditarMembro.label.linhaPesquisa}"/>
+			<view:ComboBoxFindSelected x="10" y="356" width="224" id="cadLinhaPesquisa" dataProvider="{this.dpLinhaPesquisa}" visible="{CONFIG::linhapesquisa}"/>
+			<mx:Label x="10" y="337" visible="{CONFIG::linhapesquisa}" text="{linguagem.xml.telaEditarMembro.label.linhaPesquisa}"/>
 
 		</mx:Canvas>
 	</mx:ViewStack>
