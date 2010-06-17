@@ -42,8 +42,8 @@ public class Membro implements Serializable {
 
 	private String foto;
 	
-	@ManyToOne
-	@JoinColumn(name="id_grupo_pesquisa")
+//	@ManyToOne
+//	@JoinColumn(name="id_grupo_pesquisa")
 	private GrupoPesquisa grupoPesquisa;
 
 	@Column(name="foto_byte")

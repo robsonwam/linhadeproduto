@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow close="PopUpManager.removePopUp(this);"
+				creationComplete="initForm();"
+				height="592"
+				layout="absolute"
+				showCloseButton="true"
+				title="{linguagem.xml.telaPublicacao.titulo}"
+				width="756"
+				xmlns:mx="http://www.adobe.com/2006/mxml"
+				xmlns:view="br.ufpe.cin.reuso.view.components.*" xmlns:components="br.com.r2jm.sauderesidencia.view.components.*"
+				>
+
+	<mx:Script>
+		<![CDATA[
+			import br.ufpe.cin.reuso.events.VisitanteEvent;
+			import br.ufpe.cin.reuso.lang.src.Lang;
+			import br.ufpe.cin.reuso.model.ReusoModelLocator;
+			import br.ufpe.cin.reuso.util.DateUtils;
+			import br.ufpe.cin.reuso.util.Dicionario;
+			import br.ufpe.cin.reuso.view.components.TitleWindowPesquisa;
+			import br.ufpe.cin.reuso.vo.CronogramaVO;
+			import br.ufpe.cin.reuso.vo.VisitanteVO;
+			
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import com.universalmind.cairngorm.events.Callbacks;
+			
+			import mx.binding.utils.BindingUtils;
+			import mx.collections.ArrayCollection;
+			import mx.collections.Sort;
+			import mx.collections.SortField;
+			import mx.controls.Alert;
+			import mx.core.Application;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.ResultEvent;
+			
+			import org.doc.Document;
+			import org.doc.PaperFormat;
+			
+			// Icones dos botões
+			[Embed( source='../assets/images/novo.png' )]
+			[Bindable]
+			private static var ico_incluir:Class;
+			
+			[Embed( source='../assets/images/pesquisar.png' )]
+			[Bindable]
+			private static var ico_pesquisar:Class;
+			
+			[Embed( source='../assets/images/editar.png' )]
+			[Bindable]
+			private static var ico_editar:Class;
+			
+			[Embed( source='../assets/images/delete.png' )]
+			[Bindable]
+			private static var ico_excluir:Class;
+			
+			[Embed( source='../assets/images/detalhar.png' )]
+			[Bindable]
+			private static var ico_detalhar:Class;
+			
+			[Embed( source='../assets/images/listar.png' )]
+			[Bindable]
+			private static var ico_listar:Class;
+			
+			[Embed( source='../assets/images/cancelar.png' )]
+			[Bindable]
+			private static var ico_cancelar:Class;
+			
+			[Embed( source='../assets/images/salvar.png' )]
+			[Bindable]
+			private static var ico_salvar:Class;
+			
+			[Embed( source='../assets/images/incluir.png' )]
+			[Bindable]
+			private static var ico_adicionar:Class;
+			
+			[Embed( source='../assets/images/excluir.png' )]
+			[Bindable]
+			private static var ico_remover:Class;
+			
+			[Embed( source='../assets/images/adobe.png' )]
+			[Bindable]
+			private static var ico_adobe:Class;
+			
+			
+			private var JanelaPesquisa:TitleWindowPesquisa = null;
+			
+			public static const AC_SEARCH:uint = 0;
+			
+			public static const AC_INSERT:uint = 1;
+			
+			public static const AC_INSERT_AND_NEW:uint = 2;
+			
+			public static const AC_DETAIL:uint = 3;
+			
+			public static const AC_UPDATE:uint = 4;
+			
+			public static const AC_DELETE:uint = 5;
+			
+			public static const AC_LIST:uint = 6;
+			
+			private var action:uint = 0;
+			
+			[Bindable]
+			private var visitante:VisitanteVO;
+			
+			public var titutoReport:String = "Visitante";
+			
+			public const VS_CONSULTA:uint = 0;
+			
+			public const VS_CADASTRO:uint = 1;
+			
+			private var dataFieldDia:String = "dia";
+			
+			private var dataFieldDescricao:String = "descricao";
+			
+			private var dataFieldHora:String = "hora";
+			
+			
+			[Bindable]
+			private var dpRegistros:ArrayCollection = new ArrayCollection();
+			
+			[Bindable]
+			private var dpCronograma:ArrayCollection = new ArrayCollection();
+			
+			[Bindable]
+			private var model:ReusoModelLocator = ReusoModelLocator.getInstance();
+			
+			[Bindable]
+            public var linguagem:Lang;
+			
+			
+			private function initForm():void
+			{
+				linguagem = model.linguagem;
+				
+			}
+			
+			private function getOrdenacao():Array
+			{
+				return [ new SortField( this.dataFieldDescricao , true ) , new SortField( this.dataFieldDia , true ) , new SortField( this.dataFieldHora , true )];
+			}
+			
+			private function setEntidade( action:uint ):void
+			{
+				if (( action == AC_UPDATE ) || ( action == AC_DETAIL ))
+				{
+					this.visitante = this.consDataGrid.selectedItem as VisitanteVO;
+				}
+				this.cadCodigo.text = visitante.id.toString();
+				this.cadNome.text = visitante.nome;
+				if(visitante.dia != null){
+					this.cadData.text = DateUtils.dateFormat( visitante.dia , "DD/MM/YYYY" );
+				}
+				if(visitante.hora != null){
+					this.cadHora.text = visitante.hora.toString();
+				}
+				this.dpCronograma = visitante.cronogramaCollection;
+			}
+			
+			private function DispararEvento( action:uint ):void
+			{
+				var handlers:Callbacks = null;
+				var event:VisitanteEvent = null;
+				var f:VisitanteVO = new VisitanteVO();
+				
+				if ( action == AC_SEARCH )
+				{
+					// Pega os dados da tela de pesquisa
+					f.id = int(this.consCodigo.text);
+					f.nome = this.consNome.text;
+				}
+				else if (( action == AC_INSERT ) || ( action == AC_INSERT_AND_NEW ) || ( action == AC_UPDATE ))
+				{
+					// Pega os dados da tela de cadastro
+					f.id = int(this.cadCodigo.text);
+					f.nome = this.cadNome.text;
+					var dataArray:Array = this.cadData.text.split( "/" );
+					f.dia = new Date( dataArray[ 2 ] + "/" + dataArray[ 1 ] + "/" + dataArray[ 0 ]);
+					f.hora = this.cadHora.text;
+					f.cronogramaCollection = this.dpCronograma;
+				}
+				else if ( action == AC_DELETE )
+				{
+					// Pega os dados no datagrid na tela de conculta
+					f = this.consDataGrid.selectedItem as VisitanteVO;
+				}
+				
+				if ( action == AC_SEARCH )
+				{
+					handlers = new Callbacks( onResult_Pesquisar );
+					event = new VisitanteEvent( VisitanteEvent.EVENT_PESQUISAR , handlers );
+					
+				}
+				else if ( action == AC_INSERT )
+				{
+					handlers = new Callbacks( onResult_SalvarInsert );
+					event = new VisitanteEvent( VisitanteEvent.EVENT_INSERIR , handlers );
+					
+				}
+				else if ( action == AC_INSERT_AND_NEW )
+				{
+					handlers = new Callbacks( onResult_SalvarENovo );
+					event = new VisitanteEvent( VisitanteEvent.EVENT_INSERIR , handlers );
+					
+				}
+				else if ( action == AC_UPDATE )
+				{
+					handlers = new Callbacks( onResult_SalvarUpdate );
+					event = new VisitanteEvent( VisitanteEvent.EVENT_EDITAR , handlers );
+					
+				}
+				else if ( action == AC_DELETE )
+				{
+					if (( this.consDataGrid.selectedItem as VisitanteVO ) != null )
+					{
+						handlers = new Callbacks( onResult_Excluir );
+						event = new VisitanteEvent( VisitanteEvent.EVENT_EXCLUIR , handlers );
+					}
+					else
+					{
+						Alert.show( Dicionario.REGISTROS_NAO_SELECIONADO );
+					}
+				}
+				
+				if ( event != null )
+				{
+					event.params = f;
+					event.dispatch();
+				}
+			}
+			
+			private function openCadastro( action:uint ):void
+			{
+				this.action = action;
+				
+				if (( action == AC_UPDATE ) || ( action == AC_DETAIL ))
+				{
+					if ( this.consDataGrid.selectedItem != null )
+					{
+						this.cbViewStack.selectedIndex = VS_CADASTRO;
+					}
+					else
+					{
+						Alert.show( Dicionario.REGISTROS_NAO_SELECIONADO );
+					}
+				}
+				else
+				{
+					this.cbViewStack.selectedIndex = VS_CADASTRO;
+				}
+			}
+			
+			private function cbViewStackChance():void
+			{
+				
+				this.cadCodigo.enabled = false;
+				this.cadNome.enabled = true;
+				this.BtnSalvar.visible = true;
+				this.BtnSalvarENovo.visible = true;
+				this.BtnAdicionarCronograma.visible = true;
+				this.BtnRemoverCronograma.visible = true;
+				this.cadData.enabled = true;
+				this.cadHora.enabled = true;
+				this.cadCronogramaDescricao.enabled = true;
+				this.cadCronogramaData.enabled = true;
+				this.cadCronogramaHora.enabled = true;
+				
+				this.campoObgTitulo.visible = true;
+								
+				if ( this.action == AC_UPDATE )
+				{
+					this.BtnSalvarENovo.visible = false;
+				}
+				else if ( this.action == AC_DETAIL )
+				{
+					this.BtnAdicionarCronograma.visible = false;
+					this.BtnRemoverCronograma.visible = false;
+					this.BtnSalvar.visible = false;
+					this.BtnSalvarENovo.visible = false;
+					this.BtnAdicionarCronograma.visible = false;
+					this.BtnRemoverCronograma.visible = false;
+					this.cadData.enabled = false;
+					this.cadHora.enabled = false;
+					this.cadCronogramaDescricao.enabled = false;
+					this.cadCronogramaData.enabled = false;
+					this.cadCronogramaHora.enabled = false;
+					this.cadNome.enabled = false;
+				}
+				
+				this.setEntidade( this.action );
+			}
+			
+			
+			private function pesquisar():void
+			{
+				this.DispararEvento( AC_SEARCH );
+			}
+			
+			private function salvar():void
+			{
+				if (validarDados())
+				{
+					this.DispararEvento( this.action );
+				}
+			}
+			
+			private function validarDados():Boolean
+			{
+				if ( cadNome.text.length <= 0 )
+				{
+					Alert.show( "Favor informa o nome!" , Dicionario.ALERT_TITLE_ERROR );
+					return false;
+				}
+				return true;
+			}
+			
+			private function salvarENovo():void
+			{
+				this.DispararEvento( AC_INSERT_AND_NEW );
+			}
+			
+			private function incluir():void
+			{
+				this.visitante = new VisitanteVO();
+				this.openCadastro( AC_INSERT );
+			}
+			
+			private function editar():void
+			{
+				this.openCadastro( AC_UPDATE );
+			}
+			
+			private function detalhar():void
+			{
+				this.openCadastro( AC_DETAIL );
+			}
+			
+			private function excluir():void
+			{
+				// instantiate the Alert box
+				if ( this.consDataGrid.selectedItem != null )
+				{
+					var a:Alert = Alert.show( Dicionario.CONFIRMAR_EXCLUSAO , "Confirmar" , Alert.YES | Alert.NO , this , this.confirmarExclusao , null , Alert.NO );
+				}
+				else
+				{
+					Alert.show( Dicionario.REGISTROS_NAO_SELECIONADO );
+				}
+			}
+			
+			private function confirmarExclusao( event:CloseEvent ):void
+			{
+				if ( event.detail == Alert.YES )
+				{
+					this.DispararEvento( AC_DELETE );
+				}
+			}
+			
+			private function onResult_Pesquisar( result:ArrayCollection ):void
+			{
+				this.dpRegistros = result as ArrayCollection;
+			}
+			
+			private function onResult_SalvarInsert( result:Boolean ):void
+			{
+				if ( result )
+				{
+					this.cancelarCadastro();
+					this.pesquisar();
+				}
+			}
+			
+			private function onResult_SalvarENovo( result:Boolean ):void
+			{
+				if ( result )
+				{
+					this.limparCampos();
+				}
+			}
+			
+			private function onResult_SalvarUpdate( result:Boolean ):void
+			{
+				if ( result )
+				{
+					this.cancelarCadastro();
+					this.pesquisar();
+				}
+			}
+			
+			private function onResult_Excluir( result:Boolean ):void
+			{
+				if ( result )
+				{
+					Alert.show( Dicionario.OK_EXCLUIR );
+					this.pesquisar();
+				}
+			}
+			
+			private function cancelarConsulta():void
+			{
+				PopUpManager.removePopUp( this );
+			}
+			
+			private function cancelarCadastro():void
+			{
+				this.cbViewStack.selectedIndex = VS_CONSULTA;
+				this.limparCampos();
+			}
+			
+			
+			public function limparCampos():void
+			{
+				this.cadCodigo.text = "";
+				this.cadNome.text = "";
+				this.cadData.text = "";
+				this.cadHora.text = "";
+				this.cadCronogramaDescricao.text = "";
+				this.cadCronogramaData.text = "";
+				this.cadCronogramaHora.text = "";
+				this.dpCronograma = new ArrayCollection();
+			}
+			
+			private function adicionarCronograma():void
+			{
+				var cronograma:CronogramaVO = new CronogramaVO();
+				if(dpCronograma == null){
+					dpCronograma = new ArrayCollection();
+				}
+				cronograma.descricao = this.cadCronogramaDescricao.text;
+				cronograma.dia = this.cadCronogramaData.text;
+				cronograma.hora = this.cadCronogramaHora.text;
+				
+				dpCronograma.addItem(cronograma);
+				this.cadCronogramaDescricao.text = "";
+				this.cadCronogramaData.text = "";
+				this.cadCronogramaHora.text = "";
+				
+			}
+			
+			
+			private function removerMembro():void
+			{
+				if ( this.dataGridCronograma.selectedItem != null )
+				{
+					
+					( this.dpCronograma as ArrayCollection ).removeItemAt( this.dataGridCronograma.selectedIndex );
+					
+				}
+			
+			}
+			
+			
+			public function SortDataGrid():void
+			{
+				this.dpRegistros.sort = new Sort();
+				this.dpRegistros.sort.fields = this.getOrdenacao();
+				this.dpRegistros.refresh();
+			}
+		]]>
+	</mx:Script>
+
+
+	<mx:ViewStack change="cbViewStackChance();"
+				  height="552"
+				  id="cbViewStack"
+				  width="736"
+				  x="0"
+				  y="0"
+				  >
+
+		<mx:Canvas backgroundAlpha="1.0"
+				   height="100%"
+				   label="Consulta"
+				   width="100%"
+				   >
+
+			<mx:Label text="{linguagem.xml.telaPublicacao.label.codigo}"
+					  width="112"
+					  x="10"
+					  y="13"
+					  />
+
+			<mx:TextInput id="consCodigo"
+						  maxChars="10"
+						  width="100"
+						  x="10"
+						  y="31"
+						  />
+
+			<mx:Label text="{linguagem.xml.telaPublicacao.label.nome}"
+					  x="118"
+					  y="13"
+					  />
+
+			<mx:TextInput id="consNome"
+						  maxChars="60"
+						  width="439"
+						  x="118"
+						  y="31"
+						  />
+
+			<mx:Button click="pesquisar();"
+					   icon="{ico_pesquisar}"
+					   id="BtnPesquisar"
+					   label="{linguagem.xml.telaPublicacao.botao.pesquisar}"
+					   width="96"
+					   x="620"
+					   y="31"
+					   />
+
+			<mx:Label text="{linguagem.xml.telaPublicacao.label.registros}"
+					  x="10"
+					  y="84"
+					  />
+
+			<mx:Label color="#FE0000"
+					  id="cbcsCountReg"
+					  text="{this.dpRegistros.length}"
+					  x="153"
+					  y="84"
+					  />
+
+			<mx:DataGrid creationComplete="SortDataGrid();"
+						 dataProvider="{this.dpRegistros}"
+						 height="360"
+						 id="consDataGrid"
+						 width="710"
+						 wordWrap="true"
+						 x="10"
+						 y="101"
+						 >
+
+				<mx:columns>
+					<mx:DataGridColumn dataField="id"
+									   headerText="{linguagem.xml.telaPublicacao.dataGrid.codigo}"
+									   id="dataGridColumnCodigo"
+									   width="80"
+									   />
+
+					<mx:DataGridColumn dataField="nome"
+									   headerText="{linguagem.xml.telaEditarMembro.label.nome}"
+									   id="dataGridColumnNome"
+									   width="200"
+									   wordWrap="true"
+									   />
+					
+					<mx:DataGridColumn dataField="dia"
+									   headerText="{linguagem.xml.telaVisitante.label.data}"
+									   id="dataGridColumnData"
+									   wordWrap="true"
+									   />
+
+					<mx:DataGridColumn dataField="hora"
+									   headerText="{linguagem.xml.telaVisitante.label.hora}"
+									   id="dataGridColumnHora"
+									   wordWrap="true"
+									   />
+				</mx:columns>
+			</mx:DataGrid>
+
+			<mx:Button bottom="34"
+					   click="incluir();"
+					   icon="{ico_incluir}"
+					   id="BtnIncluir"
+					   label="{linguagem.xml.telaPublicacao.botao.novo}"
+					   left="10"
+					   width="100"
+					   />
+
+			<mx:Button bottom="34"
+					   click="editar();"
+					   icon="{ico_editar}"
+					   id="BtnEditar"
+					   label="{linguagem.xml.telaPublicacao.botao.editar}"
+					   left="114"
+					   width="100"
+					   />
+
+			<mx:Button bottom="34"
+					   click="excluir();"
+					   icon="{ico_excluir}"
+					   id="BtnExcluir"
+					   label="{linguagem.xml.telaPublicacao.botao.excluir}"
+					   left="218"
+					   width="100"
+					   />
+
+			<mx:Button bottom="34"
+					   click="detalhar();"
+					   icon="{ico_detalhar}"
+					   id="BtnDetalhar"
+					   label="{linguagem.xml.telaPublicacao.botao.detalhar}"
+					   left="322"
+					   width="100"
+					   />
+
+			<mx:Button bottom="34"
+					   click="cancelarConsulta();"
+					   icon="{ico_cancelar}"
+					   id="BtnCancelar"
+					   label="{linguagem.xml.telaPublicacao.botao.fechar}"
+					   right="10"
+					   width="100"
+					   />
+
+		</mx:Canvas>
+
+		<mx:Canvas height="100%"
+				   label="Cadastro"
+				   width="100%"
+				   >
+
+			<mx:Label enabled="true"
+					  text="{linguagem.xml.telaEditarPublicacao.label.codigo}"
+					  width="112"
+					  x="10"
+					  y="10"
+					  />
+
+			<mx:TextInput id="cadCodigo"
+						  width="112"
+						  x="10"
+						  y="28"
+						  />
+
+			<mx:Label text="{linguagem.xml.telaEditarMembro.label.nome}"
+					  x="10"
+					  y="58"
+					  />
+
+			<mx:TextInput id="cadNome"
+						  width="488"
+						  x="10"
+						  y="76"
+						  />
+
+			<mx:Button bottom="24"
+					   click="salvar();"
+					   icon="{ico_salvar}"
+					   id="BtnSalvar"
+					   label="{linguagem.xml.telaEditarPublicacao.botao.salvar}"
+					   left="10"
+					   width="96"
+					   />
+
+			<mx:Button bottom="24"
+					   click="salvarENovo();"
+					   icon="{ico_salvar}"
+					   id="BtnSalvarENovo"
+					   label="{linguagem.xml.telaEditarPublicacao.botao.salvarNovo}"
+					   left="114"
+					   width="122"
+					   />
+
+			<mx:Button bottom="24"
+					   click="cancelarCadastro();"
+					   icon="{ico_cancelar}"
+					   id="BtnCancelar1"
+					   label="{linguagem.xml.telaEditarPublicacao.botao.cancelar}"
+					   right="32"
+					   width="96"
+					   />
+			<mx:Label x="54" y="58" text="*" color="#FC0202" id="campoObgTitulo"/>
+			<mx:DataGrid x="10" y="309" width="648" dataProvider="{dpCronograma}" id="dataGridCronograma" wordWrap="true" height="151">
+				<mx:columns>
+					<mx:DataGridColumn dataField="descricao"
+									   headerText="{linguagem.xml.telaCadastroBasico.label.descricao}"
+									   width="341"
+									   />
+					<mx:DataGridColumn dataField="dia"
+									   headerText="{linguagem.xml.telaVisitante.label.data}"
+									   width="150"
+									   />
+					<mx:DataGridColumn dataField="hora"
+									   headerText="{linguagem.xml.telaVisitante.label.hora}"
+									   width="150"
+									   />
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:Button bottom="264"
+					   click="adicionarCronograma();"
+					   height="22"
+					   icon="{ico_adicionar}"
+					   id="BtnAdicionarCronograma"
+					   label="{linguagem.xml.telaEditarPublicacao.botao.adicionar}"
+					   left="561"
+					   width="100"
+					   />
+			<mx:Button bottom="62"
+					   click="removerMembro();"
+					   height="22"
+					   icon="{ico_remover}"
+					   id="BtnRemoverCronograma"
+					   label="{linguagem.xml.telaEditarPublicacao.botao.remover}"
+					   left="10"
+					   width="100"
+					   />
+			<mx:Label x="11" y="168" text="{linguagem.xml.telaVisitante.label.cronograma}"/>
+			<mx:Label x="11" y="199" text="{linguagem.xml.telaCadastroBasico.label.descricao}" width="275"/>
+			<mx:Label x="10" y="117" text="{linguagem.xml.telaVisitante.label.data}" width="122"/>
+			<mx:Label x="408" y="203" text="{linguagem.xml.telaVisitante.label.data}" width="122"/>
+			<mx:Label x="184" y="117" text="{linguagem.xml.telaVisitante.label.hora}" width="122"/>
+			<mx:Label x="407" y="251" text="{linguagem.xml.telaVisitante.label.hora}" width="122"/>
+			<mx:TextInput x="184" y="134" width="104" id="cadHora"/>
+			<mx:TextInput x="407" y="266" width="127" id="cadCronogramaHora"/>
+			<mx:HRule x="11" y="168" width="670"/>
+			<mx:HRule x="10" y="494" width="670"/>
+			<mx:TextArea x="12" y="218" width="387" height="73" id="cadCronogramaDescricao"/>
+			<mx:DateField x="10" y="135" width="141" id="cadData"/>
+			<mx:DateField x="408" y="218" width="140" id="cadCronogramaData"/>
+
+		</mx:Canvas>
+	</mx:ViewStack>
+
+</mx:TitleWindow>

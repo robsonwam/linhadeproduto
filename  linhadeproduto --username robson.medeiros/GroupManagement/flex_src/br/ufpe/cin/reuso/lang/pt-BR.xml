@@ -9,6 +9,7 @@
   			<menuitem label="Membro" data="2"/>
   			<menuitem label="Publicação" data="3"/>
   			<menuitem label="Linha de Pesquisa" data="4"/>
+  			<menuitem label="Visitante" data="5"/>
 		</menuitem>
     </menu>
     <idiomas>
@@ -89,6 +90,14 @@
    		</botao>
     	<titulo>Membro</titulo>
     </telaEditarMembro>
+    
+    <telaVisitante>
+    	<label>
+	    	<data>Data</data>
+	    	<hora>Hora</hora>
+	    	<cronograma>Cronograma</cronograma>
+    	</label>
+    </telaVisitante>
     
     <telaPublicacao>
     	<label>

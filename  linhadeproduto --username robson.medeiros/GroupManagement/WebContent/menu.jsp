@@ -121,6 +121,7 @@ function horizontal() {
         <li><a href="Relatorio.do" target="area-principal"><fmt:message key="campo.membros"/></a></li>
         <li><a href="Publicacao.do" target="area-principal"><fmt:message key="campo.publicacao"/></a></li>
         <li><a href="PublicacaoMembro.do" target="area-principal"><fmt:message key="campo.publicacao_membro"/></a></li>
+        <li><a href="Visitante.do" target="area-principal"><fmt:message key="campo.visitante"/></a></li>
       </ul>
    </li>
 </ul>
