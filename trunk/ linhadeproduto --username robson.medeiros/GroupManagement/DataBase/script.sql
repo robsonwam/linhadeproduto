@@ -1,6 +1,6 @@
 /*
-Created		13/3/2010
-Modified		30/3/2010
+Created		13/03/2010
+Modified		01/06/2010
 Project		
 Model			
 Company		
@@ -8,41 +8,6 @@ Author
 Version		
 Database		PostgreSQL 8.1 
 */
-
-
-
-/* Drop Referential Integrity Triggers */
-
-
-
-
-
-/* Drop User-Defined Triggers */
-
-
-
-/* Drop Domains */
-
-
-
-/* Drop Procedures */
-
-
-
-/* Drop Views */
-
-
-
-/* Drop Indexes */
-
-
-
-/* Drop Tables */
-Drop table "grupo_pesquisa" Restrict;
-Drop table "tipo" Restrict;
-Drop table "autor" Restrict;
-Drop table "publicacao" Restrict;
-Drop table "membro" Restrict;
 
 
 
@@ -120,6 +85,27 @@ Create table "grupo_pesquisa"
 ) Without Oids;
 
 
+Create table "visitante"
+(
+	"id" Serial NOT NULL,
+	"nome" Char(50),
+	"dia" Date,
+	"hora" Varchar(10),
+ primary key ("id")
+) Without Oids;
+
+
+Create table "cronograma"
+(
+	"id" Serial NOT NULL,
+	"id_visitante" Integer NOT NULL,
+	"dia" Varchar(20),
+	"hora" Varchar(10) NOT NULL,
+	"descricao" Text,
+ primary key ("id")
+) Without Oids;
+
+
 
 /* Create Tab 'Others' for Selected Tables */
 
@@ -143,6 +129,8 @@ Alter table "membro" add  foreign key ("tipo") references "tipo" ("id") on updat
 Alter table "membro" add  foreign key ("id_grupo_pesquisa") references "grupo_pesquisa" ("id") on update restrict on delete restrict;
 
 Alter table "publicacao" add  foreign key ("id_grupo_pesquisa") references "grupo_pesquisa" ("id") on update restrict on delete restrict;
+
+Alter table "cronograma" add  foreign key ("id_visitante") references "visitante" ("id") on update restrict on delete restrict;
 
 
 

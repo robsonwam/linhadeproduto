@@ -31,8 +31,8 @@ public aspect LinhaPesquisaAspect {
 //		this.membroCollection = membroCollection;
 //	}
 	
-//	declare @field : * Membro.grupoPesquisa : @JoinColumn(name="id_grupo_pesquisa");
-//	declare @field : * Membro.grupoPesquisa : @ManyToOne ;
+	declare @field : * Membro.grupoPesquisa : @JoinColumn(name="id_grupo_pesquisa");
+	declare @field : * Membro.grupoPesquisa : @ManyToOne ;
 //	private GrupoPesquisa Membro.grupoPesquisa;
 //	
 //	public GrupoPesquisa Membro.getGrupoPesquisa() {

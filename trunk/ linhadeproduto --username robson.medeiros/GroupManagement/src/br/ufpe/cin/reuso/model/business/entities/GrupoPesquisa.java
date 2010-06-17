@@ -18,7 +18,7 @@ public class GrupoPesquisa implements Serializable {
 
 	private String descricao;
 
-	@OneToMany(mappedBy="grupoPesquisa")
+//	@OneToMany(mappedBy="grupoPesquisa")
 	private Collection<Membro> membroCollection;
 
 	@OneToMany(mappedBy="grupoPesquisa")
