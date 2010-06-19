@@ -16,10 +16,10 @@
 
 		<properties>
 			<property name="hibernate.connection.username"
-					  value="postgres"/>
+					  value="sa"/>
 
 			<property name="hibernate.connection.driver_class"
-					  value="org.postgresql.Driver"/>
+					  value="net.sourceforge.jtds.jdbc.Driver"/>
 
 			<property name="hibernate.connection.password"
 					  value="123456"/>
@@ -28,10 +28,10 @@
 					  value="true"/>
 
 			<property name="hibernate.connection.url"
-					  value="jdbc:postgresql:reuso"/>
+					  value="jdbc:sqlserver://localhost:1433;databaseName=reuso"/>
 
 			<property name="hibernate.dialect"
-					  value="org.hibernate.dialect.PostgreSQLDialect"/>
+					  value="org.hibernate.dialect.SQLServerDialect"/>
 
 		</properties>
 	</persistence-unit>
