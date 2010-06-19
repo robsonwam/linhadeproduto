@@ -10,10 +10,8 @@ import br.ufpe.cin.reuso.exceptions.ExclusaoInvalidaException;
 import br.ufpe.cin.reuso.exceptions.OperacaoInvalidaException;
 import br.ufpe.cin.reuso.model.business.entities.Login;
 import br.ufpe.cin.reuso.model.business.entities.Membro;
-import br.ufpe.cin.reuso.model.business.entities.Publicacao;
 import br.ufpe.cin.reuso.model.business.entities.Tipo;
 import br.ufpe.cin.reuso.model.business.register.RegisterMembro;
-import br.ufpe.cin.reuso.model.business.register.RegisterPublicacao;
 import br.ufpe.cin.reuso.model.business.register.RegisterTipo;
 
 
@@ -22,7 +20,6 @@ public class ControllerReuso {
 	private RegisterMembro registerMembro = null;
 	private RegisterTipo registerTipo = null;
 	
-	private RegisterPublicacao registerPublicacao = null;
 
 	private static ControllerReuso instance = null;
 	
@@ -40,8 +37,6 @@ public class ControllerReuso {
 		if (object instanceof Membro)
 		{
 			return registerMembro.inserir((Membro)object);
-		}else if (object instanceof Publicacao) {
-			return registerPublicacao.inserir((Publicacao)object);
 		}
 		else if (object instanceof Tipo)
 		{
@@ -57,8 +52,6 @@ public class ControllerReuso {
 		if (object instanceof Membro)
 		{
 			return registerMembro.remover((Membro)object);
-		}else if (object instanceof Publicacao) {
-			return registerPublicacao.remover((Publicacao)object);
 		}
 		else if (object instanceof Tipo)
 		{
@@ -76,8 +69,6 @@ public class ControllerReuso {
 		if (object instanceof Membro)
 		{
 			return registerMembro.merge((Membro)object);
-		}else if (object instanceof Publicacao) {
-			return registerPublicacao.merge((Publicacao)object);
 		}
 		else if (object instanceof Tipo)
 		{
@@ -94,8 +85,6 @@ public class ControllerReuso {
 		if (object instanceof Membro)
 		{
 			return registerMembro.buscarPorChave(((Membro)object).getIdMembro());
-		}else if (object instanceof Publicacao) {
-			return registerPublicacao.buscarPorChave(((Publicacao)object).getId());
 		}
 		else if (object instanceof Tipo)
 		{
@@ -123,19 +112,6 @@ public class ControllerReuso {
 				return result;
 			}
 			
-		}else if (object instanceof Publicacao)
-		{
-			if(((Publicacao)object).getId() == null || ((Publicacao)object).getId().toString() == null || ((Publicacao)object).getId() == 0)
-			{
-				return registerPublicacao.buscarPorExemplo((Publicacao)object,ordenacoes);
-			} else {
-				List result = new ArrayList();
-				Object element = registerPublicacao.buscarPorChave(((Publicacao)object).getId());
-				if(element != null){
-					result.add(element);
-				}
-				return result;
-			}
 		}
 		else if (object instanceof Tipo)
 		{
@@ -168,7 +144,6 @@ public class ControllerReuso {
     {
 		registerMembro = RegisterMembro.getInstance();
 		registerTipo = RegisterTipo.getInstance();
-		registerPublicacao = RegisterPublicacao.getInstance();
     }
 
 

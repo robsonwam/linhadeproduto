@@ -30,10 +30,13 @@ Create table `membro` (
 	`ativo` Varchar(20),
 	`orientador` Varchar(20),
 	`co_orientador` Varchar(20),
+        #if($linhaPesquisa)
 	`id_grupo_pesquisa` Int,
+	#end
 	UNIQUE (`codigo`),
  Primary Key (`id_membro`)) ENGINE = MyISAM;
 
+ #if($publicacoes)
 Create table `publicacao` (
 	`id` Int NOT NULL AUTO_INCREMENT,
 	`tipo` Char(50),
@@ -48,8 +51,11 @@ Create table `publicacao` (
 	`mes` Int,
 	`school` Varchar(20),
 	`autor_externo` Varbinary(20),
+	#if($linhaPesquisa)
 	`id_grupo_pesquisa` Int,
+	#end
  Primary Key (`id`)) ENGINE = MyISAM;
+ #end
 
 Create table `autor` (
 	`id` Int NOT NULL,
@@ -61,17 +67,21 @@ Create table `tipo` (
 	`nome` Varchar(20),
  Primary Key (`id`)) ENGINE = MyISAM;
 
+ #if($linhaPesquisa)
 Create table `grupo_pesquisa` (
 	`id` Int NOT NULL AUTO_INCREMENT,
 	`descricao` Varchar(20),
  Primary Key (`id`)) ENGINE = MyISAM;
+#end
 
+#if($visitantesExternos)
 Create table `visitante` (
 	`id` Int NOT NULL AUTO_INCREMENT,
 	`nome` Char(50),
 	`dia` Date,
 	`hora` Varchar(10),
  Primary Key (`id`)) ENGINE = MyISAM;
+
 
 Create table `cronograma` (
 	`id` Int NOT NULL AUTO_INCREMENT,
@@ -80,6 +90,7 @@ Create table `cronograma` (
 	`hora` Varchar(10) NOT NULL,
 	`descricao` Varbinary(20),
  Primary Key (`id`)) ENGINE = MyISAM;
+#end
 
 
 
@@ -90,15 +101,22 @@ Create table `cronograma` (
 
 
 
-
-
+#if($publicacoes)
 Alter table `autor` add Foreign Key (`id_membro`) references `membro` (`id_membro`) on delete  restrict on update  restrict;
 Alter table `autor` add Foreign Key (`id`) references `publicacao` (`id`) on delete  restrict on update  restrict;
+#end
 Alter table `membro` add Foreign Key (`tipo`) references `tipo` (`id`) on delete  restrict on update  restrict;
+#if($linhaPesquisa)
 Alter table `membro` add Foreign Key (`id_grupo_pesquisa`) references `grupo_pesquisa` (`id`) on delete  restrict on update  restrict;
+#end
+#if($publicacoes)
+#if($linhaPesquisa)
 Alter table `publicacao` add Foreign Key (`id_grupo_pesquisa`) references `grupo_pesquisa` (`id`) on delete  restrict on update  restrict;
+#end
+#end
+#if($visitantesExternos)
 Alter table `cronograma` add Foreign Key (`id_visitante`) references `visitante` (`id`) on delete  restrict on update  restrict;
-
+#end
 
 
 
