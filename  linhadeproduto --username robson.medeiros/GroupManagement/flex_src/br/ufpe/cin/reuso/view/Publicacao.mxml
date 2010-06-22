@@ -19,9 +19,6 @@
 			import br.ufpe.cin.reuso.events.PublicacaoEvent;
 			import br.ufpe.cin.reuso.vo.PublicacaoVO;
 			import flexunit.flexui.controls.right.SelectedTestCaseForm;
-			import br.ufpe.cin.reuso.view.reports.report.templates.TemplateLista;
-			import br.ufpe.cin.reuso.view.reports.report.dataproviders.DPTemplateLista;
-			import br.ufpe.cin.reuso.view.reports.report.custom.PreviewWindow;
 			import br.ufpe.cin.reuso.util.Dicionario;
 			import br.ufpe.cin.reuso.events.MembroEvent;
 			import br.ufpe.cin.reuso.vo.MembroVO;
@@ -671,17 +668,6 @@
 			
 			private function listar():void
 			{
-				var janela:PreviewWindow = new PreviewWindow();
-				janela.width = Application.application.width;
-				janela.height = Application.application.height;
-				var template:DPTemplateLista = new DPTemplateLista();
-				template.dpLista = this.dpRegistros;
-				template.titulo = this.titutoReport;
-				template.dtGrid = this.consDataGrid;
-				template.ordenacao = this.getOrdenacao();
-				var doc:Document = new Document( new TemplateLista() , template , PaperFormat.A4 );
-				PopUpManager.addPopUp( janela , this , true );
-				janela.previewComponent.doc = doc;
 			}
 			
 			private function adicionarMembro():void
