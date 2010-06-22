@@ -10,10 +10,7 @@
 			import mx.managers.PopUpManager;
 			import mx.core.Application;
 			import org.doc.PaperFormat;
-			import br.ufpe.cin.reuso.view.reports.report.templates.TemplateLista;
 			import org.doc.Document;
-			import br.ufpe.cin.reuso.view.reports.report.dataproviders.DPTemplateLista;
-			import br.ufpe.cin.reuso.view.reports.report.custom.PreviewWindow;
 
 			import mx.controls.Alert;
 			import mx.collections.ArrayCollection;
@@ -236,24 +233,6 @@
 
 			private function listar():void
 			{
-				var janela:PreviewWindow = new PreviewWindow();
-				janela.width = Application.application.width;
-				janela.height = Application.application.height;
-
-				var template:DPTemplateLista = new DPTemplateLista();
-				template.dpLista = this.dpRegistros;
-				template.titulo = this.titutoReport;
-				template.dtGrid = this.cbdgDataGrid;
-				var campo1:SortField = new SortField();
-				campo1.name = this.dataFieldCodigo;
-				campo1.numeric = true;
-
-//, new SortField(this.dataFieldDescricao, true
-				template.ordenacao = [campo1];
-
-				var doc:Document = new Document(new TemplateLista(), template, PaperFormat.A4);
-				PopUpManager.addPopUp(janela, this, true);
-				janela.previewComponent.doc = doc;
 			}
 
 			private function excluir():void

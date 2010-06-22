@@ -23,9 +23,6 @@
 			import org.utils.ByteArrayUtil;
 			import mx.utils.ObjectUtil;
 			import flexunit.flexui.controls.right.SelectedTestCaseForm;
-			import br.ufpe.cin.reuso.view.reports.report.templates.TemplateLista;
-			import br.ufpe.cin.reuso.view.reports.report.dataproviders.DPTemplateLista;
-			import br.ufpe.cin.reuso.view.reports.report.custom.PreviewWindow;
 			import br.ufpe.cin.reuso.util.Dicionario;
 			import br.ufpe.cin.reuso.events.MembroEvent;
 			import br.ufpe.cin.reuso.vo.MembroVO;
